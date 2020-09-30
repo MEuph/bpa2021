@@ -14,4 +14,7 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Button"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextButton"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 </qualifiedTypeNameHistroy>
