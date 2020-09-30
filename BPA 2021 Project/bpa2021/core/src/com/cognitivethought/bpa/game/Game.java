@@ -1,9 +1,9 @@
 package com.cognitivethought.bpa.game;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Scanner;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -18,26 +18,35 @@ public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void create () {
 		Backendless.initApp(Strings.APP_ID, Strings.SECRET_KEY);
 		
-		HashMap<String, String> test = new HashMap<>();
-		test.put("first", "second");
-		Backendless.Data.of("Test").save(test, new AsyncCallback<Map>() {
-
-			@Override
-			public void handleResponse(Map response) {
-				System.out.println("Item saved");
-			}
-
+		BackendlessUser createUser = new BackendlessUser();
+		
+		Scanner sc = new Scanner (System.in);
+		
+		System.out.println("Welcome to [GAME], please input your email here: ");
+		String email = sc.nextLine();
+		System.out.println("Please input your password here: ");
+		String password = sc.nextLine();
+		
+		createUser.setEmail(email);
+		createUser.setPassword(password);
+		
+		Backendless.UserService.register(createUser, new AsyncCallback<BackendlessUser>() {
 			@Override
 			public void handleFault(BackendlessFault fault) {
-				System.err.println("<ERROR>: Server reported an error: " + fault.getMessage());
+				System.out.printf("\n", fault.getCode(), "\n", fault.getDetail(), "\n", fault.getMessage());
 			}
 			
+			@Override
+			public void handleResponse(BackendlessUser response) {
+				System.out.println("Successfully created new user, " + response.getEmail());
+			}
 		});
+		
+		sc.close();
 		
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
