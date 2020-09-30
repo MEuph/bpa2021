@@ -7,7 +7,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextField"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Stage"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Skin"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.utils.FocusListener"/>
@@ -17,4 +16,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Label"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Skin"/>
 </qualifiedTypeNameHistroy>
