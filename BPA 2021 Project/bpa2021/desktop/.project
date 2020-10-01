@@ -20,11 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>assets</name>
-			<type>2</type>
-			<location>C:/Users/Chris/Documents/GitHub/bpa2021/BPA 2021 Project/bpa2021/core/assets</location>
-		</link>
-	</linkedResources>
 </projectDescription>
