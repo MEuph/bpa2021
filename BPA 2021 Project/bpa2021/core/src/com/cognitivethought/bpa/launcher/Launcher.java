@@ -1,7 +1,6 @@
 package com.cognitivethought.bpa.launcher;
 
 import java.util.List;
-import java.util.Map;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
@@ -40,67 +39,106 @@ public class Launcher extends ApplicationAdapter {
 	Stage loginStage;
 	Stage forgotPasswordStage;
 	Stage currentStage;
-	Stage resetPasswordStage;
-	
+	Stage previousStage;
+
 	BackendlessUser currentUser = null;
 
 	VerticalGroup na_elements;
-	
+
+	boolean na_password_focused = false;
 	TextField na_username, na_email, na_password;
 	TextButton na_createUser, na_forgotPassword;
-	
+
 	VerticalGroup login_elements;
 
+	boolean login_password_focused = false;
 	TextField login_username, login_password;
 	TextButton login_submit, login_newuser, login_forgotPassword;
 
 	Label title;
-	
+
 	VerticalGroup fp_elements;
+
+	boolean fp_email_focused = false;
+	TextField fp_username, fp_email, fp_tempPass, fp_newPass, fp_verifyNewPass;
+	TextButton fp_submit, fp_back;
 	
-	TextField fp_username, fp_email;
-	TextButton fp_submit;
-	
+	Label errorMessages;
+
 	BitmapFont font;
 
 	@Override
 	public void create() {
 		Backendless.initApp(Strings.APP_ID, Strings.SECRET_KEY);
-		
+
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
 		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		param.size = 20;
+		param.size = 15;
 		font = gen.generateFont(param);
-		gen.dispose();
 		
 		na_elements = new VerticalGroup();
 		login_elements = new VerticalGroup();
 		fp_elements = new VerticalGroup();
-		
+
 		na_elements.align(Align.center);
 		login_elements.align(Align.center);
 		fp_elements.align(Align.center);
-		
+
 		na_elements.space(20f);
 		login_elements.space(20f);
 		fp_elements.space(20f);
-		
+
 		na_elements.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		login_elements.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		fp_elements.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		
+		param.size = 50;
+		BitmapFont titleFont = gen.generateFont(param);
+		
+		LabelStyle style = new LabelStyle();
+		style.font = titleFont;
+		style.fontColor = Color.RED;
+		
+		title = new Label(Strings.LNUI_TITLE, style);
+		title.setAlignment(Align.center);
+		title.setPosition(na_elements.getX() - (title.getWidth() / 2), na_elements.getY() + 150);
+		
+		Label loginTitle;
+		Label na_title;
+		Label fp_title;
+		
+		loginTitle = new Label(Strings.LNUI_TITLE, style);
+		na_title = new Label(Strings.LNUI_TITLE, style);
+		fp_title = new Label(Strings.LNUI_TITLE, style);
+		
+		loginTitle.setAlignment(Align.center);
+		na_title.setAlignment(Align.center);
+		fp_title.setAlignment(Align.center);
+		
+		loginTitle.setPosition(login_elements.getX() - (loginTitle.getWidth() / 2), login_elements.getY() + 150);
+		na_title.setPosition(na_elements.getX() - (na_title.getWidth() / 2), na_elements.getY() + 150);
+		fp_title.setPosition(fp_elements.getX() - (fp_title.getWidth() / 2), fp_elements.getY() + 150);
+		
+		gen.dispose();
+		
 		newAccountStage = new Stage();
 		loginStage = new Stage();
 		forgotPasswordStage = new Stage();
-		
-		setStage(loginStage);
 
+		newAccountStage.addActor(na_title);
+		loginStage.addActor(loginTitle);
+		forgotPasswordStage.addActor(fp_title);
+		
+		currentStage = loginStage;
+		Gdx.input.setInputProcessor(loginStage);
+		
 		populateUI();
 	}
 
 	public void setStage(Stage s) {
 		if (currentStage != null)
 			currentStage.unfocusAll();
+		previousStage = currentStage;
 		currentStage = s;
 		Gdx.input.setInputProcessor(s);
 	}
@@ -125,12 +163,13 @@ public class Launcher extends ApplicationAdapter {
 			}
 		});
 	}
-	
-	public void submitPasswordReset(String username, String email)  {
-		// If the email the user submitted does not match the email of the account, don't do anything
+
+	public void submitPasswordReset(String username, String email) {
+		// If the email the user submitted does not match the email of the account,
+		// don't do anything
 		boolean isTruthful = false;
 		String userId = "";
-		
+
 		try {
 			String whereClause = "email = " + "\'" + email + "\'";
 			DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -139,12 +178,13 @@ public class Launcher extends ApplicationAdapter {
 			if (result.size() > 0) {
 				userId = result.get(0).getObjectId();
 			}
-		} catch (BackendlessException e) { 
+			isTruthful = true;
+		} catch (BackendlessException e) {
 			System.err.println("User with that email username combo does not exist");
 		}
-		
+
 		System.out.println(userId);
-		
+
 		if (!isTruthful) {
 			return; // TODO: Notify user
 		} else {
@@ -153,16 +193,24 @@ public class Launcher extends ApplicationAdapter {
 				public void handleFault(BackendlessFault fault) {
 					System.err.println(fault.getMessage());
 				}
-				
+
 				@Override
 				public void handleResponse(Void response) {
+					fp_tempPass.setVisible(true);
+					fp_newPass.setVisible(true);
+					fp_verifyNewPass.setVisible(true);
+					fp_elements.removeActor(fp_submit);
+					fp_elements.addActor(fp_tempPass);
+					fp_elements.addActor(fp_newPass);
+					fp_elements.addActor(fp_verifyNewPass);
+					fp_elements.addActor(fp_submit);
+					fp_elements.act(Gdx.graphics.getDeltaTime());
 					System.out.println("Sent temp password to " + fp_email.getText());
 				}
 			});
-			setStage(resetPasswordStage);
 		}
 	}
-	
+
 	public void createUser(String username, String email, String password) {
 		BackendlessUser createUser = new BackendlessUser();
 
@@ -219,14 +267,15 @@ public class Launcher extends ApplicationAdapter {
 		// -- GENERAL -- //
 		TextFieldStyle textStyle = new TextFieldStyle();
 		textStyle.font = font;
-		Pixmap bgColor = new Pixmap(200, (int) textStyle.font.getLineHeight(), Pixmap.Format.RGB888);
+		Pixmap bgColor = new Pixmap(250, (int) textStyle.font.getLineHeight(), Pixmap.Format.RGB888);
 		bgColor.setColor(Color.WHITE);
 		bgColor.fill();
 		textStyle.fontColor = Color.GRAY;
-		textStyle.background = new Image(new Texture(bgColor)).getDrawable();
-		textStyle.background.setLeftWidth(textStyle.background.getLeftWidth() + 5);
+		textStyle.background = new Image(new Texture(bgColor)).getDrawable();;
+		textStyle.background.setLeftWidth(textStyle.background.getLeftWidth());
 
 		TextButtonStyle buttonStyle = new TextButtonStyle();
+		bgColor = new Pixmap(300, (int) textStyle.font.getLineHeight(), Pixmap.Format.RGB888);
 		bgColor.setColor(Color.DARK_GRAY);
 		bgColor.fill();
 		buttonStyle.down = new Image(new Texture(bgColor)).getDrawable();
@@ -235,45 +284,36 @@ public class Launcher extends ApplicationAdapter {
 		buttonStyle.fontColor = Color.WHITE;
 		buttonStyle.overFontColor = Color.RED;
 		buttonStyle.downFontColor = Color.GRAY;
-		
+
 		TextButtonStyle noBackgroundButton = new TextButtonStyle();
 		noBackgroundButton.font = font;
 		noBackgroundButton.fontColor = Color.WHITE;
 		noBackgroundButton.overFontColor = Color.RED;
 		noBackgroundButton.downFontColor = Color.GRAY;
-		
-		LabelStyle titleStyle = new LabelStyle();
-		titleStyle.font = font;
-		titleStyle.fontColor = Color.WHITE;
-		bgColor.setColor(Color.WHITE);
-		titleStyle.background = new Image(new Texture(bgColor)).getDrawable();
-		title = new Label(Strings.LNUI_TITLE, titleStyle);
-		title.setSize(200, 20);
-		title.setPosition(100, 200);
 
 		// -- NEW ACCOUNT UI -- //
 		na_email = new TextField(Strings.LNUI_EMAIL, new TextFieldStyle(textStyle));
 		na_password = new TextField(Strings.LNUI_PASSWORD, new TextFieldStyle(textStyle));
 		na_username = new TextField(Strings.LNUI_USERNAME, new TextFieldStyle(textStyle));
-		
+
 		na_createUser = new TextButton(Strings.LNUI_CREATE_ACCOUNT, buttonStyle);
 		na_createUser.setBackground(textStyle.background);
-		na_createUser.setSize(200, font.getLineHeight() + 10);
+		na_createUser.setSize(250, font.getLineHeight() + 10);
 		na_createUser.align(Align.center);
-		
+
 		na_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, noBackgroundButton);
 		na_forgotPassword.setSize(100, font.getLineHeight() + 10);
 		na_forgotPassword.align(Align.center);
-		
+
 		na_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, buttonStyle);
-		
+
 		na_forgotPassword.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				setStage(forgotPasswordStage);
 			}
 		});
-		
+
 		na_createUser.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -320,6 +360,7 @@ public class Launcher extends ApplicationAdapter {
 		na_password.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
+				na_password_focused = focused;
 				if (focused) {
 					na_password.getStyle().fontColor = Color.RED;
 					if (na_password.getText().equals(Strings.LNUI_PASSWORD)) {
@@ -345,14 +386,14 @@ public class Launcher extends ApplicationAdapter {
 			}
 		});
 
-		na_username.setSize(200, textStyle.font.getLineHeight() + 10);
-		na_email.setSize(200, textStyle.font.getLineHeight() + 10);
-		na_password.setSize(200, textStyle.font.getLineHeight() + 10);
+		na_username.setSize(250, textStyle.font.getLineHeight() + 10);
+		na_email.setSize(250, textStyle.font.getLineHeight() + 10);
+		na_password.setSize(250, textStyle.font.getLineHeight() + 10);
 
 		na_username.setAlignment(Align.center);
 		na_email.setAlignment(Align.center);
 		na_password.setAlignment(Align.center);
-		
+
 		na_elements.addActor(na_forgotPassword);
 		na_elements.addActor(na_username);
 		na_elements.addActor(na_email);
@@ -365,22 +406,22 @@ public class Launcher extends ApplicationAdapter {
 
 		login_submit = new TextButton(Strings.LNUI_LOGIN, buttonStyle);
 		login_submit.setBackground(textStyle.background);
-		login_submit.setSize(200, font.getLineHeight() + 10);
+		login_submit.setSize(250, font.getLineHeight() + 10);
 		login_submit.align(Align.center);
-		
+
 		login_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, noBackgroundButton);
 		login_forgotPassword.setSize(100, font.getLineHeight() + 10);
 		login_forgotPassword.align(Align.center);
-		
+
 		login_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, buttonStyle);
-		
+
 		login_forgotPassword.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				setStage(forgotPasswordStage);
 			}
 		});
-		
+
 		login_submit.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -409,6 +450,7 @@ public class Launcher extends ApplicationAdapter {
 		login_password.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
+				login_password_focused = focused;
 				if (focused) {
 					login_password.getStyle().fontColor = Color.RED;
 					if (login_password.getText().equals(Strings.LNUI_PASSWORD)) {
@@ -434,27 +476,92 @@ public class Launcher extends ApplicationAdapter {
 			}
 		});
 
-		login_username.setSize(200, textStyle.font.getLineHeight() + 10);
-		login_password.setSize(200, textStyle.font.getLineHeight() + 10);
+		login_username.setSize(250, textStyle.font.getLineHeight() + 10);
+		login_password.setSize(250, textStyle.font.getLineHeight() + 10);
 
 		login_username.setAlignment(Align.center);
 		login_password.setAlignment(Align.center);
-		
+
 		login_elements.addActor(login_forgotPassword);
 		login_elements.addActor(login_username);
 		login_elements.addActor(login_password);
 		login_elements.addActor(login_submit);
-		
+
 		// -- FORGOT PASSWORD -- //
 		fp_username = new TextField(Strings.LNUI_USERNAME, new TextFieldStyle(textStyle));
 		fp_email = new TextField(Strings.LNUI_EMAIL, new TextFieldStyle(textStyle));
-		
+		fp_tempPass = new TextField(Strings.LNUI_TEMP_PASSWORD, new TextFieldStyle(textStyle));
+		fp_newPass = new TextField(Strings.LNUI_NEW_PASSWORD, new TextFieldStyle(textStyle));
+		fp_verifyNewPass = new TextField(Strings.LNUI_VERIFY_PASSWORD, new TextFieldStyle(textStyle));
+
+		fp_tempPass.setVisible(false);
+		fp_newPass.setVisible(false);
+		fp_verifyNewPass.setVisible(false);
+
 		fp_submit = new TextButton(Strings.LNUI_SUBMIT, buttonStyle);
 		fp_submit.setBackground(textStyle.background);
-		fp_submit.setSize(200, font.getLineHeight() + 10);
-		fp_submit.setPosition(100, 145);
+		fp_submit.setSize(250, font.getLineHeight() + 10);
 		fp_submit.align(Align.center);
-		
+
+		fp_back = new TextButton(Strings.LNUI_BACK, buttonStyle);
+		fp_back.setBackground(textStyle.background);
+		fp_back.setSize(250, font.getLineHeight() + 10);
+		fp_submit.align(Align.center);
+
+		fp_verifyNewPass.addListener(new FocusListener() {
+			@Override
+			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
+				if (focused) {
+					fp_verifyNewPass.getStyle().fontColor = Color.RED;
+					if (fp_verifyNewPass.getText().equals(Strings.LNUI_VERIFY_PASSWORD)) {
+						fp_verifyNewPass.setText("");
+					}
+				} else if (!focused) {
+					fp_verifyNewPass.getStyle().fontColor = Color.BLACK;
+					if (fp_verifyNewPass.getText().equals("")) {
+						fp_verifyNewPass.setText(Strings.LNUI_VERIFY_PASSWORD);
+						fp_verifyNewPass.getStyle().fontColor = Color.GRAY;
+					}
+				}
+			}
+		});
+
+		fp_newPass.addListener(new FocusListener() {
+			@Override
+			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
+				if (focused) {
+					fp_newPass.getStyle().fontColor = Color.RED;
+					if (fp_newPass.getText().equals(Strings.LNUI_NEW_PASSWORD)) {
+						fp_newPass.setText("");
+					}
+				} else if (!focused) {
+					fp_newPass.getStyle().fontColor = Color.BLACK;
+					if (fp_newPass.getText().equals("")) {
+						fp_newPass.setText(Strings.LNUI_NEW_PASSWORD);
+						fp_newPass.getStyle().fontColor = Color.GRAY;
+					}
+				}
+			}
+		});
+
+		fp_tempPass.addListener(new FocusListener() {
+			@Override
+			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
+				if (focused) {
+					fp_tempPass.getStyle().fontColor = Color.RED;
+					if (fp_tempPass.getText().equals(Strings.LNUI_TEMP_PASSWORD)) {
+						fp_tempPass.setText("");
+					}
+				} else if (!focused) {
+					fp_tempPass.getStyle().fontColor = Color.BLACK;
+					if (fp_tempPass.getText().equals("")) {
+						fp_tempPass.setText(Strings.LNUI_TEMP_PASSWORD);
+						fp_tempPass.getStyle().fontColor = Color.GRAY;
+					}
+				}
+			}
+		});
+
 		fp_username.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
@@ -472,10 +579,11 @@ public class Launcher extends ApplicationAdapter {
 				}
 			}
 		});
-		
+
 		fp_email.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
+				fp_email_focused = focused;
 				if (focused) {
 					fp_email.getStyle().fontColor = Color.RED;
 					if (fp_email.getText().equals(Strings.LNUI_EMAIL)) {
@@ -490,34 +598,61 @@ public class Launcher extends ApplicationAdapter {
 				}
 			}
 		});
-		
+
 		fp_submit.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				submitPasswordReset(fp_username.getText(), fp_email.getText());
+				if (!fp_verifyNewPass.isVisible()) {
+					submitPasswordReset(fp_username.getText(), fp_email.getText());
+				} else {
+					if (fp_verifyNewPass.getText().equals(fp_newPass.getText())) {
+						// TODO: Enforce Password Requirements
+					} else {
+						// TODO: Inform user
+					}
+				}
 			}
 		});
-		
+
+		fp_back.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				setStage(previousStage);
+			}
+		});
+
 		forgotPasswordStage.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (!isClickingOnUIElement(fp_elements, x, y, fp_email, fp_submit, fp_username)) {
-					forgotPasswordStage.unfocusAll();
+				if (fp_verifyNewPass.isVisible()) {
+					if (!isClickingOnUIElement(fp_elements, x, y, fp_email, fp_submit, fp_username, fp_verifyNewPass,
+							fp_newPass, fp_tempPass)) {
+						forgotPasswordStage.unfocusAll();
+					}
+				} else {
+					if (!isClickingOnUIElement(fp_elements, x, y, fp_email, fp_submit, fp_username)) {
+						forgotPasswordStage.unfocusAll();
+					}
 				}
 				super.clicked(event, x, y);
 			}
 		});
+
+		fp_username.setAlignment(Align.center);
+		fp_email.setAlignment(Align.center);
+		fp_newPass.setAlignment(Align.center);
+		fp_verifyNewPass.setAlignment(Align.center);
+		fp_tempPass.setAlignment(Align.center);
 		
+		fp_elements.addActor(fp_back);
 		fp_elements.addActor(fp_username);
 		fp_elements.addActor(fp_email);
 		fp_elements.addActor(fp_submit);
-		
+
 		// -- FINALIZING -- //
 		loginStage.addActor(login_elements);
 		newAccountStage.addActor(na_elements);
 		forgotPasswordStage.addActor(fp_elements);
-		loginStage.addActor(title);
-		newAccountStage.addActor(title);
 	}
 
 	public void update() {
@@ -535,6 +670,7 @@ public class Launcher extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		newAccountStage.dispose();
+		forgotPasswordStage.dispose();
 		loginStage.dispose();
 	}
 }

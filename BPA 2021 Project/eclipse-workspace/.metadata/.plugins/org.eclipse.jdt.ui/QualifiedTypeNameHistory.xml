@@ -12,7 +12,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextButton"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Label"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Skin"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.files.FileHandle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.assets.AssetManager"/>
@@ -25,4 +24,7 @@
 <fullyQualifiedTypeName name="com.backendless.persistence.DataQueryBuilder"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Label"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Actor"/>
 </qualifiedTypeNameHistroy>
