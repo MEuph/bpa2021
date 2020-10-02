@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.backendless.Backendless"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Stage"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.utils.FocusListener"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
@@ -16,7 +14,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter"/>
 <fullyQualifiedTypeName name="java.awt.Window"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextField"/>
-<fullyQualifiedTypeName name="com.backendless.async.callback.AsyncCallback"/>
 <fullyQualifiedTypeName name="com.backendless.persistence.DataQueryBuilder"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
@@ -30,4 +27,8 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.Strings"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureAtlas"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.backendless.Backendless"/>
+<fullyQualifiedTypeName name="com.backendless.async.callback.AsyncCallback"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
 </qualifiedTypeNameHistroy>

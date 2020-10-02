@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
@@ -40,35 +41,34 @@ import com.cognitivethought.bpa.Strings;
 
 public class Launcher extends ApplicationAdapter {
 
-	Stage newAccountStage;
-	Stage loginStage;
-	Stage forgotPasswordStage;
+	Stage na_stage;
+	Stage login_stage;
+	Stage fp_stage;
 	Stage currentStage;
 	Stage previousStage;
 
 	BackendlessUser currentUser = null;
 
 	VerticalGroup na_elements;
-
-	boolean na_password_focused = false;
+	
+	
+	
 	TextField na_username, na_email, na_password;
-	TextButton na_createUser, na_forgotPassword;
+	TextButton na_createUser, na_forgotPassword, na_back;
 	Label na_errors;
 
 	VerticalGroup login_elements;
 
-	boolean login_password_focused = false;
 	TextField login_username, login_password;
-	TextButton login_submit, login_newuser, login_forgotPassword, login_newaccount;
+	TextButton login_submit, login_forgotPassword, login_newAccount;
 	Label login_errors;
 
 	Label title;
 
 	VerticalGroup fp_elements;
 
-	boolean fp_email_focused = false;
 	TextField fp_username, fp_email, fp_tempPass, fp_newPass, fp_verifyNewPass;
-	TextButton fp_submit, fp_back;
+	TextButton fp_submit, fp_back, fp_resetPass;
 	CheckBox fp_alreadyHasTempPass;
 	Label fp_errors;
 
@@ -128,16 +128,16 @@ public class Launcher extends ApplicationAdapter {
 
 		gen.dispose();
 
-		newAccountStage = new Stage();
-		loginStage = new Stage();
-		forgotPasswordStage = new Stage();
+		na_stage = new Stage();
+		login_stage = new Stage();
+		fp_stage = new Stage();
 
-		newAccountStage.addActor(na_title);
-		loginStage.addActor(loginTitle);
-		forgotPasswordStage.addActor(fp_title);
+		na_stage.addActor(na_title);
+		login_stage.addActor(loginTitle);
+		fp_stage.addActor(fp_title);
 
-		currentStage = loginStage;
-		Gdx.input.setInputProcessor(loginStage);
+		currentStage = login_stage;
+		Gdx.input.setInputProcessor(login_stage);
 
 		populateUI();
 	}
@@ -151,13 +151,13 @@ public class Launcher extends ApplicationAdapter {
 	}
 
 	public void login(String email, String password) {
+		login_errors.setText("Loading...");
 		Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
 			@Override
 			public void handleFault(BackendlessFault fault) {
 				switch (fault.getCode()) {
 				case "3003":
 					login_errors.setText(Strings.ERROR_BE3003 + " Code BE3003");
-					;
 					break;
 				default:
 					login_errors.setText("Error logging in! " + fault.getMessage() + " Code BE" + fault.getCode());
@@ -174,7 +174,9 @@ public class Launcher extends ApplicationAdapter {
 
 	public void submitPasswordReset(String username, String email) {
 		boolean isTruthful = false;
-
+		
+		fp_errors.setText("Loading...");
+		
 		try {
 			String whereClause = "email = " + "\'" + email + "\'";
 			DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -191,7 +193,8 @@ public class Launcher extends ApplicationAdapter {
 		System.out.println(Strings.USER_ID);
 
 		if (!isTruthful) {
-			return; // TODO: Notify user
+			fp_errors.setText("User with that email username combo does not exist");
+			return;
 		} else {
 			Backendless.UserService.restorePassword(username, new AsyncCallback<Void>() {
 				@Override
@@ -224,7 +227,9 @@ public class Launcher extends ApplicationAdapter {
 		createUser.setEmail(email);
 		createUser.setPassword(password);
 		createUser.setProperty("name", username);
-
+		
+		na_errors.setText("Loading...");
+		
 		Backendless.UserService.register(createUser, new AsyncCallback<BackendlessUser>() {
 			@Override
 			public void handleFault(BackendlessFault fault) {
@@ -278,7 +283,6 @@ public class Launcher extends ApplicationAdapter {
 		bgColor.fill();
 		textStyle.fontColor = Color.GRAY;
 		textStyle.background = new Image(new Texture(bgColor)).getDrawable();
-		;
 		textStyle.background.setLeftWidth(textStyle.background.getLeftWidth());
 
 		TextButtonStyle buttonStyle = new TextButtonStyle();
@@ -320,26 +324,59 @@ public class Launcher extends ApplicationAdapter {
 
 		na_createUser = new TextButton(Strings.LNUI_CREATE_ACCOUNT, buttonStyle);
 		na_createUser.setBackground(textStyle.background);
-		na_createUser.setSize(250, font.getLineHeight() + 10);
+		na_createUser.setSize(250, buttonStyle.font.getLineHeight() + 10);
 		na_createUser.align(Align.center);
 
 		na_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, noBackgroundButton);
-		na_forgotPassword.setSize(100, font.getLineHeight() + 10);
+		na_forgotPassword.setSize(100, noBackgroundButton.font.getLineHeight() + 10);
 		na_forgotPassword.align(Align.center);
 
-		na_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, buttonStyle);
+		na_back = new TextButton(Strings.LNUI_BACK, noBackgroundButton);
+		na_back.setSize(100, noBackgroundButton.font.getLineHeight() + 10);
+		na_back.align(Align.center);
+
+		na_back.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				setStage(previousStage);
+			}
+		});
 
 		na_forgotPassword.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				setStage(forgotPasswordStage);
+				setStage(fp_stage);
 			}
 		});
 
 		na_createUser.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				createUser(na_username.getText(), na_email.getText(), na_password.getText());
+				int min_length = 8;
+				
+				na_errors.setText("Loading");
+				
+				String password = na_password.getText();
+				
+				boolean lengthReq = password.length() >= min_length;
+				boolean specialCharReq = !password.matches("[a-zA-Z0-9]");
+				boolean numReq = password.matches(".*\\d.*");
+
+				boolean strongEnough = lengthReq && specialCharReq && numReq;
+
+				if (strongEnough) {
+					createUser(na_username.getText(), na_email.getText(), na_password.getText());
+				} else {
+					String errorMessage = "";
+					na_errors.setText(errorMessage);
+					if (!lengthReq)
+						errorMessage += "Password must be at least 8 characters; ";
+					if (!specialCharReq)
+						errorMessage += "Password must contain a special character; ";
+					if (!numReq)
+						errorMessage += "Password must contain a number";
+					na_errors.setText(errorMessage);
+				}
 			}
 		});
 
@@ -382,7 +419,6 @@ public class Launcher extends ApplicationAdapter {
 		na_password.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
-				na_password_focused = focused;
 				if (focused) {
 					na_password.getStyle().fontColor = Color.RED;
 					if (na_password.getText().equals(Strings.LNUI_PASSWORD)) {
@@ -398,11 +434,11 @@ public class Launcher extends ApplicationAdapter {
 			}
 		});
 
-		newAccountStage.addListener(new ClickListener() {
+		na_stage.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (!isClickingOnUIElement(na_elements, x, y, na_email, na_password, na_username, na_createUser)) {
-					newAccountStage.unfocusAll();
+				if (!isClickingOnUIElement(na_elements, x, y, na_email, na_password, na_username, na_createUser, na_back)) {
+					na_stage.unfocusAll();
 				}
 				super.clicked(event, x, y);
 			}
@@ -417,6 +453,7 @@ public class Launcher extends ApplicationAdapter {
 		na_password.setAlignment(Align.center);
 
 		na_elements.addActor(na_forgotPassword);
+		na_elements.addActor(na_back);
 		na_elements.addActor(na_username);
 		na_elements.addActor(na_email);
 		na_elements.addActor(na_password);
@@ -428,19 +465,30 @@ public class Launcher extends ApplicationAdapter {
 		login_username = new TextField(Strings.LNUI_USERNAME, new TextFieldStyle(textStyle));
 
 		login_submit = new TextButton(Strings.LNUI_LOGIN, buttonStyle);
-		login_submit.setSize(250, font.getLineHeight() + 10);
+		login_submit.setSize(250, buttonStyle.font.getLineHeight() + 10);
 		login_submit.align(Align.center);
 
 		login_errors = new Label("", labelStyle);
 
 		login_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, noBackgroundButton);
-		login_forgotPassword.setSize(100, font.getLineHeight() + 10);
+		login_forgotPassword.setSize(100, noBackgroundButton.font.getLineHeight() + 10);
 		login_forgotPassword.align(Align.center);
+
+		login_newAccount = new TextButton(Strings.LNUI_CREATE_ACCOUNT, noBackgroundButton);
+		login_newAccount.setSize(200, noBackgroundButton.font.getLineHeight() + 10);
+		login_newAccount.align(Align.center);
+
+		login_newAccount.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				setStage(na_stage);
+			}
+		});
 
 		login_forgotPassword.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				setStage(forgotPasswordStage);
+				setStage(fp_stage);
 			}
 		});
 
@@ -472,7 +520,6 @@ public class Launcher extends ApplicationAdapter {
 		login_password.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
-				login_password_focused = focused;
 				if (focused) {
 					login_password.getStyle().fontColor = Color.RED;
 					if (login_password.getText().equals(Strings.LNUI_PASSWORD)) {
@@ -488,11 +535,11 @@ public class Launcher extends ApplicationAdapter {
 			}
 		});
 
-		loginStage.addListener(new ClickListener() {
+		login_stage.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (!isClickingOnUIElement(login_elements, x, y, login_password, login_username, login_submit)) {
-					loginStage.unfocusAll();
+				if (!isClickingOnUIElement(login_elements, x, y, login_password, login_username, login_submit, login_newAccount)) {
+					login_stage.unfocusAll();
 				}
 				super.clicked(event, x, y);
 			}
@@ -509,6 +556,7 @@ public class Launcher extends ApplicationAdapter {
 		login_elements.addActor(login_username);
 		login_elements.addActor(login_password);
 		login_elements.addActor(login_submit);
+		login_elements.addActor(login_newAccount);
 		login_elements.addActor(login_errors);
 
 		// -- FORGOT PASSWORD -- //
@@ -526,38 +574,31 @@ public class Launcher extends ApplicationAdapter {
 
 		fp_submit = new TextButton(Strings.LNUI_RESET_PASSWORD, buttonStyle);
 		fp_submit.setBackground(textStyle.background);
-		fp_submit.setSize(250, font.getLineHeight() + 10);
+		fp_submit.setSize(250, buttonStyle.font.getLineHeight() + 10);
 		fp_submit.align(Align.center);
 
 		fp_back = new TextButton(Strings.LNUI_BACK, buttonStyle);
 		fp_back.setBackground(textStyle.background);
-		fp_back.setSize(250, font.getLineHeight() + 10);
+		fp_back.setSize(250, buttonStyle.font.getLineHeight() + 10);
 		fp_back.align(Align.center);
-
-//		CheckBoxStyle boxStyle = new CheckBoxStyle();
-//		param.size = 9;
-//		param.color = Color.WHITE;
-//		boxStyle.font = gen.generateFont(param);
-//		Pixmap unchecked = new Pixmap(32, 32, Pixmap.Format.RGB888);
-//		unchecked.setColor(Color.WHITE);
-//		unchecked.fillRectangle(0, 0, 32, 32);
-//		unchecked.setColor(Color.BLACK);
-//		unchecked.fillRectangle(0, 0, 32, 32);
-//		Pixmap checked = new Pixmap(32, 32, Pixmap.Format.RGB888);
-//		checked.setColor(Color.WHITE);
-//		checked.fillRectangle(0, 0, 32, 32);
-//		checked.setColor(Color.BLACK);
-//		checked.drawRectangle(1, 1, 30, 30);
-//		
-//		boxStyle.checked = new Image(new Texture(checked)).getDrawable();
-//		boxStyle.checkboxOn = new Image(new Texture(unchecked)).getDrawable();
 
 		fp_alreadyHasTempPass = new CheckBox("Check here if you have already received a temporary password",
 				new Skin(new FileHandle(Strings.URL_SKINS_DEFAULT_FILE),
 						new TextureAtlas(new FileHandle(Strings.URL_SKINS_DEFAULT_ATLAS))));
 		fp_alreadyHasTempPass.setSize(32, 32);
-//		fp_alreadyHasTempPass.set
 		fp_alreadyHasTempPass.setClip(false);
+
+		fp_resetPass = new TextButton(Strings.LNUI_RESET_PASSWORD, buttonStyle);
+		fp_resetPass.setBackground(textStyle.background);
+		fp_resetPass.setSize(250, buttonStyle.font.getLineHeight() + 10);
+		fp_resetPass.align(Align.center);
+
+		fp_resetPass.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				resetPassword(fp_newPass.getText(), fp_verifyNewPass.getText(), fp_tempPass.getText());
+			}
+		});
 
 		fp_alreadyHasTempPass.addListener(new ChangeListener() {
 			@Override
@@ -645,7 +686,6 @@ public class Launcher extends ApplicationAdapter {
 		fp_email.addListener(new FocusListener() {
 			@Override
 			public void keyboardFocusChanged(FocusEvent event, Actor actor, boolean focused) {
-				fp_email_focused = focused;
 				if (focused) {
 					fp_email.getStyle().fontColor = Color.RED;
 					if (fp_email.getText().equals(Strings.LNUI_EMAIL)) {
@@ -664,17 +704,81 @@ public class Launcher extends ApplicationAdapter {
 		fp_submit.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				fp_errors.setText("Loading...");
+				try {
+					String whereClause = "email = " + "\'" + fp_email.getText() + "\'";
+					DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+					queryBuilder.setWhereClause(whereClause);
+					List<BackendlessUser> result = Backendless.Data.of(BackendlessUser.class).find(queryBuilder);
+					if (result.size() > 0) {
+						Strings.USER_ID = result.get(0).getObjectId();
+					}
+				} catch (BackendlessException e) {
+					fp_errors.setText("User with that email username combo does not exist");
+					return;
+				}
 				if (!fp_verifyNewPass.isVisible()) {
 					submitPasswordReset(fp_username.getText(), fp_email.getText());
 				} else {
-					if (fp_tempPass.getText().equals(Backendless.UserService.findById(Strings.USER_ID).getPassword())) {
+					try {
 						if (fp_verifyNewPass.getText().equals(fp_newPass.getText())) {
-							// TODO: Enforce Password Requirements
+							try {
+								currentUser = Backendless.UserService.login(fp_username.getText(), fp_tempPass.getText());
+							} catch (BackendlessException e) {
+								System.err.println("line 706");
+								return;
+							}
+
+							if (currentUser.getUserId().equals(Strings.USER_ID)) {
+
+								String password = fp_newPass.getText();
+
+								int min_length = 8;
+
+								boolean lengthReq = password.length() >= min_length;
+								boolean specialCharReq = !password.matches("[a-zA-Z0-9]");
+								boolean numReq = password.matches(".*\\d.*");
+
+								boolean strongEnough = lengthReq && specialCharReq && numReq;
+
+								if (strongEnough) {
+									currentUser.setPassword(password);
+									Backendless.Data.of(BackendlessUser.class).save(currentUser, new AsyncCallback<BackendlessUser>() {
+										
+										@Override
+										public void handleResponse(BackendlessUser response) {
+											System.out.println("Set password to " + fp_newPass.getText());
+										}
+										
+										@Override
+										public void handleFault(BackendlessFault fault) {
+											System.err.println(fault.getMessage());
+										}
+									});
+								} else {
+									String errorMessage = "";
+									fp_errors.setText(errorMessage);
+									if (!lengthReq)
+										errorMessage += "Password must be at least 8 characters; ";
+									if (!specialCharReq)
+										errorMessage += "Password must contain a special character; ";
+									if (!numReq)
+										errorMessage += "Password must contain a number";
+									fp_errors.setText(errorMessage);
+								}
+							} else {
+								fp_errors.setText("");
+								System.out.println(currentUser.getUserId());
+								System.out.println(Strings.USER_ID);
+								System.err.println("Invalid login");
+							}
 						} else {
 							fp_errors.setText(Strings.ERROR_BPA0002);
 						}
-					} else {
-						fp_errors.setText(Strings.ERROR_BPA0001);
+
+					} catch (BackendlessException e) {
+						fp_errors.setText("User with that email username combo does not exist");
+						return;
 					}
 				}
 			}
@@ -687,17 +791,17 @@ public class Launcher extends ApplicationAdapter {
 			}
 		});
 
-		forgotPasswordStage.addListener(new ClickListener() {
+		fp_stage.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				if (fp_verifyNewPass.isVisible()) {
 					if (!isClickingOnUIElement(fp_elements, x, y, fp_email, fp_submit, fp_username, fp_verifyNewPass,
-							fp_newPass, fp_tempPass)) {
-						forgotPasswordStage.unfocusAll();
+							fp_newPass, fp_tempPass, fp_back)) {
+						fp_stage.unfocusAll();
 					}
 				} else {
-					if (!isClickingOnUIElement(fp_elements, x, y, fp_email, fp_submit, fp_username)) {
-						forgotPasswordStage.unfocusAll();
+					if (!isClickingOnUIElement(fp_elements, x, y, fp_email, fp_submit, fp_username, fp_back)) {
+						fp_stage.unfocusAll();
 					}
 				}
 				super.clicked(event, x, y);
@@ -720,9 +824,13 @@ public class Launcher extends ApplicationAdapter {
 		fp_elements.addActor(fp_alreadyHasTempPass);
 
 		// -- FINALIZING -- //
-		loginStage.addActor(login_elements);
-		newAccountStage.addActor(na_elements);
-		forgotPasswordStage.addActor(fp_elements);
+		login_stage.addActor(login_elements);
+		na_stage.addActor(na_elements);
+		fp_stage.addActor(fp_elements);
+	}
+
+	private void resetPassword(String newPass, String verifyNewPass, String tempPass) {
+
 	}
 
 	public void hideAdditionalFPUI() {
@@ -765,8 +873,8 @@ public class Launcher extends ApplicationAdapter {
 
 	@Override
 	public void dispose() {
-		newAccountStage.dispose();
-		forgotPasswordStage.dispose();
-		loginStage.dispose();
+		na_stage.dispose();
+		fp_stage.dispose();
+		login_stage.dispose();
 	}
 }
