@@ -10,24 +10,29 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.badlogic.gdx.utils.Align;
@@ -48,12 +53,14 @@ public class Launcher extends ApplicationAdapter {
 	boolean na_password_focused = false;
 	TextField na_username, na_email, na_password;
 	TextButton na_createUser, na_forgotPassword;
+	Label na_errors;
 
 	VerticalGroup login_elements;
 
 	boolean login_password_focused = false;
 	TextField login_username, login_password;
-	TextButton login_submit, login_newuser, login_forgotPassword;
+	TextButton login_submit, login_newuser, login_forgotPassword, login_newaccount;
+	Label login_errors;
 
 	Label title;
 
@@ -62,8 +69,8 @@ public class Launcher extends ApplicationAdapter {
 	boolean fp_email_focused = false;
 	TextField fp_username, fp_email, fp_tempPass, fp_newPass, fp_verifyNewPass;
 	TextButton fp_submit, fp_back;
-	
-	Label errorMessages;
+	CheckBox fp_alreadyHasTempPass;
+	Label fp_errors;
 
 	BitmapFont font;
 
@@ -75,7 +82,7 @@ public class Launcher extends ApplicationAdapter {
 		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		param.size = 15;
 		font = gen.generateFont(param);
-		
+
 		na_elements = new VerticalGroup();
 		login_elements = new VerticalGroup();
 		fp_elements = new VerticalGroup();
@@ -91,36 +98,36 @@ public class Launcher extends ApplicationAdapter {
 		na_elements.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		login_elements.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 		fp_elements.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-		
+
 		param.size = 50;
 		BitmapFont titleFont = gen.generateFont(param);
-		
+
 		LabelStyle style = new LabelStyle();
 		style.font = titleFont;
 		style.fontColor = Color.RED;
-		
+
 		title = new Label(Strings.LNUI_TITLE, style);
 		title.setAlignment(Align.center);
 		title.setPosition(na_elements.getX() - (title.getWidth() / 2), na_elements.getY() + 150);
-		
+
 		Label loginTitle;
 		Label na_title;
 		Label fp_title;
-		
+
 		loginTitle = new Label(Strings.LNUI_TITLE, style);
 		na_title = new Label(Strings.LNUI_TITLE, style);
 		fp_title = new Label(Strings.LNUI_TITLE, style);
-		
+
 		loginTitle.setAlignment(Align.center);
 		na_title.setAlignment(Align.center);
 		fp_title.setAlignment(Align.center);
-		
+
 		loginTitle.setPosition(login_elements.getX() - (loginTitle.getWidth() / 2), login_elements.getY() + 150);
 		na_title.setPosition(na_elements.getX() - (na_title.getWidth() / 2), na_elements.getY() + 150);
 		fp_title.setPosition(fp_elements.getX() - (fp_title.getWidth() / 2), fp_elements.getY() + 150);
-		
+
 		gen.dispose();
-		
+
 		newAccountStage = new Stage();
 		loginStage = new Stage();
 		forgotPasswordStage = new Stage();
@@ -128,10 +135,10 @@ public class Launcher extends ApplicationAdapter {
 		newAccountStage.addActor(na_title);
 		loginStage.addActor(loginTitle);
 		forgotPasswordStage.addActor(fp_title);
-		
+
 		currentStage = loginStage;
 		Gdx.input.setInputProcessor(loginStage);
-		
+
 		populateUI();
 	}
 
@@ -149,10 +156,11 @@ public class Launcher extends ApplicationAdapter {
 			public void handleFault(BackendlessFault fault) {
 				switch (fault.getCode()) {
 				case "3003":
-					System.err.println(Strings.ERROR_BE3003);
+					login_errors.setText(Strings.ERROR_BE3003 + " Code BE3003");
+					;
 					break;
 				default:
-					System.err.println("Error logging in! " + fault.getMessage());
+					login_errors.setText("Error logging in! " + fault.getMessage() + " Code BE" + fault.getCode());
 					break;
 				}
 			}
@@ -165,10 +173,7 @@ public class Launcher extends ApplicationAdapter {
 	}
 
 	public void submitPasswordReset(String username, String email) {
-		// If the email the user submitted does not match the email of the account,
-		// don't do anything
 		boolean isTruthful = false;
-		String userId = "";
 
 		try {
 			String whereClause = "email = " + "\'" + email + "\'";
@@ -176,14 +181,14 @@ public class Launcher extends ApplicationAdapter {
 			queryBuilder.setWhereClause(whereClause);
 			List<BackendlessUser> result = Backendless.Data.of(BackendlessUser.class).find(queryBuilder);
 			if (result.size() > 0) {
-				userId = result.get(0).getObjectId();
+				Strings.USER_ID = result.get(0).getObjectId();
 			}
 			isTruthful = true;
 		} catch (BackendlessException e) {
-			System.err.println("User with that email username combo does not exist");
+			fp_errors.setText("User with that email username combo does not exist");
 		}
 
-		System.out.println(userId);
+		System.out.println(Strings.USER_ID);
 
 		if (!isTruthful) {
 			return; // TODO: Notify user
@@ -191,11 +196,13 @@ public class Launcher extends ApplicationAdapter {
 			Backendless.UserService.restorePassword(username, new AsyncCallback<Void>() {
 				@Override
 				public void handleFault(BackendlessFault fault) {
-					System.err.println(fault.getMessage());
+					fp_errors.setText(fault.getMessage());
 				}
 
 				@Override
 				public void handleResponse(Void response) {
+					fp_errors.setText(
+							"Please input the password sent to you in the " + Strings.LNUI_TEMP_PASSWORD + " box");
 					fp_tempPass.setVisible(true);
 					fp_newPass.setVisible(true);
 					fp_verifyNewPass.setVisible(true);
@@ -223,18 +230,17 @@ public class Launcher extends ApplicationAdapter {
 			public void handleFault(BackendlessFault fault) {
 				switch (fault.getCode()) {
 				case "3033":
-					System.err.println(Strings.ERROR_BE3033);
+					na_errors.setText(Strings.ERROR_BE3033 + " Code BE3033");
 					break;
 				default:
-					System.err.println(fault.getCode());
+					na_errors.setText(fault.getMessage() + " Code BE" + fault.getCode());
 					break;
 				}
 			}
 
 			@Override
 			public void handleResponse(BackendlessUser response) {
-				System.out.println("Successfully created new user, " + response.getProperty("name"));
-				System.out.println("Email sent to new user at address " + response.getEmail());
+				na_errors.setText("Check your email to verify your email address, " + response.getEmail());
 			}
 		});
 	}
@@ -271,11 +277,12 @@ public class Launcher extends ApplicationAdapter {
 		bgColor.setColor(Color.WHITE);
 		bgColor.fill();
 		textStyle.fontColor = Color.GRAY;
-		textStyle.background = new Image(new Texture(bgColor)).getDrawable();;
+		textStyle.background = new Image(new Texture(bgColor)).getDrawable();
+		;
 		textStyle.background.setLeftWidth(textStyle.background.getLeftWidth());
 
 		TextButtonStyle buttonStyle = new TextButtonStyle();
-		bgColor = new Pixmap(300, (int) textStyle.font.getLineHeight(), Pixmap.Format.RGB888);
+		bgColor = new Pixmap(100, (int) textStyle.font.getLineHeight(), Pixmap.Format.RGB888);
 		bgColor.setColor(Color.DARK_GRAY);
 		bgColor.fill();
 		buttonStyle.down = new Image(new Texture(bgColor)).getDrawable();
@@ -291,10 +298,25 @@ public class Launcher extends ApplicationAdapter {
 		noBackgroundButton.overFontColor = Color.RED;
 		noBackgroundButton.downFontColor = Color.GRAY;
 
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		param.size = 12;
+
+		Pixmap labelBg = new Pixmap(200, 200, Pixmap.Format.RGB888);
+		labelBg.setColor(Color.BLACK);
+		labelBg.fill();
+
+		LabelStyle labelStyle = new LabelStyle();
+		labelStyle.font = gen.generateFont(param);
+		labelStyle.fontColor = Color.RED;
+		labelStyle.background = new Image(new Texture(labelBg)).getDrawable();
+
 		// -- NEW ACCOUNT UI -- //
 		na_email = new TextField(Strings.LNUI_EMAIL, new TextFieldStyle(textStyle));
 		na_password = new TextField(Strings.LNUI_PASSWORD, new TextFieldStyle(textStyle));
 		na_username = new TextField(Strings.LNUI_USERNAME, new TextFieldStyle(textStyle));
+
+		na_errors = new Label("", labelStyle);
 
 		na_createUser = new TextButton(Strings.LNUI_CREATE_ACCOUNT, buttonStyle);
 		na_createUser.setBackground(textStyle.background);
@@ -398,6 +420,7 @@ public class Launcher extends ApplicationAdapter {
 		na_elements.addActor(na_username);
 		na_elements.addActor(na_email);
 		na_elements.addActor(na_password);
+		na_elements.addActor(na_errors);
 		na_elements.addActor(na_createUser);
 
 		// -- LOGIN UI -- //
@@ -405,15 +428,14 @@ public class Launcher extends ApplicationAdapter {
 		login_username = new TextField(Strings.LNUI_USERNAME, new TextFieldStyle(textStyle));
 
 		login_submit = new TextButton(Strings.LNUI_LOGIN, buttonStyle);
-		login_submit.setBackground(textStyle.background);
 		login_submit.setSize(250, font.getLineHeight() + 10);
 		login_submit.align(Align.center);
+
+		login_errors = new Label("", labelStyle);
 
 		login_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, noBackgroundButton);
 		login_forgotPassword.setSize(100, font.getLineHeight() + 10);
 		login_forgotPassword.align(Align.center);
-
-		login_forgotPassword = new TextButton(Strings.LNUI_FORGOT_PASSWORD, buttonStyle);
 
 		login_forgotPassword.addListener(new ClickListener() {
 			@Override
@@ -481,11 +503,13 @@ public class Launcher extends ApplicationAdapter {
 
 		login_username.setAlignment(Align.center);
 		login_password.setAlignment(Align.center);
+		login_errors.setAlignment(Align.center);
 
 		login_elements.addActor(login_forgotPassword);
 		login_elements.addActor(login_username);
 		login_elements.addActor(login_password);
 		login_elements.addActor(login_submit);
+		login_elements.addActor(login_errors);
 
 		// -- FORGOT PASSWORD -- //
 		fp_username = new TextField(Strings.LNUI_USERNAME, new TextFieldStyle(textStyle));
@@ -498,7 +522,9 @@ public class Launcher extends ApplicationAdapter {
 		fp_newPass.setVisible(false);
 		fp_verifyNewPass.setVisible(false);
 
-		fp_submit = new TextButton(Strings.LNUI_SUBMIT, buttonStyle);
+		fp_errors = new Label("", labelStyle);
+
+		fp_submit = new TextButton(Strings.LNUI_RESET_PASSWORD, buttonStyle);
 		fp_submit.setBackground(textStyle.background);
 		fp_submit.setSize(250, font.getLineHeight() + 10);
 		fp_submit.align(Align.center);
@@ -506,7 +532,43 @@ public class Launcher extends ApplicationAdapter {
 		fp_back = new TextButton(Strings.LNUI_BACK, buttonStyle);
 		fp_back.setBackground(textStyle.background);
 		fp_back.setSize(250, font.getLineHeight() + 10);
-		fp_submit.align(Align.center);
+		fp_back.align(Align.center);
+
+//		CheckBoxStyle boxStyle = new CheckBoxStyle();
+//		param.size = 9;
+//		param.color = Color.WHITE;
+//		boxStyle.font = gen.generateFont(param);
+//		Pixmap unchecked = new Pixmap(32, 32, Pixmap.Format.RGB888);
+//		unchecked.setColor(Color.WHITE);
+//		unchecked.fillRectangle(0, 0, 32, 32);
+//		unchecked.setColor(Color.BLACK);
+//		unchecked.fillRectangle(0, 0, 32, 32);
+//		Pixmap checked = new Pixmap(32, 32, Pixmap.Format.RGB888);
+//		checked.setColor(Color.WHITE);
+//		checked.fillRectangle(0, 0, 32, 32);
+//		checked.setColor(Color.BLACK);
+//		checked.drawRectangle(1, 1, 30, 30);
+//		
+//		boxStyle.checked = new Image(new Texture(checked)).getDrawable();
+//		boxStyle.checkboxOn = new Image(new Texture(unchecked)).getDrawable();
+
+		fp_alreadyHasTempPass = new CheckBox("Check here if you have already received a temporary password",
+				new Skin(new FileHandle(Strings.URL_SKINS_DEFAULT_FILE),
+						new TextureAtlas(new FileHandle(Strings.URL_SKINS_DEFAULT_ATLAS))));
+		fp_alreadyHasTempPass.setSize(32, 32);
+//		fp_alreadyHasTempPass.set
+		fp_alreadyHasTempPass.setClip(false);
+
+		fp_alreadyHasTempPass.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if (fp_alreadyHasTempPass.isChecked()) {
+					showAdditionalFPUI();
+				} else {
+					hideAdditionalFPUI();
+				}
+			}
+		});
 
 		fp_verifyNewPass.addListener(new FocusListener() {
 			@Override
@@ -605,10 +667,14 @@ public class Launcher extends ApplicationAdapter {
 				if (!fp_verifyNewPass.isVisible()) {
 					submitPasswordReset(fp_username.getText(), fp_email.getText());
 				} else {
-					if (fp_verifyNewPass.getText().equals(fp_newPass.getText())) {
-						// TODO: Enforce Password Requirements
+					if (fp_tempPass.getText().equals(Backendless.UserService.findById(Strings.USER_ID).getPassword())) {
+						if (fp_verifyNewPass.getText().equals(fp_newPass.getText())) {
+							// TODO: Enforce Password Requirements
+						} else {
+							fp_errors.setText(Strings.ERROR_BPA0002);
+						}
 					} else {
-						// TODO: Inform user
+						fp_errors.setText(Strings.ERROR_BPA0001);
 					}
 				}
 			}
@@ -643,16 +709,46 @@ public class Launcher extends ApplicationAdapter {
 		fp_newPass.setAlignment(Align.center);
 		fp_verifyNewPass.setAlignment(Align.center);
 		fp_tempPass.setAlignment(Align.center);
-		
+		fp_errors.setAlignment(Align.center);
+		fp_alreadyHasTempPass.align(Align.center);
+
 		fp_elements.addActor(fp_back);
 		fp_elements.addActor(fp_username);
 		fp_elements.addActor(fp_email);
 		fp_elements.addActor(fp_submit);
+		fp_elements.addActor(fp_errors);
+		fp_elements.addActor(fp_alreadyHasTempPass);
 
 		// -- FINALIZING -- //
 		loginStage.addActor(login_elements);
 		newAccountStage.addActor(na_elements);
 		forgotPasswordStage.addActor(fp_elements);
+	}
+
+	public void hideAdditionalFPUI() {
+		fp_elements.moveBy(0, 50);
+		fp_tempPass.setVisible(false);
+		fp_newPass.setVisible(false);
+		fp_verifyNewPass.setVisible(false);
+		fp_elements.removeActor(fp_tempPass);
+		fp_elements.removeActor(fp_newPass);
+		fp_elements.removeActor(fp_verifyNewPass);
+		fp_elements.act(Gdx.graphics.getDeltaTime());
+	}
+
+	public void showAdditionalFPUI() {
+		fp_elements.moveBy(0, -50);
+		fp_tempPass.setVisible(true);
+		fp_newPass.setVisible(true);
+		fp_verifyNewPass.setVisible(true);
+		fp_elements.removeActor(fp_alreadyHasTempPass);
+		fp_elements.removeActor(fp_submit);
+		fp_elements.addActor(fp_tempPass);
+		fp_elements.addActor(fp_newPass);
+		fp_elements.addActor(fp_verifyNewPass);
+		fp_elements.addActor(fp_submit);
+		fp_elements.addActor(fp_alreadyHasTempPass);
+		fp_elements.act(Gdx.graphics.getDeltaTime());
 	}
 
 	public void update() {
