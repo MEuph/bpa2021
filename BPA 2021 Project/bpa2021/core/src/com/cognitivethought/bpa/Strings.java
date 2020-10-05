@@ -8,6 +8,8 @@ public class Strings {
 	public static final String SECRET_KEY = "6FADE322-B1A0-430D-9EE5-5EE9152EA4C3";
 	
 	public static String USER_ID = "";
+
+	public static final String EMPTY = "";
 	
 	public static final String NAME = "BPA 2021 Project!";
 	
