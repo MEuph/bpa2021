@@ -11,7 +11,12 @@ public class Strings {
 
 	public static final String EMPTY = "";
 	
-	public static final String NAME = "BPA 2021 Project!";
+	public static final String NAME = "Nuclear War";
+	
+	public static final String MUI_TITLE = NAME;
+	public static final String MUI_START = "Start";
+	public static final String MUI_HELP = "Help";
+	public static final String MUI_QUIT = "Quit";
 	
 	public static final String LNUI_TITLE = NAME;
 	public static final String LNUI_EMAIL = "[Email]";
@@ -25,8 +30,10 @@ public class Strings {
 	public static final String LNUI_RESET_PASSWORD = "Reset Password";
 	public static final String LNUI_FORGOT_PASSWORD = "Forgot Password";
 	public static final String LNUI_BACK = "Back";
+	public static final String LNUI_LAUNCH = "Launch";
+	public static final String LNUI_CONTINUE = "Continue";
 	
-	public static final String ERROR_BE3033 = "Sorry, an account with that email has already been created!";
+	public static final String ERROR_BE3033 = "Sorry, an account with that username has already been created!";
 	public static final String ERROR_BE3003 = "Invalid username or password";
 
 	public static final String ERROR_BPA0001 = "Temporary password does not match password sent to email address";
@@ -34,6 +41,7 @@ public class Strings {
 	
 	public static final String URL_LOCATOR = Gdx.files.getLocalStoragePath();
 	public static final String URL_UBUNTU_REGULAR = URL_LOCATOR + "assets/fonts/used/ubuntu/Ubuntu-Regular.ttf";
+	public static final String URL_ARIAL_UNICODE = URL_LOCATOR + "assets/fonts/used/arial/arial-unicode-ms.ttf";
 	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "assets/skins/default/skin/uiskin.json";
 	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "assets/skins/default/skin/uiskin.atlas";
 }
