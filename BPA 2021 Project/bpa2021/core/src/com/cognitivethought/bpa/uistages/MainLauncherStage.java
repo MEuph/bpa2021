@@ -54,10 +54,9 @@ public class MainLauncherStage extends LauncherStage {
 		main_launch.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Launcher.setStage(Launcher.game_menu_stage);
-				
 				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-				Launcher.game_menu_stage.populate();
+				
+				Launcher.setStage(Launcher.game_menu_stage);
 			}
 		});
 		

@@ -33,26 +33,6 @@ public class LoginStage extends LauncherStage {
 
 	public LoginStage(Viewport vp) {
 		super(vp);
-		
-		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
-		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		param.size = 50;
-		BitmapFont titleFont = gen.generateFont(param);
-
-		LabelStyle style = new LabelStyle();
-		style.font = titleFont;
-		style.fontColor = Colors.LNUI_TITLE;
-
-		login_elements = new VerticalGroup();
-		login_elements.align(Align.center);
-		login_elements.space(20f);
-		login_elements.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-		login_title = new Label(Strings.LNUI_TITLE, style);
-		login_title.setAlignment(Align.center);
-		login_title.setPosition(login_elements.getX() - (login_title.getWidth() / 2), login_elements.getY() + 150);
-
-		addActor(login_title);
 	}
 
 	public void login(String email, String password) {
@@ -90,6 +70,26 @@ public class LoginStage extends LauncherStage {
 	@Override
 	public void populate() {
 		super.populate();
+		
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		param.size = 50;
+		BitmapFont titleFont = gen.generateFont(param);
+
+		LabelStyle style = new LabelStyle();
+		style.font = titleFont;
+		style.fontColor = Colors.LNUI_TITLE;
+
+		login_elements = new VerticalGroup();
+		login_elements.align(Align.center);
+		login_elements.space(20f);
+		login_elements.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		login_title = new Label(Strings.LNUI_TITLE, style);
+		login_title.setAlignment(Align.center);
+		login_title.setPosition(login_elements.getX() - (login_title.getWidth() / 2), login_elements.getY() + 150);
+
+		addActor(login_title);
 		
 		login_password = new TextField(Strings.EMPTY, new TextFieldStyle(textStyle));
 		login_username = new TextField(Strings.EMPTY, new TextFieldStyle(textStyle));

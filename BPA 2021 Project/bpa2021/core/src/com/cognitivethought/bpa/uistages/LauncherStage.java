@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.Colors;
 import com.cognitivethought.bpa.Strings;
+import com.cognitivethought.bpa.launcher.Launcher;
 
 public abstract class LauncherStage extends Stage {
 
@@ -40,7 +41,26 @@ public abstract class LauncherStage extends Stage {
 	
 	public LauncherStage(Viewport vp) {
 		super(vp);
-		
+	}
+	
+	public void repopulate() {
+		clear();
+		populate();
+	}
+	
+	public boolean isClickingOnUIElement(Actor container, float mouseX, float mouseY, Actor... actors) {
+		for (Actor a : actors) {
+			if (new Rectangle(a.getX() + container.getX(), a.getY() + container.getY(), a.getWidth(), a.getHeight())
+					.contains(mouseX, mouseY)) {
+				return true;
+			} else {
+				continue;
+			}
+		}
+		return false;
+	}
+	
+	public void populate() {
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_ARIAL_UNICODE));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
@@ -84,12 +104,29 @@ public abstract class LauncherStage extends Stage {
 		barButtonStyle.font = gen.generateFont(parameter);
 		
 		close = new TextButton("X", closeStyle);
-		fullscreen = new TextButton("â†”", barButtonStyle);
+		fullscreen = new TextButton("±", barButtonStyle);
 		
 		close.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.exit();
+			}
+		});
+		
+		fullscreen.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				clear();
+				
+				Launcher.isFullscreen = !Launcher.isFullscreen;
+				
+				if (Launcher.isFullscreen) {
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+				} else {
+					Gdx.graphics.setWindowedMode(640, 480);
+				}
+				populate();
 			}
 		});
 		
@@ -153,22 +190,6 @@ public abstract class LauncherStage extends Stage {
 		addActor(windowBar);
 		
 		gen.dispose();
-	}
-	
-	public boolean isClickingOnUIElement(Actor container, float mouseX, float mouseY, Actor... actors) {
-		for (Actor a : actors) {
-			if (new Rectangle(a.getX() + container.getX(), a.getY() + container.getY(), a.getWidth(), a.getHeight())
-					.contains(mouseX, mouseY)) {
-				return true;
-			} else {
-				continue;
-			}
-		}
-		return false;
-	}
-	
-	public void populate() {
-		
 	}
 
 	public abstract void clearFields();

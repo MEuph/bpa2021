@@ -42,6 +42,8 @@ public class Launcher extends ApplicationAdapter {
 	
 	public Viewport vp;
 	
+	public static boolean isFullscreen = false;
+	
 	@Override
 	public void create() {
 		Backendless.initApp(Strings.APP_ID, Strings.SECRET_KEY);
@@ -88,14 +90,8 @@ public class Launcher extends ApplicationAdapter {
 		stages.add(main_stage);
 		stages.add(game_menu_stage);
 		
-		currentStage = login_stage;
-		Gdx.input.setInputProcessor(login_stage);
-
-		na_stage.populate();
-		login_stage.populate();
-		fp_stage.populate();
-		main_stage.populate();
-
+		setStage(login_stage);
+		
 //		populateUI();
 	}
 	
@@ -113,8 +109,18 @@ public class Launcher extends ApplicationAdapter {
 			currentStage.unfocusAll();
 		previousStage = currentStage;
 		currentStage = s;
-		if (previousStage instanceof LauncherStage)
-			((LauncherStage) previousStage).clearFields();
+		
+		if (previousStage != null) {
+			if (previousStage instanceof LauncherStage)
+				((LauncherStage) previousStage).clearFields();
+			previousStage.clear();
+		}
+		
+		if (currentStage instanceof LauncherStage)
+			((LauncherStage) currentStage).populate();
+		else if (currentStage instanceof UIStage)
+			((UIStage) currentStage).populate();
+		
 		Gdx.input.setInputProcessor(s);
 	}
 
@@ -140,5 +146,6 @@ public class Launcher extends ApplicationAdapter {
 		fp_stage.dispose();
 		login_stage.dispose();
 		main_stage.dispose();
+		game_menu_stage.dispose();
 	}
 }

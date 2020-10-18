@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Label"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.Strings"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextButton"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.viewport.ScalingViewport"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.Scaling"/>
@@ -13,4 +12,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Group"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.uistages.LauncherStage"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
 </qualifiedTypeNameHistroy>

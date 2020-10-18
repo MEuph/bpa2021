@@ -1,6 +1,7 @@
 package com.cognitivethought.bpa.uistages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -26,18 +27,26 @@ public class GameMenuStage extends UIStage {
 		
 		int scale = ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768));
 		
-//		buttonStyle.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		param.size = 15 * (1 + scale);
+
+		//	buttonStyle.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		buttonStyle.font = gen.generateFont(param);
 		
 		gm_elements = new VerticalGroup();
 		gm_elements.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		gm_elements.space(50);
 		
-		gm_elements.scaleBy(scale);
+//		gm_elements.scaleBy(scale);
 
+		param.size = (int)labelStyle.font.getLineHeight() * (1 + scale);
+		labelStyle.font = gen.generateFont(param);
 		title = new Label(Strings.MUI_TITLE, labelStyle);
-		title.scaleBy(scale);
+//		title.scaleBy(scale);
 		title.setAlignment(Align.center);
-		title.setPosition(gm_elements.getX(), Gdx.graphics.getHeight() - 100);
+		title.setPosition(gm_elements.getX() - (title.getWidth() / 2), (int)(getViewport().getScreenHeight() * 1.3));
 		
 		start = new TextButton(Strings.MUI_START, buttonStyle);
 		help = new TextButton(Strings.MUI_HELP, buttonStyle);
