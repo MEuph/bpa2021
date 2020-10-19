@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +13,7 @@ import org.json.simple.parser.ParseException;
 
 public class Card {
 	
-	public static final ArrayList<Card> CARDS = new ArrayList<Card>();
+	public static final ArrayList<Card> DECK = new ArrayList<Card>();
 	
 	private Type type;
 
@@ -53,13 +54,25 @@ public class Card {
 				long cap = (long)data.get("Capacity");
 				long quantity = (long)data.get("Quantity");
 				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity);
-				for (int i = 0; i < quantity; i++) CARDS.add(card);
-				System.out.println(name + "\n\t" + type + "\n\t" + desc + "\n\tPopulation Delta: " + popDelta + "\n\tCan Carry " + cap + " Megatons\n\tWeight: " + weight);
+				for (int i = 0; i < quantity; i++) DECK.add(card);
 			}
 			
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
+		
+		for (int i = 0; i < 1000; i++) {
+			Collections.shuffle(DECK);
+		}
+		
+		for (Card card : DECK) {
+			System.out.println(card.toString());
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return name /*+ "\n\t" + type + "\n\t" + desc + "\n\tPopulation Delta: " + populationDelta + "\n\tCan Carry " + capacity + " Megatons\n\tWeight: " + weight*/;
 	}
 	
 	public static Type stringToType(String s) {

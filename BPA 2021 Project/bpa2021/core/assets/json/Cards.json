@@ -683,7 +683,65 @@
 		}
 	],
 	
-	// TODO: There are still some cards to implement. Check image2.jpeg and add the cards from salvage to saboteur
+	"special_bomb_shelter": [ 
+		{ 
+			"Name": "Ultimate Leadership Bomb Shelter",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_recycling": [ 
+		{ 
+			"Name": "ADVANCED RECYCLING",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_angel": [ 
+		{ 
+			"Name": "Guardian Angel",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_spy": [ 
+		{ 
+			"Name": "SPY",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 2
+		}
+	],
+	
+	"special_saboteur": [ 
+		{ 
+			"Name": "Saboteur",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
 	
 	"special_coup": [ 
 		{ 

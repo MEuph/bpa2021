@@ -3,7 +3,7 @@
   <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Card.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/Card.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/Card.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;jsoneditor.editors.HighspeedJSONEditor&quot; name=&quot;Cards.json&quot; tooltip=&quot;bpa2021-core/assets/json/Cards.json&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/assets/json/Cards.json&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;jsoneditor.editors.HighspeedJSONEditor&quot; name=&quot;Cards.json&quot; tooltip=&quot;bpa2021-desktop/assets/json/Cards.json&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-desktop/assets/json/Cards.json&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Launcher.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/launcher/Launcher.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/launcher/Launcher.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;jsoneditor.editors.HighspeedJSONEditor&quot; name=&quot;TestJSON.json&quot; tooltip=&quot;bpa2021-core/assets/json/TestJSON.json&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/assets/json/TestJSON.json&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;DevStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/gamestages/DevStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/gamestages/DevStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;UIStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/UIStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/UIStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;GameStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/gamestages/GameStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/gamestages/GameStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;LoginStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/LoginStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/LoginStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;GameMenuStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/GameMenuStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/GameMenuStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;NewAccountStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/NewAccountStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/NewAccountStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MainLauncherStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/MainLauncherStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/MainLauncherStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;ForgotPasswordStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/ForgotPasswordStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/ForgotPasswordStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;LauncherStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/uistages/LauncherStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/uistages/LauncherStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;DesktopLauncher.java&quot; tooltip=&quot;bpa2021-desktop/src/com/cognitivethought/bpa/game/desktop/DesktopLauncher.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-desktop/src/com/cognitivethought/bpa/game/desktop/DesktopLauncher.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.buildship.ui.gradlebuildscripteditor&quot; name=&quot;build.gradle&quot; tooltip=&quot;bpa2021-core/build.gradle&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/build.gradle&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditor&quot; name=&quot;Label.class&quot; tooltip=&quot;com.badlogic.gdx.scenes.scene2d.ui.Label&quot;>&#xD;&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=bpa2021-core/C:\/Users\/maste\/.gradle\/caches\/modules-2\/files-2.1\/com.badlogicgames.gdx\/gdx\/1.9.10\/79d9ad27bd5e3eb18c9ade61d3a27d7237695d53\/gdx-1.9.10.jar=/gradle_used_by_scope=/main,test=/&amp;lt;com.badlogic.gdx.scenes.scene2d.ui(Label.class&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;GameMenuStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/stages/GameMenuStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/stages/GameMenuStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Strings.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/Strings.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/Strings.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;NewAccountStage.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/stages/NewAccountStage.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/stages/NewAccountStage.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_YX2YgQ_PEeufuvBOfsdR0A" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_YX2Ygg_PEeufuvBOfsdR0A" label="%trimmedwindow.label.eclipseSDK" x="676" y="0" width="697" height="735">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_YX2YgQ_PEeufuvBOfsdR0A" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_YX2Ygg_PEeufuvBOfsdR0A" label="%trimmedwindow.label.eclipseSDK" x="639" y="-11" width="697" height="735">
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="isRestored" value="true"/>
@@ -11,6 +11,7 @@
     <persistedState key="aggregateWorkingSetId" value="Aggregate for window 1602599444387"/>
     <persistedState key="show_in_time" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;show_in_time/>"/>
     <tags>topLevel</tags>
+    <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_YX2Ygg_PEeufuvBOfsdR0A" selectedElement="_YX2Ygw_PEeufuvBOfsdR0A" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_YX2Ygw_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_YX2YhA_PEeufuvBOfsdR0A">
         <children xsi:type="advanced:Perspective" xmi:id="_YX2YhA_PEeufuvBOfsdR0A" elementId="org.eclipse.jdt.ui.JavaPerspective" selectedElement="_YX2YhQ_PEeufuvBOfsdR0A" label="Java" iconURI="platform:/plugin/org.eclipse.jdt.ui/$nl$/icons/full/eview16/jperspective.png">
@@ -76,7 +77,6 @@
             <children xsi:type="basic:PartSashContainer" xmi:id="_YX2Yhg_PEeufuvBOfsdR0A" visible="false" containerData="2500" selectedElement="_YX2Yhw_PEeufuvBOfsdR0A">
               <children xsi:type="basic:PartStack" xmi:id="_YX2Yhw_PEeufuvBOfsdR0A" elementId="left" visible="false" containerData="6000" selectedElement="_YX2YiA_PEeufuvBOfsdR0A">
                 <tags>org.eclipse.e4.primaryNavigationStack</tags>
-                <tags>noFocus</tags>
                 <tags>Minimized</tags>
                 <tags>MinimizedByZoom</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_YX2YiA_PEeufuvBOfsdR0A" elementId="org.eclipse.jdt.ui.PackageExplorer" ref="_YX3mvw_PEeufuvBOfsdR0A" closeable="true">
@@ -103,7 +103,7 @@
                 </children>
               </children>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_YX2Yjg_PEeufuvBOfsdR0A" containerData="7500" selectedElement="_YX2Yjw_PEeufuvBOfsdR0A">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_YX2Yjg_PEeufuvBOfsdR0A" containerData="7500" selectedElement="_YX2YmQ_PEeufuvBOfsdR0A">
               <children xsi:type="basic:PartSashContainer" xmi:id="_YX2Yjw_PEeufuvBOfsdR0A" containerData="7500" selectedElement="_YX2YkA_PEeufuvBOfsdR0A" horizontal="true">
                 <children xsi:type="advanced:Placeholder" xmi:id="_YX2YkA_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.editorss" containerData="7500" ref="_YX3mrw_PEeufuvBOfsdR0A">
                   <tags>Maximized</tags>
@@ -145,6 +145,7 @@
                 <tags>Gradle</tags>
                 <tags>Minimized</tags>
                 <tags>MinimizedByZoom</tags>
+                <tags>active</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_YX2Ymg_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.views.ProblemView" ref="_YX3m3Q_PEeufuvBOfsdR0A" closeable="true">
                   <tags>View</tags>
                   <tags>categoryTag:General</tags>
@@ -220,23 +221,20 @@
       <tags>categoryTag:Help</tags>
     </sharedElements>
     <sharedElements xsi:type="advanced:Area" xmi:id="_YX3mrw_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.editorss" selectedElement="_YX3msA_PEeufuvBOfsdR0A">
-      <children xsi:type="basic:PartStack" xmi:id="_YX3msA_PEeufuvBOfsdR0A" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_sNY_YBIbEeu8IeFvJY5dPA">
+      <children xsi:type="basic:PartStack" xmi:id="_YX3msA_PEeufuvBOfsdR0A" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_7XNlkBIYEeu8IeFvJY5dPA">
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
-        <tags>active</tags>
         <children xsi:type="basic:Part" xmi:id="_7XNlkBIYEeu8IeFvJY5dPA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Card.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Card.java&quot; partName=&quot;Card.java&quot; title=&quot;Card.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/Card.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/Card.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;48&quot; selectionLength=&quot;47&quot; selectionOffset=&quot;1552&quot; selectionTopPixel=&quot;323&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Card.java&quot; partName=&quot;Card.java&quot; title=&quot;Card.java&quot; tooltip=&quot;bpa2021-core/src/com/cognitivethought/bpa/Card.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/bpa2021-core/src/com/cognitivethought/bpa/Card.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;2232&quot; selectionTopPixel=&quot;326&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_sNY_YBIbEeu8IeFvJY5dPA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Cards.json" iconURI="platform:/plugin/de.jcup.hijson/icons/highspeed-json-editor.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;jsoneditor.editors.HighspeedJSONEditor&quot; name=&quot;Cards.json&quot; partName=&quot;Cards.json&quot; title=&quot;Cards.json&quot; tooltip=&quot;bpa2021-core/assets/json/Cards.json&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/bpa2021-core/assets/json/Cards.json&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;3101&quot; selectionTopPixel=&quot;8557&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;jsoneditor.editors.HighspeedJSONEditor&quot; name=&quot;Cards.json&quot; partName=&quot;Cards.json&quot; title=&quot;Cards.json&quot; tooltip=&quot;bpa2021-core/assets/json/Cards.json&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/bpa2021-core/assets/json/Cards.json&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;463&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>jsoneditor.editors.HighspeedJSONEditor</tags>
-          <tags>active</tags>
-          <tags>activeOnClose</tags>
         </children>
       </children>
     </sharedElements>
@@ -306,6 +304,8 @@
       <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;view/>"/>
       <tags>View</tags>
       <tags>categoryTag:General</tags>
+      <tags>active</tags>
+      <tags>activeOnClose</tags>
       <menus xmi:id="_YX3m5g_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.console.ConsoleView">
         <tags>ViewMenu</tags>
         <tags>menuContribution:menu</tags>
@@ -409,7 +409,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_YX3nOg_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_RZDXABIXEeu8IeFvJY5dPA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_YX8gGA_PEeufuvBOfsdR0A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_5hbw4BIyEeuT7tq0Eof9uw" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_YX8gGA_PEeufuvBOfsdR0A"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_YX3nRw_PEeufuvBOfsdR0A" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -440,7 +440,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_YX3njA_PEeufuvBOfsdR0A" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_RZDXDRIXEeu8IeFvJY5dPA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_YX8fjg_PEeufuvBOfsdR0A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_5hbw7RIyEeuT7tq0Eof9uw" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_YX8fjg_PEeufuvBOfsdR0A"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_sYiWkBD2EeusNJPVJ_k9ow" elementId="org.eclipse.buildship.ui.gradlebuildscripteditor" visible="false">
         <tags>Draggable</tags>
@@ -497,6 +497,7 @@
         <persistedState key="YSize" value="400"/>
         <tags>TrimStack</tags>
         <tags>Draggable</tags>
+        <tags>MinimizedAndShowing</tags>
       </children>
     </trimBars>
   </children>
