@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.buildship.ui.wizard.project.import">
-		<item key="project_location" value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\bpa2021"/>
+		<item key="project_location" value="C:\Users\maste\Desktop\git\bpa2021\BPA 2021 Project\bpa2021"/>
 		<item key="apply_working_sets" value="false"/>
 		<list key="working_sets">
 		</list>

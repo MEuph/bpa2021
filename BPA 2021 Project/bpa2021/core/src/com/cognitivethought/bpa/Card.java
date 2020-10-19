@@ -22,14 +22,17 @@ public class Card {
 	private long populationDelta;
 	private long capacity;
 	private long weight;
-
-	public Card(Type type, String name, String desc, long popDelta, long cap, long weight) {
+	
+	private long quantity;
+	
+	public Card(Type type, String name, String desc, long popDelta, long cap, long weight, long quantity) {
 		this.type = type;
 		this.name = name;
 		this.desc = desc;
 		this.populationDelta = popDelta;
 		this.capacity = cap;
 		this.weight = weight;
+		this.quantity = quantity;
 	}
 	
 	public static void loadCards() {
@@ -48,8 +51,9 @@ public class Card {
 				long popDelta = (long)data.get("PopulationDelta");
 				long weight = (long)data.get("Weight");
 				long cap = (long)data.get("Capacity");
-				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight);
-				CARDS.add(card);
+				long quantity = (long)data.get("Quantity");
+				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity);
+				for (int i = 0; i < quantity; i++) CARDS.add(card);
 				System.out.println(name + "\n\t" + type + "\n\t" + desc + "\n\tPopulation Delta: " + popDelta + "\n\tCan Carry " + cap + " Megatons\n\tWeight: " + weight);
 			}
 			
@@ -122,7 +126,14 @@ public class Card {
 	public void setWeight(long weight) {
 		this.weight = weight;
 	}
-
+	
+	public long getQuantity() {
+		return quantity;
+	}
+	
+	public void setQuantity(long quantity) {
+		this.quantity = quantity;
+	}
 }
 
 enum Type {
