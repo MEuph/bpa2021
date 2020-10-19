@@ -10,8 +10,20 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Group"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.uistages.LauncherStage"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.Input"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
+<fullyQualifiedTypeName name="com.backendless.async.callback.AsyncCallback"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.Colors"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextField"/>
+<fullyQualifiedTypeName name="org.json.simple.parser.ParseException"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.Card"/>
+<fullyQualifiedTypeName name="org.json.simple.JSONValue"/>
 </qualifiedTypeNameHistroy>

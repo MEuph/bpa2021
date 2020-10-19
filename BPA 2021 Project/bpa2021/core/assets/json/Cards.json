@@ -1,0 +1,155 @@
+{
+	"prop5mil": [ 
+		{ 
+			"Name": "5 Million",
+			"Type": "PROPAGANDA",
+			"PopulationDelta": 5,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Enemy Deflect To Your Side!"
+		}
+	],
+	
+	"prop10mil": [ 
+		{ 
+			"Name": "10 Million",
+			"Type": "PROPAGANDA",
+			"PopulationDelta": 10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Enemy Denounce Their Form Of Government For Yours!"
+		}
+	],
+	
+	"prop25mil": [ 
+		{ 
+			"Name": "25 Million",
+			"Type": "PROPAGANDA",
+			"PopulationDelta": 25,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Of The Enemys Population Declare Allegiane to Your Country!"
+		}
+	],
+	
+	"nuke20meg": [ 
+		{ 
+			"Name": "20 Megatons",
+			"Type": "WARHEAD",
+			"PopulationDelta": -5,
+			"Capacity": 0,
+			"Weight": 20,
+			"Description": "Destroys 5 Million"
+		}
+	],
+	
+	"nuke100meg": [ 
+		{ 
+			"Name": "100 Megatons",
+			"Type": "WARHEAD",
+			"PopulationDelta": -25,
+			"Capacity": 0,
+			"Weight": 100,
+			"Description": "Destroys 25 Million"
+		}
+	],
+	
+	"secret_riots": [ 
+		{ 
+			"Name": "Riots!",
+			"Type": "SECRET",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Due to an unfortunate decision by a referee at a sports event, your enemys biggest city erupts in riots and they lose 10 million people."
+		}
+	],
+	
+	"secret_shoes": [ 
+		{ 
+			"Name": "Hoarder!",
+			"Type": "SECRET",
+			"PopulationDelta": 2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your enemy is caught with 400 pairs of shoes in his wifes closet. 2 million barefoot natives disgustedly immigrate to your country"
+		}
+	],
+	
+	"secret_time_travel": [ 
+		{ 
+			"Name": "Time Travel!",
+			"Type": "SECRET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your scientists have learned the secret of time travel and although it is expensive YOU GET TWO TURNS IN A ROW"
+		}
+	],
+	
+	"secret_lizard_monster": [ 
+		{ 
+			"Name": "Klodzilla!",
+			"Type": "SECRET",
+			"PopulationDelta": -5,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "A giant lizard attacks your enemys biggest city. 5 million people are chewed up!"
+		}
+	],
+	
+	"secret_rearm": [ 
+		{ 
+			"Name": "REARMAMENT!",
+			"Type": "SECRET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "You may (at your option) discard up to 7 cards from your hand (all at once) and immediately replace them from the deck." 
+		}
+	],
+	
+	"secret_recall": [ 
+		{ 
+			"Name": "RECALL!",
+			"Type": "SECRET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Atomic Cannon manufacturer discovers defect - recalls all cannons. Anyone who has a face-up atomic cannon must discard it." 
+		}
+	],
+	
+	"delivery_b70": [ 
+		{ 
+			"Name": "B-70 Bomber",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 50,
+			"Weight": 0,
+			"Description": "Carries any combination of warheads up to 50 megatons"
+		}
+	],
+	
+	"delivery_polaris": [ 
+		{ 
+			"Name": "Polaris",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 100,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 10 megatons"
+		}
+	],
+	
+	"special_coup": [ 
+		{ 
+			"Name": "Public Relations Coup",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "SAVE UNTIL NEEDED. This card will cancel out one PROPAGANDA card played against you"
+		}
+	]
+}

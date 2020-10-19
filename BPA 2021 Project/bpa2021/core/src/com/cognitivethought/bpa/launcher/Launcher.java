@@ -5,14 +5,20 @@ import java.util.ArrayList;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cognitivethought.bpa.Card;
 import com.cognitivethought.bpa.Strings;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
 import com.cognitivethought.bpa.uistages.GameMenuStage;
@@ -56,6 +62,8 @@ public class Launcher extends ApplicationAdapter {
 		
 		// -- DEBUGGING TOOL FOR UPDATING CARD DATABASE -- //
 		
+		Card.loadCards();
+		
 //		JSONObject jo;
 //		try {
 //			File f = new File(Strings.URL_LOCATOR + "assets\\json\\TestJSON.json");
@@ -91,6 +99,32 @@ public class Launcher extends ApplicationAdapter {
 		stages.add(game_menu_stage);
 		
 		setStage(login_stage);
+		
+		for (Stage s : stages) {
+			s.addListener(new InputListener() {
+				@Override
+				public boolean keyTyped(InputEvent event, char character) {
+					if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+						Backendless.UserService.login("MEuph", "603Euph_", new AsyncCallback<BackendlessUser>() {
+							
+							@Override
+							public void handleResponse(BackendlessUser response) {
+								System.out.println("Worked");
+							}
+							
+							@Override
+							public void handleFault(BackendlessFault fault) {
+								System.err.println("Failed");
+							}
+						});
+						
+						Launcher.setStage(main_stage);
+					}
+					
+					return super.keyTyped(event, character);
+				}
+			});
+		}
 		
 //		populateUI();
 	}
