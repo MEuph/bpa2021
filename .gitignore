@@ -1,0 +1,37 @@
+# Java related
+target/**
+*.jar
+*.war
+*.ear
+*.class
+
+# eclipse specific
+eclipse-workspace\.metadata\**
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+BPA 2021 Project/eclipse-workspace/.metadata/.log
+BPA 2021 Project/eclipse-workspace/.metadata/.mylyn/.tasks.xml.zip
+BPA 2021 Project/eclipse-workspace/.metadata/.mylyn/tasks.xml.zip
+BPA 2021 Project/eclipse-workspace/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+BPA 2021 Project/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
+BPA 2021 Project/eclipse-workspace/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+BPA 2021 Project/eclipse-workspace/.metadata/.plugins/org.eclipse.m2e.logback.configuration/0.log
+BPA 2021 Project/eclipse-workspace/.metadata/version.ini
