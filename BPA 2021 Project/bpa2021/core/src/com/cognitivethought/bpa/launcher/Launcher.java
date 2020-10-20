@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.Card;
 import com.cognitivethought.bpa.Strings;
+import com.cognitivethought.bpa.gamestages.DevStage;
+import com.cognitivethought.bpa.gamestages.GameStage;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
 import com.cognitivethought.bpa.uistages.GameMenuStage;
 import com.cognitivethought.bpa.uistages.LauncherStage;
@@ -41,7 +43,9 @@ public class Launcher extends ApplicationAdapter {
 	public static Stage previousStage;
 
 	public static UIStage game_menu_stage;
-
+	
+	public static GameStage dev_stage;
+	
 	public static BackendlessUser currentUser = null;
 	
 	public OrthographicCamera camera;
@@ -60,43 +64,28 @@ public class Launcher extends ApplicationAdapter {
 		vp = new ScalingViewport(Scaling.none, Toolkit.getDefaultToolkit().getScreenSize().width,
 				Toolkit.getDefaultToolkit().getScreenSize().height, camera);
 		
-		// -- DEBUGGING TOOL FOR UPDATING CARD DATABASE -- //
-		
 		Card.loadCards();
-		
-//		JSONObject jo;
-//		try {
-//			File f = new File(Strings.URL_LOCATOR + "assets\\json\\TestJSON.json");
-//			jo = (JSONObject) new JSONParser().parse(new FileReader(f));
-//
-//			Map<String, String> card = new HashMap<String, String>();
-//
-//			for (Object o : jo.keySet()) {
-//				card.put(o.toString(), jo.get(o).toString());
-//			}
-//
-//			Backendless.Data.of("Cards").save(card);
-//		} catch (IOException | ParseException e) {
-//			e.printStackTrace();
-//		}
 
 		na_stage = new NewAccountStage(vp);
 		login_stage = new LoginStage(vp);
 		fp_stage = new ForgotPasswordStage(vp);
 		main_stage = new MainLauncherStage(vp);
 		game_menu_stage = new GameMenuStage(vp);
+		dev_stage = new DevStage(vp);
 		
 		na_stage.getViewport().apply();
 		login_stage.getViewport().apply();
 		fp_stage.getViewport().apply();
 		main_stage.getViewport().apply();
 		game_menu_stage.getViewport().apply();
+		dev_stage.getViewport().apply();
 		
 		stages.add(na_stage);
 		stages.add(login_stage);
 		stages.add(fp_stage);
 		stages.add(main_stage);
 		stages.add(game_menu_stage);
+		stages.add(dev_stage);
 		
 		setStage(login_stage);
 		
@@ -104,7 +93,7 @@ public class Launcher extends ApplicationAdapter {
 			s.addListener(new InputListener() {
 				@Override
 				public boolean keyTyped(InputEvent event, char character) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+					if (Gdx.input.isKeyJustPressed(Input.Keys.F12)) {
 						Backendless.UserService.login("MEuph", "603Euph_", new AsyncCallback<BackendlessUser>() {
 							
 							@Override
@@ -154,6 +143,8 @@ public class Launcher extends ApplicationAdapter {
 			((LauncherStage) currentStage).populate();
 		else if (currentStage instanceof UIStage)
 			((UIStage) currentStage).populate();
+		else if (currentStage instanceof GameStage)
+			((GameStage) currentStage).populate();
 		
 		Gdx.input.setInputProcessor(s);
 	}
@@ -166,7 +157,7 @@ public class Launcher extends ApplicationAdapter {
 	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		
 		currentStage.getCamera().update();
 		
 		update();
@@ -181,5 +172,6 @@ public class Launcher extends ApplicationAdapter {
 		login_stage.dispose();
 		main_stage.dispose();
 		game_menu_stage.dispose();
+		dev_stage.dispose();
 	}
 }

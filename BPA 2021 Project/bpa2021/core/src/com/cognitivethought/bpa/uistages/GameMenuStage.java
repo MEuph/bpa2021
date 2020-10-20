@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.Strings;
+import com.cognitivethought.bpa.launcher.Launcher;
 
 public class GameMenuStage extends UIStage {
 	
@@ -55,6 +56,13 @@ public class GameMenuStage extends UIStage {
 		start.align(Align.center);
 		help.align(Align.center);
 		quit.align(Align.center);
+		
+		start.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Launcher.setStage(Launcher.dev_stage);
+			}
+		});
 		
 		quit.addListener(new ClickListener() {
 			@Override
