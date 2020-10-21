@@ -145,7 +145,7 @@ public class LoginStage extends LauncherStage {
 				if (Backendless.UserService.isValidLogin()) {
 					Launcher.setStage(Launcher.main_stage);
 				} else {
-					System.out.println("Line 139 in LS");
+					System.out.println("Line 148 in LS");
 				}
 			}
 		});
