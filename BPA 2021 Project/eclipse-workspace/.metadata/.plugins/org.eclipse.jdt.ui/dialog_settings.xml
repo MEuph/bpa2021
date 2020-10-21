@@ -81,4 +81,19 @@
 		<item key="DIALOG_HEIGHT" value="694"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
+	<section name="FatJarPackageWizard">
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_SAVE" value="false"/>
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION" value="C:\Users\maste\Documents\GitHub\bpa2021\BPA 2021 Project\eclipse-workspace"/>
+		<item key="FatJarPackageWizardPage.LIBRARY_HANDLING" value="1"/>
+		<item key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME" value="DesktopLauncher - bpa2021-desktop"/>
+		<item key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION" value="C:\Users\maste\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\10202020\10202020v2.jar"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\maste\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\10202020\10202020v2.jar"/>
+			<item value="C:\Users\maste\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\10202020\10202020v1.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="C:\Users\maste\Documents\GitHub\bpa2021\BPA 2021 Project\eclipse-workspace.xml"/>
+			<item value=".xml"/>
+		</list>
+	</section>
 </section>

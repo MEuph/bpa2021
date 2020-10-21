@@ -289,7 +289,7 @@
 	
 	"secret_suicide_squad": [ 
 		{ 
-			"Name": "SUICIDE TERRORIST SQUAD!",
+			"Name": "SUICIDE BOMBERS!",
 			"Type": "SECRET",
 			"PopulationDelta": -1,
 			"Capacity": 0,
@@ -685,7 +685,7 @@
 	
 	"special_bomb_shelter": [ 
 		{ 
-			"Name": "Ultimate Leadership Bomb Shelter",
+			"Name": "Bomb Shelter",
 			"Type": "SPECIAL",
 			"PopulationDelta": 0,
 			"Capacity": 0,

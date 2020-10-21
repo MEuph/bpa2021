@@ -70,7 +70,7 @@ public abstract class GameStage extends Stage {
 			noBackgroundButton.downFontColor = Color.GRAY;
 
 			param.size = 12;
-
+			
 			labelBg = new Pixmap(200, 200, Pixmap.Format.RGB888);
 			labelBg.setColor(Color.BLACK);
 			labelBg.fill();
