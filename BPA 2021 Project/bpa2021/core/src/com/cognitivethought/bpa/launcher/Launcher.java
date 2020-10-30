@@ -57,9 +57,11 @@ public class Launcher extends ApplicationAdapter {
 	@Override
 	public void create() {
 		Backendless.initApp(Strings.APP_ID, Strings.SECRET_KEY);
-
+		
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.position.set(0, 0, 0);
+		camera.position.set(0, 0, -100);
+		camera.near = 0;
+		camera.far = 1000000;
 		
 		vp = new ScalingViewport(Scaling.none, Toolkit.getDefaultToolkit().getScreenSize().width,
 				Toolkit.getDefaultToolkit().getScreenSize().height, camera);
@@ -159,6 +161,7 @@ public class Launcher extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		currentStage.getCamera().update();
+		currentStage.getBatch().setProjectionMatrix(camera.combined);
 		
 		update();
 		

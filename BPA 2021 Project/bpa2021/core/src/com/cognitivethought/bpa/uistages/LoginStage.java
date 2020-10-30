@@ -5,8 +5,15 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -30,7 +37,7 @@ public class LoginStage extends LauncherStage {
 	TextField login_username, login_password;
 	TextButton login_submit, login_forgotPassword, login_newAccount, login_continue;
 	Label login_errors, login_title;
-
+	
 	public LoginStage(Viewport vp) {
 		super(vp);
 	}
@@ -71,7 +78,7 @@ public class LoginStage extends LauncherStage {
 	public void populate() {
 		super.populate();
 		
-		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		param.size = 50;
 		BitmapFont titleFont = gen.generateFont(param);
@@ -212,5 +219,10 @@ public class LoginStage extends LauncherStage {
 				((Label) a).setText(Strings.EMPTY);
 			}
 		}
+	}
+	
+	@Override
+	public void draw() {
+		super.draw();
 	}
 }

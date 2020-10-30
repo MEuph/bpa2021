@@ -136,7 +136,7 @@ public abstract class LauncherStage extends Stage {
 		windowBar.addActor(barBG);
 		windowBar.addActor(bar);
 		
-		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU));
 		parameter.size = 15;
 		font = gen.generateFont(parameter);
 		
@@ -157,6 +157,10 @@ public abstract class LauncherStage extends Stage {
 		
 		textStyle.cursor = new Image(new Texture(cursor)).getDrawable();
 		
+		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
+		parameter.size = 15;
+		font = gen.generateFont(parameter);
+		
 		buttonStyle = new TextButtonStyle();
 		bgColor = new Pixmap(100, (int) textStyle.font.getLineHeight(), Pixmap.Format.RGB888);
 		bgColor.setColor(Color.GRAY);
@@ -175,13 +179,15 @@ public abstract class LauncherStage extends Stage {
 		noBackgroundButton.fontColor = Color.WHITE;
 		noBackgroundButton.overFontColor = Color.RED;
 		noBackgroundButton.downFontColor = Color.GRAY;
-
-		parameter.size = 12;
-
+		
 		labelBg = new Pixmap(200, 200, Pixmap.Format.RGB888);
 		labelBg.setColor(Color.BLACK);
 		labelBg.fill();
 
+		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU));
+		parameter.size = 12;
+		font = gen.generateFont(parameter);
+		
 		labelStyle = new LabelStyle();
 		labelStyle.font = gen.generateFont(parameter);
 		labelStyle.fontColor = Color.RED;

@@ -30,7 +30,7 @@ public abstract class GameStage extends Stage {
 		public GameStage(Viewport vp) {
 			super(vp);
 			
-			FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+			FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 			FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 			param.size = 15;
 			font = gen.generateFont(param);

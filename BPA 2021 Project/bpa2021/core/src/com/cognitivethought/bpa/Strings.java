@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 
 public class Strings {
 	
-	public static final String APP_ID = "56E69610-EBDD-52D4-FFF7-EB3E7A675500";
-	public static final String SECRET_KEY = "6FADE322-B1A0-430D-9EE5-5EE9152EA4C3";
+	public static final String APP_ID = "C9C8C138-1803-0468-FFC0-A3452A1F9C00";
+	public static final String SECRET_KEY = "3153334D-BCEE-4F4F-BEE3-A452EB3FECDB";
 	
 	public static String USER_ID = "";
 
@@ -40,8 +40,11 @@ public class Strings {
 	public static final String ERROR_BPA0002 = "Verification password does not match new password";
 	
 	public static final String URL_LOCATOR = Gdx.files.getLocalStoragePath();
-	public static final String URL_UBUNTU_REGULAR = URL_LOCATOR + "assets/fonts/used/ubuntu/Ubuntu-Regular.ttf";
+	public static final String URL_PIXEL_FONT_REGULAR = URL_LOCATOR + "assets/fonts/used/pixelfont/AGoblinAppears-o2Av.ttf";
+	public static final String URL_UBUNTU = URL_LOCATOR + "assets/fonts/used/ubuntu/Ubuntu-Regular.ttf";
 	public static final String URL_ARIAL_UNICODE = URL_LOCATOR + "assets/fonts/used/arial/arial-unicode-ms.ttf";
 	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "assets/skins/default/skin/uiskin.json";
 	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "assets/skins/default/skin/uiskin.atlas";
+	public static final String URL_TEAPOT = URL_LOCATOR + "assets/models/teapot.obj";
+	public static final String URL_TEAPOT_TEXTURE = URL_LOCATOR + "assets/textures/wood.png";
 }

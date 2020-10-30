@@ -29,7 +29,7 @@ public class MainLauncherStage extends LauncherStage {
 	public void populate() {
 		super.populate();
 		
-		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		param.size = 50;
 		BitmapFont titleFont = gen.generateFont(param);

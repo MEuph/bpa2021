@@ -39,6 +39,7 @@
 		{ 
 			"Name": "10 Megatons",
 			"Type": "WARHEAD",
+			"Path": "assets/images/10megaton.png",
 			"PopulationDelta": -2,
 			"Capacity": 0,
 			"Weight": 10,
@@ -51,6 +52,7 @@
 		{ 
 			"Name": "20 Megatons",
 			"Type": "WARHEAD",
+			"Path": "assets/images/20megaton.png",
 			"PopulationDelta": -5,
 			"Capacity": 0,
 			"Weight": 20,
@@ -63,6 +65,7 @@
 		{ 
 			"Name": "50 Megatons",
 			"Type": "WARHEAD",
+			"Path": "assets/images/50megaton.png",
 			"PopulationDelta": -10,
 			"Capacity": 0,
 			"Weight": 50,
@@ -75,6 +78,7 @@
 		{ 
 			"Name": "100 Megatons",
 			"Type": "WARHEAD",
+			"Path": "assets/images/100megaton.png",
 			"PopulationDelta": -25,
 			"Capacity": 0,
 			"Weight": 100,

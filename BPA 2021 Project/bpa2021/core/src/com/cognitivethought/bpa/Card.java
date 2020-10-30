@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
@@ -33,9 +34,13 @@ public class Card extends Widget {
 //	private Table desc_wrap;
 
 	private Type type;
-
+	
+	private Image art;
+	
 	private String name;
 	private String desc;
+	
+	private Color fontColor;
 
 	private long populationDelta;
 	private long capacity;
@@ -85,40 +90,63 @@ public class Card extends Widget {
 
 		spacing = card.spacing = 0;
 
-		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		nameStyle = new LabelStyle();
 		descStyle = new LabelStyle();
 		typeStyle = new LabelStyle();
-
+		
+		switch (type) {
+		case ANTI_MISSILE:
+			fontColor = Colors.FONT_AM;
+			break;
+		case DELIVERY_SYSTEM:
+			fontColor = Colors.FONT_DS;
+			break;
+		case PROPAGANDA:
+			fontColor = Colors.FONT_PR;
+			break;
+		case SECRET:
+			fontColor = Colors.FONT_SE;
+			break;
+		case SPECIAL:
+			fontColor = Colors.FONT_SP;
+			break;
+		case WARHEAD:
+			fontColor = Colors.FONT_WH;
+			break;
+		default:
+			break;
+		}
+		
 		this.pm = new Pixmap(60, 100, Pixmap.Format.RGBA8888);
 
 		int fontSize = 20;
 
 		param.size = fontSize * (1 + scale);
 		nameStyle.font = gen.generateFont(param);
-		nameStyle.font.setColor(Color.BLACK);
+		nameStyle.font.setColor(fontColor);
 
 		param.size = 10 * (1 + scale);
 		descStyle.font = gen.generateFont(param);
-		descStyle.font.setColor(Color.BLACK);
+		descStyle.font.setColor(fontColor);
 
 		param.size = 15 * (1 + scale);
 		typeStyle.font = gen.generateFont(param);
-		typeStyle.font.setColor(Color.BLACK);
+		typeStyle.font.setColor(fontColor);
 
 		param.size = fontSize * (1 + scale);
 
 		l_name = new Label(name, nameStyle);
-		l_name.setColor(Color.BLACK);
+		l_name.setColor(fontColor);
 		l_name.setFontScaleX(1f);
 
 		l_desc = new Label(desc, descStyle);
-		l_desc.setColor(Color.BLACK);
+		l_desc.setColor(fontColor);
 		l_desc.setFontScaleX(1f);
 
 		l_type = new Label(type.toString().replace('_', ' '), typeStyle);
-		l_type.setColor(Color.BLACK);
+		l_type.setColor(fontColor);
 		l_type.setFontScaleX(1f);
 
 //		desc_wrap = new Table();
@@ -126,7 +154,7 @@ public class Card extends Widget {
 		originalPos = new Vector2(getX(), getY());
 	}
 	
-	public Card(Type type, String name, String desc, long popDelta, long cap, long weight, long quantity) {
+	public Card(Type type, String name, String desc, long popDelta, long cap, long weight, long quantity, String art_path) {
 		this.type = type;
 		this.name = name;
 		this.desc = desc;
@@ -134,10 +162,38 @@ public class Card extends Widget {
 		this.capacity = cap;
 		this.weight = weight;
 		this.quantity = quantity;
+		
+		if (art_path != null)
+			art = new Image(new Texture(Strings.URL_LOCATOR + art_path));
+		else
+			art = null;
 
+		switch (type) {
+		case ANTI_MISSILE:
+			fontColor = Colors.FONT_AM;
+			break;
+		case DELIVERY_SYSTEM:
+			fontColor = Colors.FONT_DS;
+			break;
+		case PROPAGANDA:
+			fontColor = Colors.FONT_PR;
+			break;
+		case SECRET:
+			fontColor = Colors.FONT_SE;
+			break;
+		case SPECIAL:
+			fontColor = Colors.FONT_SP;
+			break;
+		case WARHEAD:
+			fontColor = Colors.FONT_WH;
+			break;
+		default:
+			break;
+		}
+		
 		this.pm = new Pixmap(60, 100, Pixmap.Format.RGBA8888);
 
-		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		nameStyle = new LabelStyle();
 		descStyle = new LabelStyle();
@@ -147,28 +203,28 @@ public class Card extends Widget {
 
 		param.size = fontSize * (1 + scale);
 		nameStyle.font = gen.generateFont(param);
-		nameStyle.font.setColor(Color.BLACK);
+		nameStyle.font.setColor(fontColor);
 
 		param.size = 10 * (1 + scale);
 		descStyle.font = gen.generateFont(param);
-		descStyle.font.setColor(Color.BLACK);
+		descStyle.font.setColor(fontColor);
 
 		param.size = 15 * (1 + scale);
 		typeStyle.font = gen.generateFont(param);
-		typeStyle.font.setColor(Color.BLACK);
+		typeStyle.font.setColor(fontColor);
 
 		param.size = fontSize * (1 + scale);
 
 		l_name = new Label(name, nameStyle);
-		l_name.setColor(Color.BLACK);
+		l_name.setColor(fontColor);
 		l_name.setFontScaleX(1f);
 
 		l_desc = new Label(desc, descStyle);
-		l_desc.setColor(Color.BLACK);
+		l_desc.setColor(fontColor);
 		l_desc.setFontScaleX(1f);
 
 		l_type = new Label(type.toString().replace('_', ' '), typeStyle);
-		l_type.setColor(Color.BLACK);
+		l_type.setColor(fontColor);
 		l_type.setFontScaleX(1f);
 
 //		desc_wrap = new Table();
@@ -183,19 +239,22 @@ public class Card extends Widget {
 		if (type != null) {
 			switch (type) {
 			case DELIVERY_SYSTEM:
-				fill = Color.CYAN;
+				fill = Colors.FILL_DS;
 				break;
 			case PROPAGANDA:
-				fill = Color.GRAY;
+				fill = Colors.FILL_PR;
 				break;
 			case SECRET:
-				fill = Color.LIME;
+				fill = Colors.FILL_SE;
 				break;
 			case SPECIAL:
-				fill = Color.GOLD;
+				fill = Colors.FILL_SP;
 				break;
 			case WARHEAD:
-				fill = Color.RED;
+				fill = Colors.FILL_WH;
+				break;
+			case ANTI_MISSILE:
+				fill = Colors.FILL_AM;
 				break;
 			default:
 				fill = Color.WHITE;
@@ -286,6 +345,12 @@ public class Card extends Widget {
 
 		drawCardShape(pm);
 		
+		if (art != null) {
+			art.setPosition(getX(), l_desc.getY() + l_desc.getHeight());
+			art.setSize(getWidth(), getWidth());
+			art.draw(batch, parentAlpha);
+		}
+		
 		l_name.draw(batch, parentAlpha);
 		l_desc.draw(batch, parentAlpha);
 		l_type.draw(batch, parentAlpha);
@@ -334,7 +399,7 @@ public class Card extends Widget {
 		l_type.setAlignment(Align.left);
 
 //		l_name.setScale(1 + scale);
-		l_name.setPosition((getX()), getHeight() - l_name.getHeight() - (l_name.getGlyphLayout().height / 2));
+		l_name.setPosition((getX()) + 5, getHeight() - l_name.getHeight() - (l_name.getGlyphLayout().height / 2));
 //		l_desc.setScale(1 + scale);
 		l_desc.setPosition((getWidth() / 2) - ((l_desc.getWidth() / 2)), getHeight() - l_desc.getFontScaleX()
 				- l_name.getHeight() - l_desc.getHeight() - (l_desc.getGlyphLayout().height / 2) - 25);
@@ -354,11 +419,17 @@ public class Card extends Widget {
 				String name = (String) data.get("Name");
 				String type = (String) data.get("Type");
 				String desc = (String) data.get("Description");
+				String art_path = "";
+				try {
+					art_path = (String) data.get("Path");
+				} catch (Exception e) {
+					art_path = "";
+				}
 				long popDelta = (long) data.get("PopulationDelta");
 				long weight = (long) data.get("Weight");
 				long cap = (long) data.get("Capacity");
 				long quantity = (long) data.get("Quantity");
-				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity);
+				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path);
 				for (int i = 0; i < quantity + 1; i++)
 					DECK.add(card);
 			}
@@ -396,6 +467,8 @@ public class Card extends Widget {
 			return Type.SPECIAL;
 		case "PROPAGANDA":
 			return Type.PROPAGANDA;
+		case "ANTI_MISSILE":
+			return Type.ANTI_MISSILE;
 		default:
 			return Type.WARHEAD;
 		}
@@ -458,6 +531,6 @@ public class Card extends Widget {
 	}
 
 	public enum Type {
-		WARHEAD, SECRET, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA;
+		WARHEAD, SECRET, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA, ANTI_MISSILE;
 	}
 }
