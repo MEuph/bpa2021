@@ -47,4 +47,5 @@ public class Strings {
 	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "assets/skins/default/skin/uiskin.atlas";
 	public static final String URL_TEAPOT = URL_LOCATOR + "assets/models/teapot.obj";
 	public static final String URL_TEAPOT_TEXTURE = URL_LOCATOR + "assets/textures/wood.png";
+	public static final String URL_PLACEMAT = URL_LOCATOR + "assets/images/placemat.png";
 }

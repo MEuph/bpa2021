@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.Card;
 import com.cognitivethought.bpa.Strings;
-import com.cognitivethought.bpa.gamestages.DevStage;
+import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.gamestages.GameStage;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
 import com.cognitivethought.bpa.uistages.GameMenuStage;
@@ -73,7 +73,7 @@ public class Launcher extends ApplicationAdapter {
 		fp_stage = new ForgotPasswordStage(vp);
 		main_stage = new MainLauncherStage(vp);
 		game_menu_stage = new GameMenuStage(vp);
-		dev_stage = new DevStage(vp);
+		dev_stage = new MainGameStage(vp);
 		
 		na_stage.getViewport().apply();
 		login_stage.getViewport().apply();
