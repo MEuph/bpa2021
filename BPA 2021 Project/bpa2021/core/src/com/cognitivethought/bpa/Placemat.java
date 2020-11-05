@@ -5,15 +5,47 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Placemat extends Widget {
+public class Placemat extends Actor {
+
+	// 83 x 46 CARD SIZE
+
+	float cardWidth = 83, cardHeight = 46;
+	float matWidth = 440, matHeight = 224;
 
 	Card left, right, top, bottom, center;
 	Pixmap mat;
 
 	public Placemat() {
 		mat = new Pixmap(new FileHandle(Strings.URL_PLACEMAT));
+
+		left = new Card(Card.BLANK);
+		right = new Card(Card.BLANK);
+		top = new Card(Card.BLANK);
+		bottom = new Card(Card.BLANK);
+		center = new Card(Card.BLANK);
+	}
+	
+	@Override
+	public void setSize(float width, float height) {
+		super.setSize(width, height);
+
+		left.setPosition(getX() + pixelToRelative(40, 88).x, getY() + pixelToRelative(40, 88).y);
+		left.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		top.setPosition(getX() + pixelToRelative(159, 24).x, getY() + pixelToRelative(159, 24).y);
+		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		center.setPosition(getX() + pixelToRelative(159, 88).x, getY() + pixelToRelative(159, 88).y);
+		center.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		bottom.setPosition(getX() + pixelToRelative(159, 152).x, getY() + pixelToRelative(159, 152).y);
+		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		right.setPosition(getX() + pixelToRelative(278, 88).x, getY() + pixelToRelative(278, 88).y);
+		right.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+//		
 	}
 
 	public Card getLeft() {
@@ -69,30 +101,14 @@ public class Placemat extends Widget {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		batch.draw(new Texture(mat), getX(), getY(), getWidth(), getHeight());
-		
-		if (left != null)
-			left.setPosition(pixelToRelative(40, 88).x, pixelToRelative(40, 88).y);
-		if (top != null)
-			top.setPosition(pixelToRelative(159, 24).x, pixelToRelative(159, 24).y);
-		if (center != null)
-			center.setPosition(pixelToRelative(159, 88).x, pixelToRelative(159, 88).y);
-		if (bottom != null)
-			bottom.setPosition(pixelToRelative(159, 152).x, pixelToRelative(159, 152).y);
-		if (right != null)
-			right.setPosition(pixelToRelative(278, 88).x, pixelToRelative(278, 88).y);
 
-		if (left != null)
-			left.draw(batch, parentAlpha);
-		if (top != null)
-			top.draw(batch, parentAlpha);
-		if (center != null)
-			center.draw(batch, parentAlpha);
-		if (bottom != null)
-			bottom.draw(batch, parentAlpha);
-		if (right != null)
-			right.draw(batch, parentAlpha);
+		batch.draw(new Texture(mat), getX(), getY(), getWidth(), getHeight());
+
+		left.draw(batch, parentAlpha);
+		top.draw(batch, parentAlpha);
+		center.draw(batch, parentAlpha);
+		bottom.draw(batch, parentAlpha);
+		right.draw(batch, parentAlpha);
 	}
 
 }

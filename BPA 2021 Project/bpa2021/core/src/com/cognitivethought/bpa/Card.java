@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,7 +35,9 @@ public class Card extends Widget {
 
 	public static final ArrayList<Card> DECK = new ArrayList<Card>();
 
-	private Label l_name, l_desc, l_type, l_capacity, l_weight;
+	public static final Card BLANK = new Card(Type.BLANK, "", "", 0, 0, 0, 1, null);
+
+	private Label l_name, l_desc, l_type;
 //	private Table desc_wrap;
 
 	private Type type;
@@ -54,7 +57,9 @@ public class Card extends Widget {
 
 	public int scale;
 	public int rad = 20;
-
+	
+	public boolean placematHover = false;
+	
 	public Vector2 originalPos, originalSize;
 
 	private Pixmap pm;
@@ -119,6 +124,9 @@ public class Card extends Widget {
 		case WARHEAD:
 			fontColor = Colors.FONT_WH;
 			break;
+		case BLANK:
+			fontColor = Color.BLACK;
+			break;
 		default:
 			break;
 		}
@@ -160,6 +168,9 @@ public class Card extends Widget {
 		case WARHEAD:
 			fontColor = Colors.FONT_WH;
 			break;
+		case BLANK:
+			fontColor = Color.BLACK;
+			break;
 		default:
 			break;
 		}
@@ -168,6 +179,8 @@ public class Card extends Widget {
 	}
 
 	public void init() {
+		originalSize = new Vector2(getWidth(), getHeight());
+
 		this.pm = new Pixmap(60, 100, Pixmap.Format.RGBA8888);
 
 		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
@@ -215,7 +228,10 @@ public class Card extends Widget {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 
-				((MainGameStage) Launcher.dev_stage).holdCard(card);
+				if (type == Type.BLANK)
+					System.exit(0);
+				else
+					((MainGameStage) Launcher.dev_stage).holdCard(card);
 			}
 		});
 	}
@@ -273,113 +289,161 @@ public class Card extends Widget {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
-		
-		pm.setColor(Color.CLEAR);
-		pm.fill();
-		
-		Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-		Vector2 mouseLocalPosition = screenToLocalCoordinates(mouseScreenPosition);
+		if (getWidth() < getHeight()) {
+			batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
 
-		Actor box = hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
+			pm.setColor(Color.CLEAR);
+			pm.fill();
 
-		int hoverScale = 50;
-		float speed = 10f;
-		
-		if (box != null) {
-			if (mouseLocalPosition.x < box.getX() + spacing)
-				hovering = true;
-			else
-				hovering = false;
-		} else {
-			hovering = false;
-		}
-		
-		if (((MainGameStage)Launcher.dev_stage).currentlyHeldCard != null) {
-			if (((MainGameStage)Launcher.dev_stage).currentlyHeldCard.equals(this)) {
+			Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+			Vector2 mouseLocalPosition = screenToLocalCoordinates(mouseScreenPosition);
+
+			Actor box = hit(mouseLocalPosition.x, mouseLocalPosition.y, false);
+
+			int hoverScale = 50;
+			float speed = 10f;
+
+			if (box != null) {
+				if (mouseLocalPosition.x < box.getX() + spacing)
+					hovering = true;
+				else
+					hovering = false;
+			} else {
 				hovering = false;
 			}
-		}
-		
-		if (hovering) {
-			this.getParent().toFront();
-			Vector2 newPosition = new Vector2(getX(), getY())
-					.lerp(new Vector2(originalPos.x, originalPos.y + hoverScale), Gdx.graphics.getDeltaTime() * speed);
-			setPosition(newPosition.x, newPosition.y);
-			Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(
-					new Vector2(originalSize.x + hoverScale, originalSize.y + hoverScale),
-					Gdx.graphics.getDeltaTime() * speed);
-			setSize((int) newSize.x, (int) newSize.y);
-			int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1.25f,
-					Gdx.graphics.getDeltaTime() * speed);
-			l_name.setFontScale(name_newScale);
-			int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1.25f,
-					Gdx.graphics.getDeltaTime() * speed);
-			l_desc.setFontScale(desc_newScale);
-			int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1.25f,
-					Gdx.graphics.getDeltaTime() * speed);
-			l_type.setFontScale(type_newScale);
-		} else {
-			if (((MainGameStage)Launcher.dev_stage).currentlyHeldCard != null) {
-				if (!((MainGameStage)Launcher.dev_stage).currentlyHeldCard.equals(this)) {
-					Vector2 newPosition = new Vector2(getX(), getY()).lerp(originalPos, Gdx.graphics.getDeltaTime() * speed);
+
+			if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard != null) {
+				if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard.equals(this)) {
+					hovering = false;
+				}
+			}
+
+			if (hovering) {
+				this.getParent().toFront();
+				Vector2 newPosition = new Vector2(getX(), getY()).lerp(
+						new Vector2(originalPos.x, originalPos.y + hoverScale), Gdx.graphics.getDeltaTime() * speed);
+				setPosition(newPosition.x, newPosition.y);
+				Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(
+						new Vector2(originalSize.x + hoverScale, originalSize.y + hoverScale),
+						Gdx.graphics.getDeltaTime() * speed);
+				setSize((int) newSize.x, (int) newSize.y);
+				int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1.25f,
+						Gdx.graphics.getDeltaTime() * speed);
+				l_name.setFontScale(name_newScale);
+				int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1.25f,
+						Gdx.graphics.getDeltaTime() * speed);
+				l_desc.setFontScale(desc_newScale);
+				int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1.25f,
+						Gdx.graphics.getDeltaTime() * speed);
+				l_type.setFontScale(type_newScale);
+			} else {
+				if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard != null) {
+					if (!((MainGameStage) Launcher.dev_stage).currentlyHeldCard.equals(this)) {
+						Vector2 newPosition = new Vector2(getX(), getY()).lerp(originalPos,
+								Gdx.graphics.getDeltaTime() * speed);
+						setPosition(newPosition.x, newPosition.y);
+						Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(originalSize,
+								Gdx.graphics.getDeltaTime() * speed);
+						setSize((int) newSize.x, (int) newSize.y);
+						int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1f,
+								Gdx.graphics.getDeltaTime() * speed);
+						l_name.setFontScale(name_newScale);
+						int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
+								Gdx.graphics.getDeltaTime() * speed);
+						l_desc.setFontScale(desc_newScale);
+						int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
+								Gdx.graphics.getDeltaTime() * speed);
+						l_type.setFontScale(type_newScale);
+					} else {
+						l_name.setFontScale(1f);
+						l_desc.setFontScale(1f);
+						l_type.setFontScale(1f);
+					}
+				} else {
+					Vector2 newPosition = new Vector2(getX(), getY()).lerp(originalPos,
+							Gdx.graphics.getDeltaTime() * speed);
 					setPosition(newPosition.x, newPosition.y);
 					Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(originalSize,
 							Gdx.graphics.getDeltaTime() * speed);
 					setSize((int) newSize.x, (int) newSize.y);
-					int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1f, Gdx.graphics.getDeltaTime() * speed);
+					int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1f,
+							Gdx.graphics.getDeltaTime() * speed);
 					l_name.setFontScale(name_newScale);
-					int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f, Gdx.graphics.getDeltaTime() * speed);
+					int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
+							Gdx.graphics.getDeltaTime() * speed);
 					l_desc.setFontScale(desc_newScale);
 					int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
 							Gdx.graphics.getDeltaTime() * speed);
 					l_type.setFontScale(type_newScale);
-				} else {
-					l_name.setFontScale(1f);
-					l_desc.setFontScale(1f);
-					l_type.setFontScale(1f);
 				}
-			} else {
-				Vector2 newPosition = new Vector2(getX(), getY()).lerp(originalPos, Gdx.graphics.getDeltaTime() * speed);
-				setPosition(newPosition.x, newPosition.y);
-				Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(originalSize,
-						Gdx.graphics.getDeltaTime() * speed);
-				setSize((int) newSize.x, (int) newSize.y);
-				int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1f, Gdx.graphics.getDeltaTime() * speed);
-				l_name.setFontScale(name_newScale);
-				int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f, Gdx.graphics.getDeltaTime() * speed);
-				l_desc.setFontScale(desc_newScale);
-				int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
-						Gdx.graphics.getDeltaTime() * speed);
-				l_type.setFontScale(type_newScale);
 			}
+
+			// desc_wrap.setDebug(true, true);
+
+			if ((int) l_name.getFontScaleX() <= 0)
+				l_name.setFontScale(0.000001f);
+			if ((int) l_desc.getFontScaleX() <= 0)
+				l_desc.setFontScale(0.000001f);
+
+			drawCardShape(pm);
+
+			if (art != null) {
+				art.setPosition(getX(), l_desc.getY() + l_desc.getHeight());
+				art.setSize(getWidth(), getWidth());
+				art.draw(batch, parentAlpha);
+			}
+
+			l_name.draw(batch, parentAlpha);
+			l_desc.draw(batch, parentAlpha);
+			l_type.draw(batch, parentAlpha);
+
+			// FreeTypeFontGenerator gen = new
+			// FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
+			// FreeTypeFontGenerator.FreeTypeFontParameter param = new
+			// FreeTypeFontGenerator.FreeTypeFontParameter();
+			// param.size = 10 * (1 + scale);
+			// gen.dispose();
+		} else {
+			if (type == Type.BLANK) {
+				pm = new Pixmap((int) getWidth(), (int) getHeight(), Pixmap.Format.RGB888);
+				pm.setColor(placematHover ? Color.RED : Color.GREEN);
+				pm.fill();
+				batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
+			} else {
+				batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
+
+				pm.setColor(Color.CLEAR);
+				pm.fill();
+
+				// desc_wrap.setDebug(true, true);
+
+				if ((int) l_name.getFontScaleX() <= 0)
+					l_name.setFontScale(0.000001f);
+				if ((int) l_desc.getFontScaleX() <= 0)
+					l_desc.setFontScale(0.000001f);
+
+				drawCardShape(pm);
+
+				if (art != null) {
+					art.setPosition(getX(), l_desc.getY() + l_desc.getHeight());
+					art.setSize(getWidth(), getWidth());
+					art.draw(batch, parentAlpha);
+				}
+
+				l_name.draw(batch, parentAlpha);
+				l_desc.draw(batch, parentAlpha);
+				l_type.draw(batch, parentAlpha);
+			}
+			
+			Vector2 mousePos = new Vector2(Gdx.input.getX() + Gdx.graphics.getWidth() / 2 - (16 / 2), (Gdx.graphics.getHeight() * 1.5f) - Gdx.input.getY() - (16 / 2));
+			
+			Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+			Rectangle cursor = new Rectangle(mousePos.x, mousePos.y, 16, 16);
+			
+			placematHover = bounds.overlaps(cursor);
 		}
-
-//		desc_wrap.setDebug(true, true);
-
-		if ((int) l_name.getFontScaleX() <= 0)
-			l_name.setFontScale(0.000001f);
-		if ((int) l_desc.getFontScaleX() <= 0)
-			l_desc.setFontScale(0.000001f);
-
-		drawCardShape(pm);
-		
-		if (art != null) {
-			art.setPosition(getX(), l_desc.getY() + l_desc.getHeight());
-			art.setSize(getWidth(), getWidth());
-			art.draw(batch, parentAlpha);
-		}
-		
-		l_name.draw(batch, parentAlpha);
-		l_desc.draw(batch, parentAlpha);
-		l_type.draw(batch, parentAlpha);
-
-//		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_UBUNTU_REGULAR));
-//		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
-//		param.size = 10 * (1 + scale);
-//		gen.dispose();
 	}
-
+	
 	public void setScale(int scale) {
 		this.scale = scale;
 		this.setSize(getWidth() * (1 + scale), getHeight() * (1 + scale));
@@ -418,10 +482,12 @@ public class Card extends Widget {
 		l_type.setAlignment(Align.left);
 
 //		l_name.setScale(1 + scale);
-		l_name.setPosition((getX()) + 5, getY() + getHeight() - l_name.getHeight() - (l_name.getGlyphLayout().height / 2));
+		l_name.setPosition((getX()) + 5,
+				getY() + getHeight() - l_name.getHeight() - (l_name.getGlyphLayout().height / 2));
 //		l_desc.setScale(1 + scale);
-		l_desc.setPosition(getX() + (getWidth() / 2) - ((l_desc.getWidth() / 2)), getY() + getHeight() - l_desc.getFontScaleX()
-				- l_name.getHeight() - l_desc.getHeight() - (l_desc.getGlyphLayout().height / 2) - 40);
+		l_desc.setPosition(getX() + (getWidth() / 2) - ((l_desc.getWidth() / 2)),
+				getY() + getHeight() - l_desc.getFontScaleX() - l_name.getHeight() - l_desc.getHeight()
+						- (l_desc.getGlyphLayout().height / 2) - 40);
 		l_type.setPosition((getX() + rad), getY() + l_type.getGlyphLayout().height);
 	}
 
@@ -557,6 +623,6 @@ public class Card extends Widget {
 	}
 
 	public enum Type {
-		WARHEAD, SECRET, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA, ANTI_MISSILE;
+		WARHEAD, SECRET, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA, ANTI_MISSILE, BLANK;
 	}
 }

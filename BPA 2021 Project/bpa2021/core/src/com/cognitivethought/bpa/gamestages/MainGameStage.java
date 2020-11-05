@@ -16,15 +16,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.Card;
+import com.cognitivethought.bpa.Cursor;
 import com.cognitivethought.bpa.Placemat;
 import com.cognitivethought.bpa.PopulationCard;
+import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.Spinner;
 
 public class MainGameStage extends GameStage {
 
 	HorizontalGroup hand;
 	VerticalGroup population;
-
+	
+	public Cursor c;
+	
 	ArrayList<WidgetGroup> cards;
 	ArrayList<WidgetGroup> populationCards;
 
@@ -33,6 +37,7 @@ public class MainGameStage extends GameStage {
 	Label totalPop;
 	Label fps;
 
+	public Card initialState;
 	public Card currentlyHeldCard;
 
 	public Placemat placemat;
@@ -44,7 +49,9 @@ public class MainGameStage extends GameStage {
 	@Override
 	public void populate() {
 		super.populate();
-
+		
+		c = new Cursor();
+		
 		fps = new Label("", labelStyle);
 		fps.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getWidth() / 2);
 
@@ -107,10 +114,12 @@ public class MainGameStage extends GameStage {
 		
 		placemat.setSize(400 * 2, 224 * 2);
 		placemat.setPosition(hand.getX() - (placemat.getWidth() / 2) + 100, hand.getY() + (placemat.getHeight() / 2) + 75);
+		placemat.setSize(400 * 2, 224 * 2);
 		
 //		hand.setDebug(true, true);
 
 //		addActor(fps);
+		
 		addActor(hand);
 		addActor(population);
 		addActor(totalPop);
@@ -119,7 +128,7 @@ public class MainGameStage extends GameStage {
 		final Spinner spinner = new Spinner();
 		spinner.setSize(250, 250);
 		spinner.setPosition(hand.getX() - (hand.getWidth() / 2) - 575, hand.getY() + 400);
-
+		
 		addActor(spinner);
 
 		addListener(new InputListener() {
@@ -132,11 +141,61 @@ public class MainGameStage extends GameStage {
 				return super.keyDown(event, keycode);
 			}
 		});
+		
+		addActor(c);
 	}
 
 	public void holdCard(Card card) {
 		currentlyHeldCard = card;
-		hand.removeActor(card);
+		initialState = card;
+		int a = -1;
+		WidgetGroup wg = new WidgetGroup();
+		wg.addActor(card);
+		for (int i = 0; i < hand.getChildren().size; i++) {
+//			if (wg.getChild(0).equals((WidgetGroup)hand.getChild(0).get))
+		}
+		
+		// TODO: SAVED LINE
+		
+		hand.removeActor(hand.getChild(a));
+		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
+	}
+	
+	public void putBackInHand() {
+		currentlyHeldCard = initialState;
+		
+		WidgetGroup w = new WidgetGroup();
+		w.addActor(currentlyHeldCard);
+		
+		hand.addActor(w);
+		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
+		
+		currentlyHeldCard = null;
+		
+		resetHand();
+	}
+	
+	public void resetHand() {
+		hand.remove();
+		
+//		HorizontalGroup originalHand = new HorizontalGroup();
+//		for (int i = 0; i < hand.getChildren().size; i++) {
+//			WidgetGroup g = (WidgetGroup)hand.getChild(i);
+//			originalHand.addActor(g);
+//		}
+//		
+//		hand = new HorizontalGroup();
+//		for (int i = 0; i < originalHand.getChildren().size; i++) {
+//			hand.addActor(originalHand.getChild(i));
+//		}
+		hand.invalidate();
+		hand.align(Align.center);
+		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
+//		hand.setSize(Gdx.graphics.getWidth() - 200, 400);
+		hand.setPosition(Gdx.graphics.getWidth() - cards.get(0).getChild(0).getWidth() / 2,
+				Gdx.graphics.getHeight() / 2);
+		
+		addActor(hand);
 	}
 	
 	@Override
@@ -155,6 +214,12 @@ public class MainGameStage extends GameStage {
 
 	@Override
 	public void draw() {
+		if (Launcher.currentStage == Launcher.dev_stage) {
+			if (Gdx.input.getInputProcessor() != this) {
+				Gdx.input.setInputProcessor(this);
+			}
+		}
+		
 		Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -163,6 +228,7 @@ public class MainGameStage extends GameStage {
 		totalPop.setText(Integer.toString(sum(pop)) + "M");
 
 		if (currentlyHeldCard != null) {
+			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f, currentlyHeldCard.originalSize.y / 1.15f);
 			currentlyHeldCard.setPosition(
 					Gdx.input.getX() + (Gdx.graphics.getWidth() / 2) - (currentlyHeldCard.getWidth() / 2),
 					Gdx.graphics.getHeight() - Gdx.input.getY() + currentlyHeldCard.getHeight());
@@ -170,9 +236,33 @@ public class MainGameStage extends GameStage {
 				addActor(currentlyHeldCard);
 			
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
-				currentlyHeldCard.play();
-				currentlyHeldCard.remove();
-				currentlyHeldCard = null;
+				if (placemat.getLeft().placematHover) {
+					currentlyHeldCard.setPosition(placemat.getLeft().getX(), placemat.getLeft().getY());
+					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
+					placemat.setLeft(currentlyHeldCard);
+					
+					currentlyHeldCard.play();
+					currentlyHeldCard.remove();
+					currentlyHeldCard = null;
+				} else if (placemat.getRightCard().placematHover) {
+					currentlyHeldCard.setPosition(placemat.getRightCard().getX(), placemat.getRightCard().getY());
+					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
+					placemat.setRight(currentlyHeldCard);
+					
+					currentlyHeldCard.play();
+					currentlyHeldCard.remove();
+					currentlyHeldCard = null;
+				} else if (placemat.getTopCard().placematHover) {
+					currentlyHeldCard.setPosition(placemat.getTopCard().getX(), placemat.getTopCard().getY());
+					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
+					placemat.setTop(currentlyHeldCard);
+					
+					currentlyHeldCard.play();
+					currentlyHeldCard.remove();
+					currentlyHeldCard = null;
+				} else {
+					putBackInHand();
+				}
 			}
 		}
 
@@ -181,5 +271,7 @@ public class MainGameStage extends GameStage {
 			fps.setText(Integer.toString((int) (1 / Gdx.graphics.getDeltaTime())));
 			frameTime = 0f;
 		}
+		
+		c.update();
 	}
 }
