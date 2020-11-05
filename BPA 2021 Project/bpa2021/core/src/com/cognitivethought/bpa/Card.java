@@ -57,9 +57,9 @@ public class Card extends Widget {
 
 	public int scale;
 	public int rad = 20;
-	
+
 	public boolean placematHover = false;
-	
+
 	public Vector2 originalPos, originalSize;
 
 	private Pixmap pm;
@@ -80,6 +80,8 @@ public class Card extends Widget {
 		type = card.type;
 		name = card.name;
 		desc = card.desc;
+
+		art = card.art;
 
 		populationDelta = card.populationDelta;
 		capacity = card.capacity;
@@ -228,15 +230,15 @@ public class Card extends Widget {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 
-				if (type == Type.BLANK)
-					System.exit(0);
-				else
+				if (type != Type.BLANK)
 					((MainGameStage) Launcher.dev_stage).holdCard(card);
 			}
 		});
+
+		gen.dispose();
 	}
 
-	public void drawCardShape(Pixmap pm) {
+	public void drawCardShape() {
 		Color fill = mouseDown ? Color.GRAY : Color.WHITE;
 		Color outline = hovering ? Color.RED : Color.BLACK;
 
@@ -266,6 +268,7 @@ public class Card extends Widget {
 			}
 		}
 
+		pm = new Pixmap((int) getWidth(), (int) getHeight(), Pixmap.Format.RGBA8888);
 		pm.setColor(fill);
 		pm.fillCircle(rad, pm.getHeight() - rad, rad);
 		pm.fillCircle(pm.getWidth() - rad, pm.getHeight() - rad, rad);
@@ -289,12 +292,11 @@ public class Card extends Widget {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		drawCardShape();
+		Texture tex = new Texture(pm);
+		pm.dispose();
+		
 		if (getWidth() < getHeight()) {
-			batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
-
-			pm.setColor(Color.CLEAR);
-			pm.fill();
-
 			Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 			Vector2 mouseLocalPosition = screenToLocalCoordinates(mouseScreenPosition);
 
@@ -327,15 +329,6 @@ public class Card extends Widget {
 						new Vector2(originalSize.x + hoverScale, originalSize.y + hoverScale),
 						Gdx.graphics.getDeltaTime() * speed);
 				setSize((int) newSize.x, (int) newSize.y);
-				int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1.25f,
-						Gdx.graphics.getDeltaTime() * speed);
-				l_name.setFontScale(name_newScale);
-				int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1.25f,
-						Gdx.graphics.getDeltaTime() * speed);
-				l_desc.setFontScale(desc_newScale);
-				int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1.25f,
-						Gdx.graphics.getDeltaTime() * speed);
-				l_type.setFontScale(type_newScale);
 			} else {
 				if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard != null) {
 					if (!((MainGameStage) Launcher.dev_stage).currentlyHeldCard.equals(this)) {
@@ -345,15 +338,6 @@ public class Card extends Widget {
 						Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(originalSize,
 								Gdx.graphics.getDeltaTime() * speed);
 						setSize((int) newSize.x, (int) newSize.y);
-						int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1f,
-								Gdx.graphics.getDeltaTime() * speed);
-						l_name.setFontScale(name_newScale);
-						int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
-								Gdx.graphics.getDeltaTime() * speed);
-						l_desc.setFontScale(desc_newScale);
-						int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
-								Gdx.graphics.getDeltaTime() * speed);
-						l_type.setFontScale(type_newScale);
 					} else {
 						l_name.setFontScale(1f);
 						l_desc.setFontScale(1f);
@@ -366,15 +350,6 @@ public class Card extends Widget {
 					Vector2 newSize = new Vector2(getWidth(), getHeight()).lerp(originalSize,
 							Gdx.graphics.getDeltaTime() * speed);
 					setSize((int) newSize.x, (int) newSize.y);
-					int name_newScale = (int) MathUtils.lerp(l_name.getFontScaleX(), 1f,
-							Gdx.graphics.getDeltaTime() * speed);
-					l_name.setFontScale(name_newScale);
-					int desc_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
-							Gdx.graphics.getDeltaTime() * speed);
-					l_desc.setFontScale(desc_newScale);
-					int type_newScale = (int) MathUtils.lerp(l_desc.getFontScaleX(), 1f,
-							Gdx.graphics.getDeltaTime() * speed);
-					l_type.setFontScale(type_newScale);
 				}
 			}
 
@@ -385,11 +360,11 @@ public class Card extends Widget {
 			if ((int) l_desc.getFontScaleX() <= 0)
 				l_desc.setFontScale(0.000001f);
 
-			drawCardShape(pm);
+			batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 
-			if (art != null) {
-				art.setPosition(getX(), l_desc.getY() + l_desc.getHeight());
-				art.setSize(getWidth(), getWidth());
+			if (type == Type.WARHEAD) {
+				art.setSize(getWidth() / 1.15f, getWidth() / 1.15f);
+				art.setPosition(getX() + (getWidth() / 2) - (art.getWidth() / 2), getY() + (art.getHeight() / 7f));
 				art.draw(batch, parentAlpha);
 			}
 
@@ -405,50 +380,36 @@ public class Card extends Widget {
 			// gen.dispose();
 		} else {
 			if (type == Type.BLANK) {
-				pm = new Pixmap((int) getWidth(), (int) getHeight(), Pixmap.Format.RGB888);
-				pm.setColor(placematHover ? Color.RED : Color.GREEN);
-				pm.fill();
-				batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
+				Vector2 mousePos = new Vector2(Gdx.input.getX() + Gdx.graphics.getWidth() / 2 - (16 / 2),
+						(Gdx.graphics.getHeight() * 1.5f) - Gdx.input.getY() - (16 / 2));
+				
+				Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+				Rectangle cursor = new Rectangle(mousePos.x, mousePos.y, 16, 16);
+				
+				placematHover = bounds.overlaps(cursor);
 			} else {
-				batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
-
-				pm.setColor(Color.CLEAR);
-				pm.fill();
-
+				batch.draw(tex, getX(), getY(), getWidth(), getHeight());
+	
 				// desc_wrap.setDebug(true, true);
-
-				if ((int) l_name.getFontScaleX() <= 0)
-					l_name.setFontScale(0.000001f);
-				if ((int) l_desc.getFontScaleX() <= 0)
-					l_desc.setFontScale(0.000001f);
-
-				drawCardShape(pm);
-
-				if (art != null) {
-					art.setPosition(getX(), l_desc.getY() + l_desc.getHeight());
-					art.setSize(getWidth(), getWidth());
+	
+				if (type == Type.WARHEAD) {
+					art.setSize(getWidth(), getHeight());
+					art.setPosition(getX(), getY());
 					art.draw(batch, parentAlpha);
 				}
-
-				l_name.draw(batch, parentAlpha);
-				l_desc.draw(batch, parentAlpha);
-				l_type.draw(batch, parentAlpha);
-			}
-			
-			Vector2 mousePos = new Vector2(Gdx.input.getX() + Gdx.graphics.getWidth() / 2 - (16 / 2), (Gdx.graphics.getHeight() * 1.5f) - Gdx.input.getY() - (16 / 2));
-			
-			Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-			Rectangle cursor = new Rectangle(mousePos.x, mousePos.y, 16, 16);
-			
-			placematHover = bounds.overlaps(cursor);
-		}
-	}
 	
+				l_name.draw(batch, parentAlpha);
+			}
+		}
+
+		tex.dispose();
+	}
+
 	public void setScale(int scale) {
 		this.scale = scale;
 		this.setSize(getWidth() * (1 + scale), getHeight() * (1 + scale));
 
-		this.pm = new Pixmap(60 * (1 + scale), 100 * (1 + scale), Pixmap.Format.RGBA8888);
+//		this.pm = new Pixmap(60 * (1 + scale), 100 * (1 + scale), Pixmap.Format.RGBA8888);
 
 //		if (l_name != null) {
 //			param.size = 20 * (1 + scale);
@@ -501,7 +462,7 @@ public class Card extends Widget {
 	public static void loadCards() {
 		JSONObject cards;
 		try {
-			File f = new File(Strings.URL_LOCATOR + "assets\\json\\Cards.json");
+			File f = new File(Strings.URL_LOCATOR + "\\json\\Cards.json");
 			JSONParser parser = new JSONParser();
 			cards = (JSONObject) parser.parse(new FileReader(f));
 

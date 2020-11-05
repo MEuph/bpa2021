@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Cursor extends Actor {
 	
 	Pixmap pm;
+	Texture tex;
 	
 	int size = 16;
 	
@@ -18,6 +19,7 @@ public class Cursor extends Actor {
 		pm.setColor(Color.CYAN);
 		pm.fill();
 		setSize(size, size);
+		tex = new Texture(pm);
 	}
 	
 	public void update() {
@@ -27,6 +29,6 @@ public class Cursor extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		batch.draw(new Texture(pm), getX(), getY(), size, size);
+		batch.draw(tex, getX(), getY(), size, size);
 	}
 }

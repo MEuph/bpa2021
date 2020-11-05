@@ -40,12 +40,17 @@ public class Strings {
 	public static final String ERROR_BPA0002 = "Verification password does not match new password";
 	
 	public static final String URL_LOCATOR = Gdx.files.getLocalStoragePath();
-	public static final String URL_PIXEL_FONT_REGULAR = URL_LOCATOR + "assets/fonts/used/pixelfont/AGoblinAppears-o2Av.ttf";
-	public static final String URL_UBUNTU = URL_LOCATOR + "assets/fonts/used/ubuntu/Ubuntu-Regular.ttf";
-	public static final String URL_ARIAL_UNICODE = URL_LOCATOR + "assets/fonts/used/arial/arial-unicode-ms.ttf";
-	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "assets/skins/default/skin/uiskin.json";
-	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "assets/skins/default/skin/uiskin.atlas";
-	public static final String URL_TEAPOT = URL_LOCATOR + "assets/models/teapot.obj";
-	public static final String URL_TEAPOT_TEXTURE = URL_LOCATOR + "assets/textures/wood.png";
-	public static final String URL_PLACEMAT = URL_LOCATOR + "assets/images/placemat.png";
+	public static final String URL_PIXEL_FONT_REGULAR = URL_LOCATOR + "fonts/used/pixelfont/AGoblinAppears-o2Av.ttf";
+	public static final String URL_UBUNTU = URL_LOCATOR + "fonts/used/ubuntu/Ubuntu-Regular.ttf";
+	public static final String URL_ARIAL_UNICODE = URL_LOCATOR + "fonts/used/arial/arial-unicode-ms.ttf";
+	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "skins/default/skin/uiskin.json";
+	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/default/skin/uiskin.atlas";
+	public static final String URL_TEAPOT = URL_LOCATOR + "models/teapot.obj";
+	public static final String URL_TEAPOT_TEXTURE = URL_LOCATOR + "textures/wood.png";
+	public static final String URL_PLACEMAT = URL_LOCATOR + "images/placemat.png";
+	public static final String URL_1MIL = URL_LOCATOR + "images/1million.png";
+	public static final String URL_10MIL = URL_LOCATOR + "images/10million.png";
+	public static final String URL_20MIL = URL_LOCATOR + "images/20million.png";
+	public static final String URL_50MIL = URL_LOCATOR + "images/50million.png";
+	public static final String URL_100MIL = URL_LOCATOR + "images/100million.png";
 }

@@ -20,6 +20,8 @@ public class Spinner extends Actor {
 	
 	Pixmap pm;
 	
+	Texture tex;
+	
 	@Override
 	public void setSize(float width, float height) {
 		super.setSize(width, height);
@@ -27,6 +29,8 @@ public class Spinner extends Actor {
 		pm = new Pixmap((int)width, (int)height, Pixmap.Format.RGBA8888);
 		pm.setColor(Color.RED);
 		pm.fillRectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
+		
+		tex = new Texture(pm);
 		
 		arm = new Pixmap(5, (int)(getHeight() / 2) - 10, Pixmap.Format.RGB888);
 		arm.setColor(Color.BLACK);
@@ -67,7 +71,7 @@ public class Spinner extends Actor {
 		}
 		
 		super.draw(batch, parentAlpha);
-		batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
+		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 		armSprite.draw(batch);
 	}
 }

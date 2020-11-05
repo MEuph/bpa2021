@@ -3,11 +3,11 @@
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.Card"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Touchable"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.Cursor"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.awt.Rectangle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 </qualifiedTypeNameHistroy>

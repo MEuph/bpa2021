@@ -12,4 +12,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.cognitivethought.bpa.game.desktop.DesktopLauncher"/>
 <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="bpa2021-desktop"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bpa2021-desktop"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:bpa2021-core/assets}"/>
 </launchConfiguration>

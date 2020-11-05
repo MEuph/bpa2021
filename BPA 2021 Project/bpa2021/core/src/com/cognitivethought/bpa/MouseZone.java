@@ -11,11 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MouseZone extends Actor {
 
 	Pixmap pm;
+	Texture tex;
 	
 	public MouseZone() {
 		pm = new Pixmap(300, 300, Pixmap.Format.RGB888);
 		pm.setColor(Color.BLACK);
 		pm.fill();
+		
+		tex = new Texture(pm);
 		
 		addListener(new ClickListener() {
 			@Override
@@ -31,6 +34,6 @@ public class MouseZone extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		batch.draw(new Texture(pm), getX(), getY(), getWidth(), getHeight());
+		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 	}
 }

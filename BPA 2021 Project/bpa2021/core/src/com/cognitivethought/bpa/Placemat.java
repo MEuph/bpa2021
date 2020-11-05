@@ -11,15 +11,18 @@ public class Placemat extends Actor {
 
 	// 83 x 46 CARD SIZE
 
-	float cardWidth = 83, cardHeight = 46;
+	float cardWidth = 95, cardHeight = 46;
 	float matWidth = 440, matHeight = 224;
 
 	Card left, right, top, bottom, center;
 	Pixmap mat;
+	Texture tex;
 
 	public Placemat() {
 		mat = new Pixmap(new FileHandle(Strings.URL_PLACEMAT));
-
+		
+		tex = new Texture(mat);
+		
 		left = new Card(Card.BLANK);
 		right = new Card(Card.BLANK);
 		top = new Card(Card.BLANK);
@@ -102,7 +105,7 @@ public class Placemat extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 
-		batch.draw(new Texture(mat), getX(), getY(), getWidth(), getHeight());
+		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 
 		left.draw(batch, parentAlpha);
 		top.draw(batch, parentAlpha);

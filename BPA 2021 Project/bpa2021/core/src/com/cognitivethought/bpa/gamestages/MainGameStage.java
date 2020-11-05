@@ -32,8 +32,11 @@ public class MainGameStage extends GameStage {
 	ArrayList<WidgetGroup> cards;
 	ArrayList<WidgetGroup> populationCards;
 
-	int[] pop = { 10, 10, 5 };
-
+	int[] pop = { 1, 10, 20, 50, 100 };
+	
+	float cardWidth = 0;
+	float popCardWidth = 0;
+	
 	Label totalPop;
 	Label fps;
 
@@ -70,7 +73,8 @@ public class MainGameStage extends GameStage {
 			card.setSize(90, 140);
 			card.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
 			card.spacing = ((int) (card.getWidth() / 2) - 2);
-
+			cardWidth = card.getWidth();
+			
 			WidgetGroup w = new WidgetGroup();
 			w.addActor(card);
 
@@ -81,9 +85,10 @@ public class MainGameStage extends GameStage {
 
 		for (int i = 0; i < pop.length; i++) {
 			PopulationCard p = new PopulationCard(pop[i]);
-			p.setSize(60, 75);
+			p.setSize(64, 64);
 			p.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
-
+			popCardWidth = p.getWidth();
+			
 			WidgetGroup w = new WidgetGroup();
 			w.addActor(p);
 
@@ -93,12 +98,12 @@ public class MainGameStage extends GameStage {
 		hand.align(Align.center);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 //		hand.setSize(Gdx.graphics.getWidth() - 200, 400);
-		hand.setPosition(Gdx.graphics.getWidth() - cards.get(0).getChild(0).getWidth() / 2,
+		hand.setPosition(Gdx.graphics.getWidth() - cardWidth / 2,
 				Gdx.graphics.getHeight() / 2);
 
 		population.align(Align.center);
 		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
-		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (populationCards.get(0).getWidth() + 70),
+		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70),
 				Gdx.graphics.getHeight());
 
 		for (WidgetGroup wg : cards) {
@@ -109,11 +114,11 @@ public class MainGameStage extends GameStage {
 			population.addActor(wg);
 		}
 
-		totalPop.setPosition(population.getX(), population.getY() - 100);
+		totalPop.setPosition(population.getX(), population.getY() - population.getHeight() - 30);
 		totalPop.setAlignment(Align.left);
 		
 		placemat.setSize(400 * 2, 224 * 2);
-		placemat.setPosition(hand.getX() - (placemat.getWidth() / 2) + 100, hand.getY() + (placemat.getHeight() / 2) + 75);
+		placemat.setPosition(hand.getX() - (placemat.getWidth() / 2) + 100, (Gdx.graphics.getHeight() * 1.5f) - placemat.getHeight());
 		placemat.setSize(400 * 2, 224 * 2);
 		
 //		hand.setDebug(true, true);
@@ -148,16 +153,9 @@ public class MainGameStage extends GameStage {
 	public void holdCard(Card card) {
 		currentlyHeldCard = card;
 		initialState = card;
-		int a = -1;
-		WidgetGroup wg = new WidgetGroup();
-		wg.addActor(card);
-		for (int i = 0; i < hand.getChildren().size; i++) {
-//			if (wg.getChild(0).equals((WidgetGroup)hand.getChild(0).get))
-		}
+		WidgetGroup wg = (WidgetGroup)card.getParent();
 		
-		// TODO: SAVED LINE
-		
-		hand.removeActor(hand.getChild(a));
+		hand.removeActor(wg);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 	}
 	
@@ -192,7 +190,7 @@ public class MainGameStage extends GameStage {
 		hand.align(Align.center);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 //		hand.setSize(Gdx.graphics.getWidth() - 200, 400);
-		hand.setPosition(Gdx.graphics.getWidth() - cards.get(0).getChild(0).getWidth() / 2,
+		hand.setPosition(Gdx.graphics.getWidth() - cardWidth / 2,
 				Gdx.graphics.getHeight() / 2);
 		
 		addActor(hand);
@@ -231,7 +229,7 @@ public class MainGameStage extends GameStage {
 			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f, currentlyHeldCard.originalSize.y / 1.15f);
 			currentlyHeldCard.setPosition(
 					Gdx.input.getX() + (Gdx.graphics.getWidth() / 2) - (currentlyHeldCard.getWidth() / 2),
-					Gdx.graphics.getHeight() - Gdx.input.getY() + currentlyHeldCard.getHeight());
+					Gdx.graphics.getHeight() - Gdx.input.getY() + currentlyHeldCard.getHeight() * 2);
 			if (!getActors().contains((Actor) currentlyHeldCard, true))
 				addActor(currentlyHeldCard);
 			
