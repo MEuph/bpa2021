@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.Align;
@@ -23,7 +24,9 @@ import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.Spinner;
 
 public class MainGameStage extends GameStage {
-
+	
+	public static final TooltipManager MANAGER = new TooltipManager();
+	
 	HorizontalGroup hand;
 	VerticalGroup population;
 	
@@ -47,6 +50,7 @@ public class MainGameStage extends GameStage {
 	
 	public MainGameStage(Viewport vp) {
 		super(vp);
+		MANAGER.instant();
 	}
 
 	@Override
@@ -117,18 +121,19 @@ public class MainGameStage extends GameStage {
 		totalPop.setPosition(population.getX(), population.getY() - population.getHeight() - 30);
 		totalPop.setAlignment(Align.left);
 		
-		placemat.setSize(400 * 2, 224 * 2);
+		float scale = 2f;
+		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)), (224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
 		placemat.setPosition(hand.getX() - (placemat.getWidth() / 2) + 100, (Gdx.graphics.getHeight() * 1.5f) - placemat.getHeight());
-		placemat.setSize(400 * 2, 224 * 2);
+		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)), (224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
 		
 //		hand.setDebug(true, true);
 
-//		addActor(fps);
+		addActor(fps);
 		
+		addActor(placemat);
 		addActor(hand);
 		addActor(population);
 		addActor(totalPop);
-		addActor(placemat);
 
 		final Spinner spinner = new Spinner();
 		spinner.setSize(250, 250);
@@ -227,9 +232,10 @@ public class MainGameStage extends GameStage {
 
 		if (currentlyHeldCard != null) {
 			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f, currentlyHeldCard.originalSize.y / 1.15f);
+			System.out.println("CARD SIZE: " + currentlyHeldCard.getWidth() + ", " + currentlyHeldCard.getHeight());
 			currentlyHeldCard.setPosition(
 					Gdx.input.getX() + (Gdx.graphics.getWidth() / 2) - (currentlyHeldCard.getWidth() / 2),
-					Gdx.graphics.getHeight() - Gdx.input.getY() + currentlyHeldCard.getHeight() * 2);
+					Gdx.graphics.getHeight() - Gdx.input.getY() + (Gdx.graphics.getHeight() >= 1080 ? currentlyHeldCard.getHeight() * 2 : currentlyHeldCard.getHeight()));
 			if (!getActors().contains((Actor) currentlyHeldCard, true))
 				addActor(currentlyHeldCard);
 			

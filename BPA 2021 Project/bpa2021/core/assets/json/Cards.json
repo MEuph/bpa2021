@@ -7,6 +7,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Enemy Deflect To Your Side!",
+			"Short Desc": "Take 5M from enemy",
 			"Quantity": 24
 		}
 	],
@@ -19,6 +20,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Enemy Denounce Their Form Of Government For Yours!",
+			"Short Desc": "Take 10M from enemy",
 			"Quantity": 17
 		}
 	],
@@ -31,6 +33,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Of The Enemys Population Declare Allegiane to Your Country!",
+			"Short Desc": "Take 25M from enemy",
 			"Quantity": 4
 		}
 	],
@@ -44,6 +47,7 @@
 			"Capacity": 0,
 			"Weight": 10,
 			"Description": "Destroys 2 Million",
+			"Short Desc": "Kill 2M",
 			"Quantity": 38
 		}
 	],
@@ -57,6 +61,7 @@
 			"Capacity": 0,
 			"Weight": 20,
 			"Description": "Destroys 5 Million",
+			"Short Desc": "Kill 5M",
 			"Quantity": 20
 		}
 	],
@@ -70,6 +75,7 @@
 			"Capacity": 0,
 			"Weight": 50,
 			"Description": "Destroys 10 Million",
+			"Short Desc": "Kill 10M",
 			"Quantity": 8
 		}
 	],
@@ -83,7 +89,8 @@
 			"Capacity": 0,
 			"Weight": 100,
 			"Description": "Destroys 25 Million",
-			"Quantity": 200
+			"Short Desc": "Kill 25M",
+			"Quantity": 2
 		}
 	],
 	
@@ -95,6 +102,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your enemys political system collapses and half of their provinces declare independence. While they are sorting it out, they lose a turn, must throw away their entire hand, and must draw 9 new cards on their next turn. (This includes all face up cards, submarines, cannons, etc.)",
+			"Short Desc": "Target player loses a turn and all of their cards, but draws 9 new cards",
 			"Quantity": 1
 		}
 	],
@@ -107,6 +115,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Due to an unfortunate decision by a referee at a sports event, your enemys biggest city erupts in riots and they lose 10 million people.",
+			"Short Desc": "Enemy loses 10M",
 			"Quantity": 1
 		}
 	],
@@ -119,6 +128,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "A violent tornado results in a loss of 10 MILLION to your own population",
+			"Short Desc": "Lose 10M",
 			"Quantity": 1
 		}
 	],
@@ -131,6 +141,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your enemy attempts to annex their smaller neighbor, but to their dismay, the ENTIRE WORLD comes to the rescue of the neighbor, accusing your enemy of crimes against humanity. The disaster costs them 25 Million people.",
+			"Short Desc": "Enemy loses 25M",
 			"Quantity": 1
 		}
 	],
@@ -143,6 +154,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "25 Million people mysteriously vanish from the enemy's country",
+			"Short Desc": "Enemy loses 25M",
 			"Quantity": 1
 		}
 	],
@@ -155,6 +167,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "The entire world is having an economic recession except for your country! Two million people move to your country from every other player in the game.",
+			"Short Desc": "Gain 2M for each player in the game, each enemy loses 2M",
 			"Quantity": 1
 		}
 	],
@@ -167,6 +180,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Eco-Terrorists sabotage your defense headquarters. They claim nuclear war is bad for the planet. YOU LOSE TWO TURNS.",
+			"Short Desc": "Lose two turns",
 			"Quantity": 1
 		}
 	],
@@ -179,6 +193,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "10 Million of your own people leave your country (and the game) for a neutral country.",
+			"Short Desc": "Lose 10M",
 			"Quantity": 1
 		}
 	],
@@ -190,7 +205,8 @@
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
-			"Description": "Famous talk show host retires. Tonight is his last show. Everyone in your country is watching TV. YOU LOSE ON TURN",
+			"Description": "Famous talk show host retires. Tonight is his last show. Everyone in your country is watching TV. YOU LOSE ONE TURN",
+			"Short Desc": "Lose one turn",
 			"Quantity": 1
 		}
 	],
@@ -203,6 +219,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "A nasty computer virus has infected computers world-wide. When this card is drawn, everyone in the game must immediately switch their two face-down cards",
+			"Short Desc": "All players swap their two face-down cards",
 			"Quantity": 1
 		}
 	],
@@ -215,6 +232,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your president declares a Test Ban on nuclear weapons and FORFEITS ONE TURN.",
+			"Short Desc": "Lose one turn",
 			"Quantity": 1
 		}
 	],
@@ -227,6 +245,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your budget proposal for a defense system with a silly name is laughed out of the legislature. YOU LOSE ONE TURN.",
+			"Short Desc": "Lose one turn",
 			"Quantity": 1
 		}
 	],
@@ -239,6 +258,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your enemy raises taxes 100% this year. 5 Million of their people move to your country",
+			"Short Desc": "Take 5M from enemy",
 			"Quantity": 1
 		}
 	],
@@ -251,6 +271,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "2 Million of the enemy's people leave their homeland to join your form of superior government. NOTE: Does not apply once nuclear war has started",
+			"Short Desc": "Take 2M from enemy if not at war",
 			"Quantity": 1
 		}
 	],
@@ -263,6 +284,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your enemy cancels a public demonstration with machine guns. It was a BIG demonstration. They lose 2 million people",
+			"Short Desc": "Enemy loses 2M",
 			"Quantity": 1
 		}
 	],
@@ -275,6 +297,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "You have tricked the enemy into an ineffective but time-consuming Summit Talk. Their wasted efforts result in the LOSS OF ONE TURN.",
+			"Short Desc": "Enemy loses one turn",
 			"Quantity": 1
 		}
 	],
@@ -287,6 +310,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your country lands the first successful Mars probe. One million people flock to your country from neutral countries (take one million from the discard pile)",
+			"Short Desc": "Gain 1M",
 			"Quantity": 1
 		}
 	],
@@ -299,6 +323,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "You lose 1 million people, but your enemy loses 5 million.",
+			"Short Desc": "Lose 1M, enemy loses 5M",
 			"Quantity": 1
 		}
 	],
@@ -311,6 +336,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your Cold War prestige soars due to being first on the moon! 5 Million of the enemy defect to seek aerospace jobs in your country.",
+			"Short Desc": "Take 5M from enemy",
 			"Quantity": 1
 		}
 	],
@@ -323,6 +349,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your country's population increases by 5 Million",
+			"Short Desc": "Gain 5M",
 			"Quantity": 1
 		}
 	],
@@ -335,6 +362,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "2 Million of the enemy's population immigrate to your country in hopes of reaping the benefits of your system.",
+			"Short Desc": "Take 2M from enemy",
 			"Quantity": 1
 		}
 	],
@@ -347,6 +375,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "2 Million of the enemy's Hippy Pacifists protest nuclear war and deflect to your country.",
+			"Short Desc": "Take 2M from enemy",
 			"Quantity": 1
 		}
 	],
@@ -359,6 +388,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Enemy ambassador gets drunk at UN Party! Their country LOSES ONE TURN to restore diplomatic relations. NOTE: Does not apply once nuclear war has been started.",
+			"Short Desc": "Enemy loses one turn if not at war",
 			"Quantity": 1
 		}
 	],
@@ -371,6 +401,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "2 Million of your highly moral little old ladies rebel against your country's military policies and disgustedly drive off in their electric cars to the enemy's country.",
+			"Short Desc": "Lose 2M, random enemy gains 2M",
 			"Quantity": 1
 		}
 	],
@@ -383,6 +414,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your enemy is caught with 400 pairs of shoes in their spouse's closet. 2 million barefoot natives disgustedly immigrate to your country",
+			"Short Desc": "Take 2M from enemy",
 			"Quantity": 1
 		}
 	],
@@ -395,6 +427,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Your scientists have learned the secret of time travel and although it is expensive YOU GET TWO TURNS IN A ROW",
+			"Short Desc": "Take two extra turns",
 			"Quantity": 1
 		}
 	],
@@ -407,6 +440,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "A giant lizard attacks your enemys biggest city. 5 million people are chewed up!",
+			"Short Desc": "Enemy loses 5M",
 			"Quantity": 1
 		}
 	],
@@ -419,6 +453,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "You may (at your option) discard up to 7 cards from your hand (all at once) and immediately replace them from the deck." ,
+			"Short Desc": "Discard up to 7 cards and re-draw from deck",
 			"Quantity": 1
 		}
 	],
@@ -431,6 +466,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Atomic Cannon manufacturer discovers defect - recalls all cannons. Anyone who has a face-up atomic cannon must discard it." ,
+			"Short Desc": "All face-up atomic cannons are discarded",
 			"Quantity": 1
 		}
 	],
@@ -443,6 +479,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "The result of a blunder in your enemy's germ warfare experiments destroys 25 MILLION of their own people" ,
+			"Short Desc": "Enemy loses 25M",
 			"Quantity": 1
 		}
 	],
@@ -455,6 +492,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "A disastrous earthquake destroys 10 MILLION of the enemy population" ,
+			"Short Desc": "Enemy loses 10M",
 			"Quantity": 1
 		}
 	],
@@ -467,6 +505,7 @@
 			"Capacity": 50,
 			"Weight": 0,
 			"Description": "Carries any combination of warheads up to 50 megatons",
+			"Short Desc": "Carries 50 Megs",
 			"Quantity": 6
 		}
 	],
@@ -479,6 +518,7 @@
 			"Capacity": 100,
 			"Weight": 0,
 			"Description": "Carries up to 100",
+			"Short Desc": "Carries 100 Megs",
 			"Quantity": 3
 		}
 	],
@@ -491,6 +531,7 @@
 			"Capacity": 100,
 			"Weight": 0,
 			"Description": "Carries one warhead up to 100 megatons",
+			"Short Desc": "Carries one warhead",
 			"Quantity": 3
 		}
 	],
@@ -503,6 +544,7 @@
 			"Capacity": 20,
 			"Weight": 0,
 			"Description": "Carries one warhead up to 20 megatons",
+			"Short Desc": "Carries one nuke up to 20 megs",
 			"Quantity": 9
 		}
 	],
@@ -515,6 +557,7 @@
 			"Capacity": 20,
 			"Weight": 0,
 			"Description": "Carries 10 or 20 megatons",
+			"Short Desc": "Carries 10 or 20 megs",
 			"Quantity": 4
 		}
 	],
@@ -527,6 +570,7 @@
 			"Capacity": 100,
 			"Weight": 0,
 			"Description": "Carries one warhead up to 10 megatons",
+			"Short Desc": "Carries 10 megs",
 			"Quantity": 9
 		}
 	],
@@ -538,7 +582,8 @@
 			"PopulationDelta": 0,
 			"Capacity": 10,
 			"Weight": 0,
-			"Description": "Fire 10 megatons at neighbor to your left or to your right",
+			"Description": "Fire 10 megatons at your neighbor",
+			"Short Desc": "Fires 10 megs at adjacent player",
 			"Quantity": 4
 		}
 	],
@@ -551,6 +596,7 @@
 			"Capacity": 20,
 			"Weight": 0,
 			"Description": "Carries up to 20 megatons. Can be shot down by patriot <see actual card for more rules>",
+			"Short Desc": "Carries up to 20 megs",
 			"Quantity": 9
 		}
 	],
@@ -563,6 +609,7 @@
 			"Capacity": 50,
 			"Weight": 0,
 			"Description": "Carries one warhead up to 50 megatons or can be used to reload your space platform",
+			"Short Desc": "Carries 50 megs",
 			"Quantity": 2
 		}
 	],
@@ -575,6 +622,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Shoots down Scud, Atlas, Polaris, Titan, or Minuteman missiles",
+			"Short Desc": "Counters Scud, Atlas, Polaris, Titan, or Minuteman",
 			"Quantity": 2
 		}
 	],	
@@ -587,6 +635,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Cancel out one anti-missile or fighter",
+			"Short Desc": "Counter one anti-missile or fighter",
 			"Quantity": 2
 		}
 	],
@@ -599,6 +648,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Intercept Capability:\nSaturn\nB-70 Bomber\nATLAS\nPOLARIS",
+			"Short Desc": "Counters Saturn, B-70, Atlas, & Polaris",
 			"Quantity": 1
 		}
 	],
@@ -611,6 +661,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Intercept Capability:\nATLAS\nPOLARIS",
+			"Short Desc": "Counters Atlas & Polaris",
 			"Quantity": 1
 		}
 	],
@@ -623,6 +674,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Intercept Capability:\nPOLARIS",
+			"Short Desc": "Counters Polaris",
 			"Quantity": 1
 		}
 	],
@@ -635,6 +687,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Intercept Capability:\nB-70 Bomber\nATLAS\nPOLARIS",
+			"Short Desc": "Counters B-70, Atlas, & Polaris",
 			"Quantity": 1
 		}
 	],
@@ -647,6 +700,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "HOLD THIS CARD. Can be used to shoot down any bomber <see actual card for more rules>",
+			"Short Desc": "Shoots down any bomber",
 			"Quantity": 2
 		}
 	],	
@@ -659,6 +713,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "HOLD THIS CARD. Use when you wish to start a trading session",
+			"Short Desc": "Starts a trading session",
 			"Quantity": 2
 		}
 	],
@@ -671,6 +726,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "HOLD THIS CARD. This card may be used to double the power of a 10 or 20 megaton warhead",
+			"Short Desc": "Doubles a 10 or 20 meg warhead",
 			"Quantity": 2
 		}
 	],
@@ -683,6 +739,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Take an enemy's delivery system? <See card>",
+			"Short Desc": "Take an enemy's delivery system",
 			"Quantity": 1
 		}
 	],
@@ -695,6 +752,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
 			"Quantity": 1
 		}
 	],
@@ -707,6 +765,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
 			"Quantity": 1
 		}
 	],
@@ -719,6 +778,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
 			"Quantity": 1
 		}
 	],
@@ -731,6 +791,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
 			"Quantity": 2
 		}
 	],
@@ -743,6 +804,7 @@
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
 			"Quantity": 1
 		}
 	],
@@ -754,7 +816,8 @@
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
-			"Description": "SAVE UNTIL NEEDED. Ttheir card will cancel out one PROPAGANDA card played against you",
+			"Description": "SAVE UNTIL NEEDED. This card will cancel out one PROPAGANDA card played against you",
+			"Short Desc": "Counters one propaganda against you",
 			"Quantity": 1
 		}
 	]

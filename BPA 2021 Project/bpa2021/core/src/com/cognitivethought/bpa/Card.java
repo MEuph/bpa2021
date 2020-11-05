@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip.TextTooltipStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -32,10 +33,13 @@ import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
 
 public class Card extends Widget {
-
+	
+	public static final int WIDTH = 90 * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768));
+	public static final int HEIGHT = 140 * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768));
+	
 	public static final ArrayList<Card> DECK = new ArrayList<Card>();
 
-	public static final Card BLANK = new Card(Type.BLANK, "", "", 0, 0, 0, 1, null);
+	public static final Card BLANK = new Card(Type.BLANK, "", "", 0, 0, 0, 1, null, "");
 
 	private Label l_name, l_desc, l_type;
 //	private Table desc_wrap;
@@ -46,6 +50,7 @@ public class Card extends Widget {
 
 	private String name;
 	private String desc;
+	private String short_desc;
 
 	private Color fontColor;
 
@@ -54,18 +59,18 @@ public class Card extends Widget {
 	private long weight;
 
 	private long quantity;
-
+	
 	public int scale;
 	public int rad = 20;
 
 	public boolean placematHover = false;
-
+	
 	public Vector2 originalPos, originalSize;
 
 	private Pixmap pm;
-
+	private Texture tex;
+	
 	private boolean hovering;
-	private boolean mouseDown;
 
 	public int spacing = 0;
 
@@ -75,12 +80,16 @@ public class Card extends Widget {
 	private LabelStyle nameStyle;
 	private LabelStyle descStyle;
 	private LabelStyle typeStyle;
-
+	
+	private TextTooltip t;
+	
 	public Card(Card card) {
 		type = card.type;
 		name = card.name;
 		desc = card.desc;
-
+		
+		short_desc = card.short_desc;
+		
 		art = card.art;
 
 		populationDelta = card.populationDelta;
@@ -106,6 +115,8 @@ public class Card extends Widget {
 		nameStyle = new LabelStyle();
 		descStyle = new LabelStyle();
 		typeStyle = new LabelStyle();
+		
+		t = card.t;
 
 		switch (type) {
 		case ANTI_MISSILE:
@@ -132,12 +143,12 @@ public class Card extends Widget {
 		default:
 			break;
 		}
-
+		
 		init();
 	}
 
 	public Card(Type type, String name, String desc, long popDelta, long cap, long weight, long quantity,
-			String art_path) {
+			String art_path, String short_desc) {
 		this.type = type;
 		this.name = name;
 		this.desc = desc;
@@ -145,7 +156,9 @@ public class Card extends Widget {
 		this.capacity = cap;
 		this.weight = weight;
 		this.quantity = quantity;
-
+		
+		this.short_desc = short_desc;
+		
 		if (art_path != null)
 			art = new Image(new Texture(Strings.URL_LOCATOR + art_path));
 		else
@@ -216,6 +229,16 @@ public class Card extends Widget {
 		l_desc.setColor(fontColor);
 		l_desc.setFontScaleX(1f);
 
+		TextTooltipStyle ttStyle = new TextTooltipStyle();
+		Pixmap ttPm = new Pixmap((int)100, (int)300, Pixmap.Format.RGBA8888);
+		ttPm.setColor(0, 0, 0, 0.2f);
+		ttPm.fill();
+		ttStyle.background = new Image(new Texture(ttPm)).getDrawable();
+		ttPm.dispose();
+		ttStyle.label = descStyle;
+		ttStyle.wrapWidth = 1;
+		this.t = new TextTooltip(desc, MainGameStage.MANAGER, ttStyle);
+
 		l_type = new Label(type.toString().replace('_', ' '), typeStyle);
 		l_type.setColor(fontColor);
 		l_type.setFontScaleX(1f);
@@ -234,14 +257,15 @@ public class Card extends Widget {
 					((MainGameStage) Launcher.dev_stage).holdCard(card);
 			}
 		});
-
+		
 		gen.dispose();
+		
+		tex = new Texture(drawCardShape());
+//		pm.dispose();
 	}
 
-	public void drawCardShape() {
-		Color fill = mouseDown ? Color.GRAY : Color.WHITE;
-		Color outline = hovering ? Color.RED : Color.BLACK;
-
+	public Pixmap drawCardShape() {
+		Color fill = null;
 		if (type != null) {
 			switch (type) {
 			case DELIVERY_SYSTEM:
@@ -268,22 +292,24 @@ public class Card extends Widget {
 			}
 		}
 
-		pm = new Pixmap((int) getWidth(), (int) getHeight(), Pixmap.Format.RGBA8888);
-		pm.setColor(fill);
-		pm.fillCircle(rad, pm.getHeight() - rad, rad);
-		pm.fillCircle(pm.getWidth() - rad, pm.getHeight() - rad, rad);
-		pm.fillCircle(pm.getWidth() - rad, rad, rad);
-		pm.fillCircle(rad, rad, rad);
-		pm.setColor(outline);
-		pm.drawCircle(rad, pm.getHeight() - rad, rad);
-		pm.drawCircle(pm.getWidth() - rad, pm.getHeight() - rad, rad);
-		pm.drawCircle(pm.getWidth() - rad, rad, rad);
-		pm.drawCircle(rad, rad, rad);
-		pm.fillRectangle(rad, 0, (pm.getWidth()) - (rad * 2) + 1, pm.getHeight());
-		pm.fillRectangle(0, rad, pm.getWidth(), pm.getHeight() - (rad * 2));
-		pm.setColor(fill);
-		pm.fillRectangle(rad, 1, (pm.getWidth()) - (rad * 2) + 1, pm.getHeight() - 2);
-		pm.fillRectangle(1, rad, pm.getWidth() - 2, pm.getHeight() - (rad * 2));
+		Pixmap ret = new Pixmap((int) WIDTH, (int) HEIGHT, Pixmap.Format.RGBA8888);
+		ret.setColor(fill);
+		ret.fillCircle(rad, ret.getHeight() - rad, rad);
+		ret.fillCircle(ret.getWidth() - rad, ret.getHeight() - rad, rad);
+		ret.fillCircle(ret.getWidth() - rad, rad, rad);
+		ret.fillCircle(rad, rad, rad);
+		ret.setColor(Color.BLACK);
+		ret.drawCircle(rad, ret.getHeight() - rad, rad);
+		ret.drawCircle(ret.getWidth() - rad, ret.getHeight() - rad, rad);
+		ret.drawCircle(ret.getWidth() - rad, rad, rad);
+		ret.drawCircle(rad, rad, rad);
+		ret.fillRectangle(rad, 0, (ret.getWidth()) - (rad * 2) + 1, ret.getHeight());
+		ret.fillRectangle(0, rad, ret.getWidth(), ret.getHeight() - (rad * 2));
+		ret.setColor(fill);
+		ret.fillRectangle(rad, 1, (ret.getWidth()) - (rad * 2) + 1, ret.getHeight() - 2);
+		ret.fillRectangle(1, rad, ret.getWidth() - 2, ret.getHeight() - (rad * 2));
+		
+		return ret;
 	}
 
 	public void play() {
@@ -292,10 +318,6 @@ public class Card extends Widget {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		drawCardShape();
-		Texture tex = new Texture(pm);
-		pm.dispose();
-		
 		if (getWidth() < getHeight()) {
 			Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 			Vector2 mouseLocalPosition = screenToLocalCoordinates(mouseScreenPosition);
@@ -389,20 +411,25 @@ public class Card extends Widget {
 				placematHover = bounds.overlaps(cursor);
 			} else {
 				batch.draw(tex, getX(), getY(), getWidth(), getHeight());
-	
+				
+				if (!getListeners().contains(t, false)) {
+					addListener(t);
+				}
+				
 				// desc_wrap.setDebug(true, true);
 	
 				if (type == Type.WARHEAD) {
-					art.setSize(getWidth(), getHeight());
-					art.setPosition(getX(), getY());
+					art.setSize(getHeight() - 15, getHeight() - 15);
+					art.setPosition(getX() + getWidth() - art.getWidth(), getY());
 					art.draw(batch, parentAlpha);
 				}
-	
+				
+				l_desc.setWidth(getWidth() / 2);
+				l_desc.setText(short_desc);
+				l_desc.draw(batch, parentAlpha);
 				l_name.draw(batch, parentAlpha);
 			}
 		}
-
-		tex.dispose();
 	}
 
 	public void setScale(int scale) {
@@ -472,6 +499,7 @@ public class Card extends Widget {
 				String name = (String) data.get("Name");
 				String type = (String) data.get("Type");
 				String desc = (String) data.get("Description");
+				String short_desc = (String)data.get("Short Desc");
 				String art_path = "";
 				try {
 					art_path = (String) data.get("Path");
@@ -482,7 +510,7 @@ public class Card extends Widget {
 				long weight = (long) data.get("Weight");
 				long cap = (long) data.get("Capacity");
 				long quantity = (long) data.get("Quantity");
-				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path);
+				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path, short_desc);
 				for (int i = 0; i < quantity + 1; i++)
 					DECK.add(card);
 			}

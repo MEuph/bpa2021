@@ -9,5 +9,9 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.awt.Rectangle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Gdx2DPixmap"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Tooltip"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextTooltip"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextTooltip.TextTooltipStyle"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 </qualifiedTypeNameHistroy>
