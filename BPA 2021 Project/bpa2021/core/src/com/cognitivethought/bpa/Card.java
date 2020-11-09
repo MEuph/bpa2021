@@ -424,10 +424,10 @@ public class Card extends Widget {
 					art.draw(batch, parentAlpha);
 				}
 				
+				l_desc.setPosition(getX(), l_name.getY());
 				l_desc.setWidth(getWidth() / 2);
 				l_desc.setText(short_desc);
 				l_desc.draw(batch, parentAlpha);
-				l_name.draw(batch, parentAlpha);
 			}
 		}
 	}

@@ -47,6 +47,7 @@ public class MainGameStage extends GameStage {
 	public Card currentlyHeldCard;
 
 	public Placemat placemat;
+	public final Spinner spinner = new Spinner();
 	
 	public MainGameStage(Viewport vp) {
 		super(vp);
@@ -118,7 +119,7 @@ public class MainGameStage extends GameStage {
 			population.addActor(wg);
 		}
 
-		totalPop.setPosition(population.getX(), population.getY() - population.getHeight() - 30);
+		totalPop.setPosition(population.getX(), population.getY() - ((((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)) * 32) * population.getChildren().size));
 		totalPop.setAlignment(Align.left);
 		
 		float scale = 2f;
@@ -128,19 +129,21 @@ public class MainGameStage extends GameStage {
 		
 //		hand.setDebug(true, true);
 
+		spinner.setSize(400 * scale, 224 * scale);
+		spinner.setPosition(hand.getX() - (spinner.getWidth() / 2) + 100, (Gdx.graphics.getHeight() * 1.5f) - spinner.getHeight());
+		
+
 		addActor(fps);
 		
+		addActor(spinner.clickArrow);
+		addActor(placemat.clickArrow);
 		addActor(placemat);
 		addActor(hand);
 		addActor(population);
 		addActor(totalPop);
-
-		final Spinner spinner = new Spinner();
-		spinner.setSize(400, 224);
-		spinner.setPosition(hand.getX() - (hand.getWidth() / 2) - 575, hand.getY() + 400);
-		
 		addActor(spinner);
-
+		
+		
 		addListener(new InputListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
@@ -232,7 +235,6 @@ public class MainGameStage extends GameStage {
 
 		if (currentlyHeldCard != null) {
 			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f, currentlyHeldCard.originalSize.y / 1.15f);
-			System.out.println("CARD SIZE: " + currentlyHeldCard.getWidth() + ", " + currentlyHeldCard.getHeight());
 			currentlyHeldCard.setPosition(
 					Gdx.input.getX() + (Gdx.graphics.getWidth() / 2) - (currentlyHeldCard.getWidth() / 2),
 					Gdx.graphics.getHeight() - Gdx.input.getY() + (Gdx.graphics.getHeight() >= 1080 ? currentlyHeldCard.getHeight() * 2 : currentlyHeldCard.getHeight()));
