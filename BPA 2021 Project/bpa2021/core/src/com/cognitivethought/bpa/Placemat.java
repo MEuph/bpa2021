@@ -11,7 +11,7 @@ public class Placemat extends Actor {
 
 	// 83 x 46 CARD SIZE
 
-	float cardWidth = 95, cardHeight = 46;
+	float cardWidth = 63, cardHeight = 36;
 	float matWidth = 440, matHeight = 224;
 
 	Card left, right, top, bottom, center;
@@ -34,19 +34,19 @@ public class Placemat extends Actor {
 	public void setSize(float width, float height) {
 		super.setSize(width, height);
 
-		left.setPosition(getX() + pixelToRelative(40, 88).x, getY() + pixelToRelative(40, 88).y);
+		left.setPosition(getX() + pixelToRelative(60, 66).x, getY() + pixelToRelative(60, 66).y);
 		left.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		top.setPosition(getX() + pixelToRelative(159, 24).x, getY() + pixelToRelative(159, 24).y);
-		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
-		
-		center.setPosition(getX() + pixelToRelative(159, 88).x, getY() + pixelToRelative(159, 88).y);
-		center.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
-		
-		bottom.setPosition(getX() + pixelToRelative(159, 152).x, getY() + pixelToRelative(159, 152).y);
+		bottom.setPosition(getX() + pixelToRelative(174, 66).x, getY() + pixelToRelative(174, 66).y);
 		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		right.setPosition(getX() + pixelToRelative(278, 88).x, getY() + pixelToRelative(278, 88).y);
+		center.setPosition(getX() + pixelToRelative(174, 130).x, getY() + pixelToRelative(174, 130).y);
+		center.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		top.setPosition(getX() + pixelToRelative(174, 194).x, getY() + pixelToRelative(174, 194).y);
+		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		right.setPosition(getX() + pixelToRelative(287, 66).x, getY() + pixelToRelative(287, 66).y);
 		right.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 //		
 	}
@@ -94,9 +94,9 @@ public class Placemat extends Actor {
 	public Vector2 pixelToRelative(float xPix, float yPix) {
 		float retX = 0;
 		float retY = 0;
-
+		
 		retX = (xPix * getWidth()) / mat.getWidth();
-		retY = (yPix * getHeight()) / mat.getHeight();
+		retY = ((matHeight - yPix) * getHeight()) / mat.getHeight();
 
 		return new Vector2(retX, retY);
 	}

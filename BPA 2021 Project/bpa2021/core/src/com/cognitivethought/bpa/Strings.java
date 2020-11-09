@@ -53,4 +53,6 @@ public class Strings {
 	public static final String URL_20MIL = URL_LOCATOR + "images/20million.png";
 	public static final String URL_50MIL = URL_LOCATOR + "images/50million.png";
 	public static final String URL_100MIL = URL_LOCATOR + "images/100million.png";
+	public static final String URL_SPINNER_ARM = URL_LOCATOR + "textures/spinnerarrow.png";
+	public static final String URL_SPINNER_BACKGROUND = URL_LOCATOR + "textures/spinnerbackground.png";
 }

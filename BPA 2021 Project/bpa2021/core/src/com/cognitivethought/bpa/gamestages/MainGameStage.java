@@ -136,7 +136,7 @@ public class MainGameStage extends GameStage {
 		addActor(totalPop);
 
 		final Spinner spinner = new Spinner();
-		spinner.setSize(250, 250);
+		spinner.setSize(400, 224);
 		spinner.setPosition(hand.getX() - (hand.getWidth() / 2) - 575, hand.getY() + 400);
 		
 		addActor(spinner);
