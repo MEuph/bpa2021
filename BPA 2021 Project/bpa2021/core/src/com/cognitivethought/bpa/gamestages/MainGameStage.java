@@ -6,20 +6,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.Card;
 import com.cognitivethought.bpa.Cursor;
 import com.cognitivethought.bpa.Placemat;
 import com.cognitivethought.bpa.PopulationCard;
+import com.cognitivethought.bpa.Strings;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.Spinner;
 
@@ -50,9 +55,25 @@ public class MainGameStage extends GameStage {
 	public Placemat placemat;
 	public final Spinner spinner = new Spinner();
 	
+	public ImageButton nextTurn;
+	
 	public MainGameStage(Viewport vp) {
 		super(vp);
 		MANAGER.instant();
+		
+		nextTurn = new ImageButton(new Image(new Texture(Strings.URL_NEXT_TURN)).getDrawable());
+		nextTurn.setPosition(Gdx.graphics.getWidth() + 200, (Gdx.graphics.getHeight() * 2) - 200);
+		
+		nextTurn.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				
+				placemat.advance();
+			}
+		});
+		
+		addActor(nextTurn);
 	}
 	
 	public int[] split(int num) {
@@ -61,7 +82,6 @@ public class MainGameStage extends GameStage {
 		for (int i = 0; i < possible_combos.length && num > 0; i++) {
 			while (num - possible_combos[i] >= 0) {
 				a.add(possible_combos[i]);
-				System.out.println(num + ", " + possible_combos[i]);
 				num -= possible_combos[i];
 			}
 		}
@@ -281,7 +301,6 @@ public class MainGameStage extends GameStage {
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setLeft(currentlyHeldCard);
 					
-					currentlyHeldCard.play();
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getRightCard().placematHover) {
@@ -289,7 +308,6 @@ public class MainGameStage extends GameStage {
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setRight(currentlyHeldCard);
 					
-					currentlyHeldCard.play();
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getTopCard().placematHover) {
@@ -297,7 +315,6 @@ public class MainGameStage extends GameStage {
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setTop(currentlyHeldCard);
 					
-					currentlyHeldCard.play();
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else {

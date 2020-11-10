@@ -21,12 +21,13 @@ public class Placemat extends Actor {
 	
 	float downY, upY;
 	
-	Card left, right, top, bottom, center;
+	Card left, right, bottom, top, center;
 	Pixmap mat;
 	Texture tex;
 	Pixmap arrow;
 	Texture aTex;
 	public ImageButton clickArrow;
+	Texture outline;
 	
 	boolean isDown = false;
 	
@@ -35,11 +36,13 @@ public class Placemat extends Actor {
 		
 		tex = new Texture(mat);
 		
-		arrow = new Pixmap(new FileHandle(Strings.URL_TEMP_ARROW));
+		arrow = new Pixmap(new FileHandle(Strings.URL_PLACEMAT_ARROW));
 		
 		aTex = new Texture(arrow);
 		Image i = new Image(aTex);
 		clickArrow = new ImageButton(i.getDrawable());
+		
+		outline = new Texture(new Pixmap(new FileHandle(Strings.URL_PLACEMAT_OUTLINE)));
 		
 		clickArrow.addListener(new ClickListener() {
 			@Override
@@ -51,8 +54,8 @@ public class Placemat extends Actor {
 
 		left = new Card(Card.BLANK);
 		right = new Card(Card.BLANK);
-		top = new Card(Card.BLANK);
 		bottom = new Card(Card.BLANK);
+		top = new Card(Card.BLANK);
 		center = new Card(Card.BLANK);
 	}
 	
@@ -77,14 +80,14 @@ public class Placemat extends Actor {
 		left.setPosition(getX() + pixelToRelative(60, 66).x, getY() + pixelToRelative(60, 66).y);
 		left.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		bottom.setPosition(getX() + pixelToRelative(174, 66).x, getY() + pixelToRelative(174, 66).y);
-		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		top.setPosition(getX() + pixelToRelative(174, 66).x, getY() + pixelToRelative(174, 66).y);
+		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
 		center.setPosition(getX() + pixelToRelative(174, 130).x, getY() + pixelToRelative(174, 130).y);
 		center.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		top.setPosition(getX() + pixelToRelative(174, 194).x, getY() + pixelToRelative(174, 194).y);
-		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		bottom.setPosition(getX() + pixelToRelative(174, 194).x, getY() + pixelToRelative(174, 194).y);
+		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
 		right.setPosition(getX() + pixelToRelative(287, 66).x, getY() + pixelToRelative(287, 66).y);
 		right.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
@@ -107,19 +110,19 @@ public class Placemat extends Actor {
 	}
 
 	public Card getTopCard() {
-		return top;
-	}
-
-	public void setTop(Card top) {
-		this.top = top;
-	}
-
-	public Card getBottom() {
 		return bottom;
 	}
 
+	public void setTop(Card top) {
+		this.bottom = top;
+	}
+
+	public Card getBottom() {
+		return top;
+	}
+
 	public void setBottom(Card bottom) {
-		this.bottom = bottom;
+		this.top = bottom;
 	}
 
 	public Card getCenter() {
@@ -148,9 +151,9 @@ public class Placemat extends Actor {
 		clickArrow.draw(batch, parentAlpha);
 		
 		left.draw(batch, parentAlpha);
-		top.draw(batch, parentAlpha);
-		center.draw(batch, parentAlpha);
 		bottom.draw(batch, parentAlpha);
+		center.draw(batch, parentAlpha);
+		top.draw(batch, parentAlpha);
 		right.draw(batch, parentAlpha);
 		
 		if (isDown && getY() >= downY + 2) {
@@ -172,5 +175,14 @@ public class Placemat extends Actor {
 			setPosition(getX(), upY);
 			clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
 		}
+		
+		batch.draw(outline, getX(), getY(), getWidth(), getHeight());
+	}
+
+	public void advance() {
+		top.play();
+		top = center;
+		center = bottom;
+		bottom = Card.BLANK;
 	}
 }

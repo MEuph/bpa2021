@@ -41,7 +41,7 @@ public class Spinner extends Actor {
 		
 		tex = new Texture(Strings.URL_SPINNER_BACKGROUND);
 		
-		arrow = new Pixmap(new FileHandle(Strings.URL_RED_TEMP_ARROW));
+		arrow = new Pixmap(new FileHandle(Strings.URL_SPINNER_ARROW));
 		
 		aTex = new Texture(arrow);
 		Image i = new Image(aTex);

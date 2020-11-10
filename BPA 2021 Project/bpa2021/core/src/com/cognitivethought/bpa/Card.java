@@ -313,7 +313,7 @@ public class Card extends Widget {
 	}
 
 	public void play() {
-		System.out.println("Played card!");
+		if (type != Type.BLANK) System.out.println("Played card!");
 	}
 
 	@Override
@@ -514,7 +514,6 @@ public class Card extends Widget {
 				for (int i = 0; i < quantity + 1; i++)
 					DECK.add(card);
 			}
-
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
@@ -523,9 +522,9 @@ public class Card extends Widget {
 			Collections.shuffle(DECK);
 		}
 
-		for (Card card : DECK) {
-			System.out.println(card.toString());
-		}
+//		for (Card card : DECK) {
+//			System.out.println(card.toString());
+//		}
 	}
 
 	@Override

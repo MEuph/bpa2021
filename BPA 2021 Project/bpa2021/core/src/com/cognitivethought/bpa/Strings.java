@@ -55,6 +55,8 @@ public class Strings {
 	public static final String URL_100MIL = URL_LOCATOR + "images/100million.png";
 	public static final String URL_SPINNER_ARM = URL_LOCATOR + "textures/spinnerarrow.png";
 	public static final String URL_SPINNER_BACKGROUND = URL_LOCATOR + "textures/spinnerbackground.png";
-	public static final String URL_TEMP_ARROW = URL_LOCATOR + "TEMP ARROW.png";
-	public static final String URL_RED_TEMP_ARROW = URL_LOCATOR + "RED TEMP ARROW.png";
+	public static final String URL_PLACEMAT_ARROW = URL_LOCATOR + "placematbutton.png";
+	public static final String URL_SPINNER_ARROW = URL_LOCATOR + "spinnerbutton.png";
+	public static final String URL_PLACEMAT_OUTLINE = URL_LOCATOR + "images/placemat outline.png";
+	public static final String URL_NEXT_TURN = URL_LOCATOR + "/next_turn.png";
 }
