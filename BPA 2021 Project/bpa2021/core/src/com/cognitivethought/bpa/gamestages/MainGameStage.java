@@ -35,7 +35,8 @@ public class MainGameStage extends GameStage {
 	ArrayList<WidgetGroup> cards;
 	ArrayList<WidgetGroup> populationCards;
 
-	int[] pop = { 1, 10, 20, 50, 100 };
+	int[] possible_combos = {100, 50, 20, 10, 1};
+	int[] pop = split(999);
 	
 	float cardWidth = 0;
 	float popCardWidth = 0;
@@ -53,7 +54,37 @@ public class MainGameStage extends GameStage {
 		super(vp);
 		MANAGER.instant();
 	}
-
+	
+	public int[] split(int num) {
+		ArrayList<Integer> a = new ArrayList<>();
+		
+		for (int i = 0; i < possible_combos.length && num > 0; i++) {
+			while (num - possible_combos[i] >= 0) {
+				a.add(possible_combos[i]);
+				System.out.println(num + ", " + possible_combos[i]);
+				num -= possible_combos[i];
+			}
+		}
+		
+		int[] ret = new int[a.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = a.get(i);
+		}
+		
+		return ret;
+		
+	}
+	
+	public int occurences(int[] arr, int search) {
+		int ret = 0;
+		
+		for (int i : arr)
+			if (i == search)
+				ret++;
+		
+		return ret;
+	}
+	
 	@Override
 	public void populate() {
 		super.populate();
@@ -87,17 +118,20 @@ public class MainGameStage extends GameStage {
 
 			Card.DECK.remove(i);
 		}
+		
+		for (int i = 0; i < possible_combos.length; i++) {
+			if (occurences(pop, possible_combos[i]) > 0) {
+				PopulationCard p = new PopulationCard(possible_combos[i], occurences(pop, possible_combos[i]));
+				
+				p.setSize(64, 64);
+				p.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+				popCardWidth = p.getWidth();
+				
+				WidgetGroup w = new WidgetGroup();
+				w.addActor(p);
 
-		for (int i = 0; i < pop.length; i++) {
-			PopulationCard p = new PopulationCard(pop[i]);
-			p.setSize(64, 64);
-			p.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
-			popCardWidth = p.getWidth();
-			
-			WidgetGroup w = new WidgetGroup();
-			w.addActor(p);
-
-			populationCards.add(w);
+				populationCards.add(w);
+			}
 		}
 
 		hand.align(Align.center);

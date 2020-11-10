@@ -13,8 +13,9 @@ public class PopulationCard extends Widget {
 	
 	Label disp;
 	Texture tex;
+	int quantity;
 	
-	public PopulationCard(int popSize) {
+	public PopulationCard(int popSize, int quantity) {
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		param.size = 15;
@@ -22,7 +23,8 @@ public class PopulationCard extends Widget {
 		LabelStyle style = new LabelStyle();
 		style.font = gen.generateFont(param);
 		
-		disp = new Label(Integer.toString(popSize) + "M", style);
+		String str = Integer.toString(popSize) + "M" + (quantity > 0 ? " x" + Integer.toString(quantity) : "");
+		disp = new Label(str, style);
 		disp.setColor(Color.BLUE);
 		
 		switch (popSize) {
@@ -43,6 +45,8 @@ public class PopulationCard extends Widget {
 			break;
 		}
 		
+		this.quantity = quantity;
+		
 		gen.dispose();
 	}
 	
@@ -52,7 +56,10 @@ public class PopulationCard extends Widget {
 		
 		disp.setPosition(getX() - 10 - (disp.getGlyphLayout().width), getY() + (getHeight() / 2));
 		
-		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
+		for (int i = 0; i < quantity; i++) {
+			batch.draw(tex, getX() + (quantity * 5) - (i * 5), getY(), getWidth(), getHeight());
+		}
+		
 		disp.draw(batch, parentAlpha);
 	}
 }
