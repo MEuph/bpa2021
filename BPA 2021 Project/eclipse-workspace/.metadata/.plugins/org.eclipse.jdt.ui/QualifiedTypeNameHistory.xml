@@ -16,4 +16,5 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Button"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.gamestages.MainGameStage"/>
 </qualifiedTypeNameHistroy>

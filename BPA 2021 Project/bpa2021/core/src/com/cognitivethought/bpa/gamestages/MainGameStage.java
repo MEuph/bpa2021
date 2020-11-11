@@ -29,23 +29,24 @@ import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.Spinner;
 
 public class MainGameStage extends GameStage {
-	
+
 	public static final TooltipManager MANAGER = new TooltipManager();
-	
+	public static boolean warInitiated = false;
+
 	HorizontalGroup hand;
 	VerticalGroup population;
-	
+
 	public Cursor c;
-	
+
 	ArrayList<WidgetGroup> cards;
 	ArrayList<WidgetGroup> populationCards;
 
-	int[] possible_combos = {100, 50, 20, 10, 1};
+	int[] possible_combos = { 100, 50, 20, 10, 1 };
 	int[] pop = split(999);
-	
+
 	float cardWidth = 0;
 	float popCardWidth = 0;
-	
+
 	Label totalPop;
 	Label fps;
 
@@ -54,63 +55,49 @@ public class MainGameStage extends GameStage {
 
 	public Placemat placemat;
 	public final Spinner spinner = new Spinner();
-	
+
 	public ImageButton nextTurn;
-	
+
 	public MainGameStage(Viewport vp) {
 		super(vp);
 		MANAGER.instant();
-		
-		nextTurn = new ImageButton(new Image(new Texture(Strings.URL_NEXT_TURN)).getDrawable());
-		nextTurn.setPosition(Gdx.graphics.getWidth() + 200, (Gdx.graphics.getHeight() * 2) - 200);
-		
-		nextTurn.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				super.clicked(event, x, y);
-				
-				placemat.advance();
-			}
-		});
-		
-		addActor(nextTurn);
 	}
-	
+
 	public int[] split(int num) {
 		ArrayList<Integer> a = new ArrayList<>();
-		
+
 		for (int i = 0; i < possible_combos.length && num > 0; i++) {
 			while (num - possible_combos[i] >= 0) {
 				a.add(possible_combos[i]);
 				num -= possible_combos[i];
 			}
 		}
-		
+
 		int[] ret = new int[a.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = a.get(i);
 		}
-		
+
 		return ret;
-		
+
 	}
-	
+
 	public int occurences(int[] arr, int search) {
 		int ret = 0;
-		
+
 		for (int i : arr)
 			if (i == search)
 				ret++;
-		
+
 		return ret;
 	}
-	
+
 	@Override
 	public void populate() {
 		super.populate();
-		
+
 		c = new Cursor();
-		
+
 		fps = new Label("", labelStyle);
 		fps.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getWidth() / 2);
 
@@ -123,14 +110,14 @@ public class MainGameStage extends GameStage {
 		hand = new HorizontalGroup();
 		population = new VerticalGroup();
 		placemat = new Placemat();
-		
+
 		for (int i = 0; i < 8; i++) {
 			Card card = new Card(Card.DECK.get(i));
 			card.setSize(90, 140);
 			card.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
 			card.spacing = ((int) (card.getWidth() / 2) - 2);
 			cardWidth = card.getWidth();
-			
+
 			WidgetGroup w = new WidgetGroup();
 			w.addActor(card);
 
@@ -138,15 +125,15 @@ public class MainGameStage extends GameStage {
 
 			Card.DECK.remove(i);
 		}
-		
+
 		for (int i = 0; i < possible_combos.length; i++) {
 			if (occurences(pop, possible_combos[i]) > 0) {
 				PopulationCard p = new PopulationCard(possible_combos[i], occurences(pop, possible_combos[i]));
-				
+
 				p.setSize(64, 64);
 				p.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
 				popCardWidth = p.getWidth();
-				
+
 				WidgetGroup w = new WidgetGroup();
 				w.addActor(p);
 
@@ -157,14 +144,25 @@ public class MainGameStage extends GameStage {
 		hand.align(Align.center);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 //		hand.setSize(Gdx.graphics.getWidth() - 200, 400);
-		hand.setPosition(Gdx.graphics.getWidth() - cardWidth / 2,
-				Gdx.graphics.getHeight() / 2);
+		hand.setPosition(Gdx.graphics.getWidth() - cardWidth / 2, Gdx.graphics.getHeight() / 2);
 
 		population.align(Align.center);
 		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
-		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70),
-				Gdx.graphics.getHeight());
+		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70), Gdx.graphics.getHeight());
+		
+		nextTurn = new ImageButton(new Image(new Texture(Strings.URL_NEXT_TURN)).getDrawable());
+		nextTurn.setPosition(Gdx.graphics.getWidth() - 300, (Gdx.graphics.getHeight()));
 
+		nextTurn.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+
+				placemat.advance();
+			}
+		});
+
+		
 		for (WidgetGroup wg : cards) {
 			hand.addActor(wg);
 		}
@@ -173,22 +171,27 @@ public class MainGameStage extends GameStage {
 			population.addActor(wg);
 		}
 
-		totalPop.setPosition(population.getX(), population.getY() - ((((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)) * 32) * population.getChildren().size));
+		totalPop.setPosition(population.getX(),
+				population.getY() - ((((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)) * 32)
+						* population.getChildren().size));
 		totalPop.setAlignment(Align.left);
-		
+
 		float scale = 2f;
-		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)), (224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
-		placemat.setPosition(hand.getX() - (placemat.getWidth() / 2) + 100, (Gdx.graphics.getHeight() * 1.5f) - placemat.getHeight());
-		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)), (224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
-		
+		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)),
+				(224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+		placemat.setPosition(hand.getX() - (placemat.getWidth() / 2) + 100,
+				(Gdx.graphics.getHeight() * 1.5f) - placemat.getHeight());
+		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)),
+				(224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+
 //		hand.setDebug(true, true);
 
 		spinner.setSize(400 * scale, 224 * scale);
-		spinner.setPosition(hand.getX() - (spinner.getWidth() / 2) + 100, (Gdx.graphics.getHeight() * 1.5f) - spinner.getHeight());
-		
+		spinner.setPosition(hand.getX() - (spinner.getWidth() / 2) + 100,
+				(Gdx.graphics.getHeight() * 1.5f) - spinner.getHeight());
 
 		addActor(fps);
-		
+
 		addActor(spinner.clickArrow);
 		addActor(placemat.clickArrow);
 		addActor(placemat);
@@ -196,8 +199,8 @@ public class MainGameStage extends GameStage {
 		addActor(population);
 		addActor(totalPop);
 		addActor(spinner);
-		
-		
+		addActor(nextTurn);
+
 		addListener(new InputListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
@@ -208,36 +211,36 @@ public class MainGameStage extends GameStage {
 				return super.keyDown(event, keycode);
 			}
 		});
-		
+
 		addActor(c);
 	}
 
 	public void holdCard(Card card) {
 		currentlyHeldCard = card;
 		initialState = card;
-		WidgetGroup wg = (WidgetGroup)card.getParent();
-		
+		WidgetGroup wg = (WidgetGroup) card.getParent();
+
 		hand.removeActor(wg);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 	}
-	
+
 	public void putBackInHand() {
 		currentlyHeldCard = initialState;
-		
+
 		WidgetGroup w = new WidgetGroup();
 		w.addActor(currentlyHeldCard);
-		
+
 		hand.addActor(w);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
-		
+
 		currentlyHeldCard = null;
-		
+
 		resetHand();
 	}
-	
+
 	public void resetHand() {
 		hand.remove();
-		
+
 //		HorizontalGroup originalHand = new HorizontalGroup();
 //		for (int i = 0; i < hand.getChildren().size; i++) {
 //			WidgetGroup g = (WidgetGroup)hand.getChild(i);
@@ -252,12 +255,11 @@ public class MainGameStage extends GameStage {
 		hand.align(Align.center);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 //		hand.setSize(Gdx.graphics.getWidth() - 200, 400);
-		hand.setPosition(Gdx.graphics.getWidth() - cardWidth / 2,
-				Gdx.graphics.getHeight() / 2);
-		
+		hand.setPosition(Gdx.graphics.getWidth() - cardWidth / 2, Gdx.graphics.getHeight() / 2);
+
 		addActor(hand);
 	}
-	
+
 	@Override
 	public void clearFields() {
 
@@ -279,42 +281,48 @@ public class MainGameStage extends GameStage {
 				Gdx.input.setInputProcessor(this);
 			}
 		}
-		
+
 		Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		super.draw();
 
+		placemat.clickArrow.setPosition(placemat.getX() + (placemat.getWidth() / 2)
+				- (MainGameStage.warInitiated ? placemat.clickArrow.getWidth() : placemat.clickArrow.getWidth() / 2), placemat.getY() - placemat.clickArrow.getHeight() + 5);
+
 		totalPop.setText(Integer.toString(sum(pop)) + "M");
 
 		if (currentlyHeldCard != null) {
-			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f, currentlyHeldCard.originalSize.y / 1.15f);
+			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f,
+					currentlyHeldCard.originalSize.y / 1.15f);
 			currentlyHeldCard.setPosition(
 					Gdx.input.getX() + (Gdx.graphics.getWidth() / 2) - (currentlyHeldCard.getWidth() / 2),
-					Gdx.graphics.getHeight() - Gdx.input.getY() + (Gdx.graphics.getHeight() >= 1080 ? currentlyHeldCard.getHeight() * 2 : currentlyHeldCard.getHeight()));
+					Gdx.graphics.getHeight() - Gdx.input.getY()
+							+ (Gdx.graphics.getHeight() >= 1080 ? currentlyHeldCard.getHeight() * 2
+									: currentlyHeldCard.getHeight()));
 			if (!getActors().contains((Actor) currentlyHeldCard, true))
 				addActor(currentlyHeldCard);
-			
+
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (placemat.getLeft().placematHover) {
 					currentlyHeldCard.setPosition(placemat.getLeft().getX(), placemat.getLeft().getY());
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setLeft(currentlyHeldCard);
-					
+
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getRightCard().placematHover) {
 					currentlyHeldCard.setPosition(placemat.getRightCard().getX(), placemat.getRightCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setRight(currentlyHeldCard);
-					
+
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getTopCard().placematHover) {
 					currentlyHeldCard.setPosition(placemat.getTopCard().getX(), placemat.getTopCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setTop(currentlyHeldCard);
-					
+
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else {
@@ -328,7 +336,7 @@ public class MainGameStage extends GameStage {
 			fps.setText(Integer.toString((int) (1 / Gdx.graphics.getDeltaTime())));
 			frameTime = 0f;
 		}
-		
+
 		c.update();
 	}
 }

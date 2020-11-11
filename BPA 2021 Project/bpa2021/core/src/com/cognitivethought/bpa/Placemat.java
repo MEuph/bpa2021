@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.cognitivethought.bpa.gamestages.MainGameStage;
 
 public class Placemat extends Actor {
 
@@ -67,10 +68,7 @@ public class Placemat extends Actor {
 			downY = getY();
 			setPosition(getX(), getY() + getHeight());
 			upY = getY();
-		}
-		
-		clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
-//		
+		}		
 	}
 	
 	@Override
@@ -146,7 +144,7 @@ public class Placemat extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
+		
 		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 		clickArrow.draw(batch, parentAlpha);
 		
