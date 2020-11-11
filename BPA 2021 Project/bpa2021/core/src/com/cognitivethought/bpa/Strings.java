@@ -47,7 +47,7 @@ public class Strings {
 	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/default/skin/uiskin.atlas";
 	public static final String URL_TEAPOT = URL_LOCATOR + "models/teapot.obj";
 	public static final String URL_TEAPOT_TEXTURE = URL_LOCATOR + "textures/wood.png";
-	public static final String URL_PLACEMAT = URL_LOCATOR + "images/placemat.png";
+	public static final String URL_PLACEMAT_ICONS = URL_LOCATOR + "images/placematicons.png";
 	public static final String URL_1MIL = URL_LOCATOR + "images/1million.png";
 	public static final String URL_10MIL = URL_LOCATOR + "images/10million.png";
 	public static final String URL_20MIL = URL_LOCATOR + "images/20million.png";
@@ -58,5 +58,7 @@ public class Strings {
 	public static final String URL_PLACEMAT_ARROW = URL_LOCATOR + "placematbutton.png";
 	public static final String URL_SPINNER_ARROW = URL_LOCATOR + "spinnerbutton.png";
 	public static final String URL_PLACEMAT_OUTLINE = URL_LOCATOR + "images/placemat outline.png";
+	public static final String URL_PLACEMAT_SPOTS = URL_LOCATOR + "images/placematspots.png";
 	public static final String URL_NEXT_TURN = URL_LOCATOR + "/next_turn.png";
+	public static final String URL_PLACEMAT_BACKGROUND = URL_LOCATOR + "/images/placematbg.gif";
 }

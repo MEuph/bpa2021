@@ -83,6 +83,8 @@ public class Card extends Widget {
 	
 	private TextTooltip t;
 	
+	boolean isOnPlacemat = false;
+	
 	public Card(Card card) {
 		type = card.type;
 		name = card.name;
@@ -254,7 +256,7 @@ public class Card extends Widget {
 				super.clicked(event, x, y);
 
 				if (type != Type.BLANK)
-					((MainGameStage) Launcher.dev_stage).holdCard(card);
+					((MainGameStage) Launcher.dev_stage).currentPlayer.holdCard(card);
 			}
 		});
 		
@@ -318,7 +320,7 @@ public class Card extends Widget {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if (getWidth() < getHeight()) {
+		if (!isOnPlacemat) {
 			Vector2 mouseScreenPosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 			Vector2 mouseLocalPosition = screenToLocalCoordinates(mouseScreenPosition);
 
@@ -336,8 +338,8 @@ public class Card extends Widget {
 				hovering = false;
 			}
 
-			if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard != null) {
-				if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard.equals(this)) {
+			if (((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard != null) {
+				if (((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard.equals(this)) {
 					hovering = false;
 				}
 			}
@@ -352,8 +354,8 @@ public class Card extends Widget {
 						Gdx.graphics.getDeltaTime() * speed);
 				setSize((int) newSize.x, (int) newSize.y);
 			} else {
-				if (((MainGameStage) Launcher.dev_stage).currentlyHeldCard != null) {
-					if (!((MainGameStage) Launcher.dev_stage).currentlyHeldCard.equals(this)) {
+				if (((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard != null) {
+					if (!((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard.equals(this)) {
 						Vector2 newPosition = new Vector2(getX(), getY()).lerp(originalPos,
 								Gdx.graphics.getDeltaTime() * speed);
 						setPosition(newPosition.x, newPosition.y);

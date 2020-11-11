@@ -4,20 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.cognitivethought.bpa.gamestages.MainGameStage;
 
 public class Placemat extends Actor {
 
 	// 83 x 46 CARD SIZE
 
-	float cardWidth = 63, cardHeight = 36;
+	float cardWidth = 33, cardHeight = 49;
 	float matWidth = 440, matHeight = 224;
 	
 	float downY, upY;
@@ -29,13 +30,18 @@ public class Placemat extends Actor {
 	Texture aTex;
 	public ImageButton clickArrow;
 	Texture outline;
+	Animation<TextureRegion> background;
+	float elapsed;
 	
 	boolean isDown = false;
 	
 	public Placemat() {
-		mat = new Pixmap(new FileHandle(Strings.URL_PLACEMAT));
+		mat = new Pixmap(new FileHandle(Strings.URL_PLACEMAT_SPOTS));
 		
 		tex = new Texture(mat);
+		
+		// NOTE: GifDecoder written by Johannes Borchardt and converted to the latest LibGDX version by Anton Persson
+		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, new FileHandle(Strings.URL_PLACEMAT_BACKGROUND).read());
 		
 		arrow = new Pixmap(new FileHandle(Strings.URL_PLACEMAT_ARROW));
 		
@@ -75,20 +81,20 @@ public class Placemat extends Actor {
 	public void setPosition(float x, float y) {
 		super.setPosition(x, y);
 		
-		left.setPosition(getX() + pixelToRelative(60, 66).x, getY() + pixelToRelative(60, 66).y);
+		left.setPosition(getX() + pixelToRelative(64, 131).x, getY() + pixelToRelative(64, 131).y);
 		left.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		top.setPosition(getX() + pixelToRelative(174, 66).x, getY() + pixelToRelative(174, 66).y);
+		right.setPosition(getX() + pixelToRelative(305, 131).x, getY() + pixelToRelative(305, 131).y);
+		right.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		
+		top.setPosition(getX() + pixelToRelative(185, 64).x, getY() + pixelToRelative(185, 64).y);
 		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		center.setPosition(getX() + pixelToRelative(174, 130).x, getY() + pixelToRelative(174, 130).y);
+		center.setPosition(getX() + pixelToRelative(185, 131).x, getY() + pixelToRelative(185, 131).y);
 		center.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
-		bottom.setPosition(getX() + pixelToRelative(174, 194).x, getY() + pixelToRelative(174, 194).y);
+		bottom.setPosition(getX() + pixelToRelative(185, 198).x, getY() + pixelToRelative(185, 198).y);
 		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
-		
-		right.setPosition(getX() + pixelToRelative(287, 66).x, getY() + pixelToRelative(287, 66).y);
-		right.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 	}
 	
 	public Card getLeft() {
@@ -145,6 +151,8 @@ public class Placemat extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
+		elapsed += Gdx.graphics.getDeltaTime();
+		batch.draw(background.getKeyFrame(elapsed), getX(), getY(), getWidth(), getHeight());
 		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 		clickArrow.draw(batch, parentAlpha);
 		
@@ -153,6 +161,12 @@ public class Placemat extends Actor {
 		center.draw(batch, parentAlpha);
 		top.draw(batch, parentAlpha);
 		right.draw(batch, parentAlpha);
+		
+		left.isOnPlacemat = true;
+		bottom.isOnPlacemat = true;
+		center.isOnPlacemat = true;
+		top.isOnPlacemat = true;
+		right.isOnPlacemat = true;
 		
 		if (isDown && getY() >= downY + 2) {
 			Vector2 newPos = new Vector2(getX(), getY()).

@@ -25,7 +25,7 @@ public abstract class GameStage extends Stage {
 		TextButtonStyle buttonStyle;
 		TextButtonStyle noBackgroundButton;
 		Pixmap labelBg;
-		LabelStyle labelStyle;
+		public LabelStyle labelStyle;
 		
 		public GameStage(Viewport vp) {
 			super(vp);
