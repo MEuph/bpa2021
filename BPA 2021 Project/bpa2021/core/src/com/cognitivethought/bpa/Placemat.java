@@ -151,7 +151,7 @@ public class Placemat extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		elapsed += Gdx.graphics.getDeltaTime();
+		elapsed += Gdx.graphics.getDeltaTime() * 5;
 		batch.draw(background.getKeyFrame(elapsed), getX(), getY(), getWidth(), getHeight());
 		batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 		clickArrow.draw(batch, parentAlpha);
