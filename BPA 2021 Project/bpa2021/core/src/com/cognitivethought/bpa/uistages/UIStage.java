@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cognitivethought.bpa.Colors;
-import com.cognitivethought.bpa.Strings;
+import com.cognitivethought.bpa.tidiness.Colors;
+import com.cognitivethought.bpa.tidiness.Strings;
 
 public abstract class UIStage extends Stage {
 	

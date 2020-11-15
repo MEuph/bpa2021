@@ -19,9 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cognitivethought.bpa.Colors;
-import com.cognitivethought.bpa.Strings;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.tidiness.Colors;
+import com.cognitivethought.bpa.tidiness.Strings;
 
 public class NewAccountStage extends LauncherStage {
 	

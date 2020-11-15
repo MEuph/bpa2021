@@ -16,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.Align;
-import com.cognitivethought.bpa.Card;
-import com.cognitivethought.bpa.Placemat;
-import com.cognitivethought.bpa.PopulationCard;
 import com.cognitivethought.bpa.gamestages.GameStage;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
+import com.cognitivethought.bpa.prefabs.Card;
+import com.cognitivethought.bpa.prefabs.Placemat;
+import com.cognitivethought.bpa.prefabs.PopulationCard;
 import com.cognitivethought.bpa.prefabs.Spinner;
 
 public class Player extends Group {
@@ -33,8 +33,10 @@ public class Player extends Group {
 	public ArrayList<WidgetGroup> cards;
 	public ArrayList<WidgetGroup> populationCards;
 	
+	public int pop_i = 100;
+	
 	public int[] possible_combos = {100, 50, 20, 10, 1};
-	public int[] pop = split(100);
+	public int[] pop = split(pop_i);
 	
 	public float cardWidth = 0;
 	public float popCardWidth = 0;
@@ -46,6 +48,8 @@ public class Player extends Group {
 	public Card currentlyHeldCard;
 	
 	public String username;
+	
+	public boolean skipNextTurn = false;
 	
 	public Player() {
 	}
@@ -240,7 +244,7 @@ public class Player extends Group {
 		
 		placemat.clickArrow.setPosition(placemat.getX() + (placemat.getWidth() / 2)
 				- (MainGameStage.warInitiated ? placemat.clickArrow.getWidth() : placemat.clickArrow.getWidth() / 2), placemat.getY() - placemat.clickArrow.getHeight() + 5);
-
+		
 		totalPop.setText(Integer.toString(sum(pop)) + "M");
 
 		if (currentlyHeldCard != null) {
@@ -255,14 +259,14 @@ public class Player extends Group {
 				addActor(currentlyHeldCard);
 
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
-				if (placemat.getLeft().placematHover) {
+				if (placemat.getLeft().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
 					currentlyHeldCard.setPosition(placemat.getLeft().getX(), placemat.getLeft().getY());
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setLeft(currentlyHeldCard);
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
-				} else if (placemat.getRightCard().placematHover) {
+				} else if (placemat.getRightCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
 					currentlyHeldCard.setPosition(placemat.getRightCard().getX(), placemat.getRightCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
 					placemat.setRight(currentlyHeldCard);
@@ -281,5 +285,77 @@ public class Player extends Group {
 				}
 			}
 		}
+	}
+	
+	public void givePopulation(int quantity) {
+		populationCards.clear();
+		population.clear();
+		
+		pop_i += quantity;
+		pop = split(pop_i);
+		
+		for (int i = 0; i < possible_combos.length; i++) {
+			if (occurences(pop, possible_combos[i]) > 0) {
+				PopulationCard p = new PopulationCard(possible_combos[i], occurences(pop, possible_combos[i]));
+
+				p.setSize(64, 64);
+				p.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+				popCardWidth = p.getWidth();
+
+				WidgetGroup w = new WidgetGroup();
+				w.addActor(p);
+
+				populationCards.add(w);
+			}
+		}
+		
+		population.align(Align.center);
+		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
+		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70), Gdx.graphics.getHeight());
+
+		for (WidgetGroup wg : populationCards) {
+			population.addActor(wg);
+		}
+
+		totalPop.setPosition(population.getX(),
+				population.getY() - ((((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)) * 32)
+						* population.getChildren().size));
+		totalPop.setAlignment(Align.left);
+	}
+
+	public void removePopulation(int quantity) {
+		populationCards.clear();
+		population.clear();
+		
+		pop_i -= quantity;
+		pop = split(pop_i);
+		
+		for (int i = 0; i < possible_combos.length; i++) {
+			if (occurences(pop, possible_combos[i]) > 0) {
+				PopulationCard p = new PopulationCard(possible_combos[i], occurences(pop, possible_combos[i]));
+
+				p.setSize(64, 64);
+				p.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+				popCardWidth = p.getWidth();
+
+				WidgetGroup w = new WidgetGroup();
+				w.addActor(p);
+
+				populationCards.add(w);
+			}
+		}
+		
+		population.align(Align.center);
+		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
+		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70), Gdx.graphics.getHeight());
+
+		for (WidgetGroup wg : populationCards) {
+			population.addActor(wg);
+		}
+
+		totalPop.setPosition(population.getX(),
+				population.getY() - ((((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)) * 32)
+						* population.getChildren().size));
+		totalPop.setAlignment(Align.left);
 	}
 }

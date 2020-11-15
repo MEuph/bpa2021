@@ -1,7 +1,8 @@
 package com.cognitivethought.bpa.gamestages;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.backendless.Backendless;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,21 +13,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cognitivethought.bpa.Strings;
 import com.cognitivethought.bpa.game.Player;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.multiplayer.TurnPacket;
+import com.cognitivethought.bpa.tidiness.Strings;
 
 public class MainGameStage extends GameStage {
 
 	public static final TooltipManager MANAGER = new TooltipManager();
 	public static boolean warInitiated = false;
 	
-	ArrayList<Player> players = new ArrayList<Player>();
+	public HashMap<String, Player> players = new HashMap<String, Player>();
 	
 	public Player currentPlayer;
+	public Player clientPlayer;
 	public Label fps;
 	
 	public ImageButton nextTurn;
+	
+	public TurnPacket turn;
 	
 	public float frameTime = 0f;
 
@@ -34,18 +39,20 @@ public class MainGameStage extends GameStage {
 		super(vp);
 		MANAGER.instant();
 		
-		players.add(new Player());
-		currentPlayer = players.get(0);
 	}
 
 	@Override
 	public void populate() {
 		super.populate();
 		
+		players.put(Backendless.UserService.CurrentUser().getUserId(), new Player());
+		currentPlayer = players.get(Backendless.UserService.CurrentUser().getUserId());
+		
 		currentPlayer.populate(this);
+		clientPlayer = currentPlayer;
 		
 		nextTurn = new ImageButton(new Image(new Texture(Strings.URL_NEXT_TURN)).getDrawable());
-		nextTurn.setPosition(Gdx.graphics.getWidth() - 300, (Gdx.graphics.getHeight()));
+		nextTurn.setPosition(clientPlayer.placemat.getLeft().getX() - (currentPlayer.placemat.getLeft().getWidth() / 2), clientPlayer.placemat.getLeft().getY() - clientPlayer.placemat.getLeft().getHeight() - 40);
 
 		nextTurn.addListener(new ClickListener() {
 			@Override
@@ -59,7 +66,7 @@ public class MainGameStage extends GameStage {
 		fps = new Label("", labelStyle);
 		fps.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getWidth() / 2);
 
-		addActor(currentPlayer);
+		addActor(clientPlayer);
 		addActor(fps);
 		addActor(nextTurn);
 	}
@@ -81,11 +88,17 @@ public class MainGameStage extends GameStage {
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		super.draw();
-
+		
+		nextTurn.setPosition(clientPlayer.placemat.getLeft().getX() - (currentPlayer.placemat.getLeft().getWidth() / 2), clientPlayer.placemat.getLeft().getY() - clientPlayer.placemat.getLeft().getHeight() - 40);
+		
 		frameTime += Gdx.graphics.getDeltaTime();
 		if (frameTime > 0.1) {
 			fps.setText(Integer.toString((int) (1 / Gdx.graphics.getDeltaTime())));
 			frameTime = 0f;
 		}
+	}
+
+	public void executeTurn(TurnPacket request) {
+		request.execute(this);
 	}
 }

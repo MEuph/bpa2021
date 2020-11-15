@@ -2,8 +2,8 @@ package com.cognitivethought.bpa.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.cognitivethought.bpa.Strings;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.tidiness.Strings;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

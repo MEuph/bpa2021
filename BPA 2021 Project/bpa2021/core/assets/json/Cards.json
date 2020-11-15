@@ -1,27 +1,15 @@
 {
-	"prop5mil": [ 
-		{ 
-			"Name": "5 Million",
-			"Type": "PROPAGANDA",
-			"PopulationDelta": 5,
-			"Capacity": 0,
-			"Weight": 0,
-			"Description": "Enemy Deflect To Your Side!",
-			"Short Desc": "Take 5M from enemy",
-			"Quantity": 24
-		}
-	],
-	
 	"prop10mil": [ 
 		{ 
 			"Name": "10 Million",
 			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/10millionpropaganda.png",
 			"PopulationDelta": 10,
 			"Capacity": 0,
 			"Weight": 0,
 			"Description": "Enemy Denounce Their Form Of Government For Yours!",
 			"Short Desc": "Take 10M from enemy",
-			"Quantity": 17
+			"Quantity": 24
 		}
 	],
 	
@@ -29,11 +17,26 @@
 		{ 
 			"Name": "25 Million",
 			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/25millionpropaganda.png",
 			"PopulationDelta": 25,
 			"Capacity": 0,
 			"Weight": 0,
-			"Description": "Of The Enemys Population Declare Allegiane to Your Country!",
+			"Description": "Of The Enemys Population Declare Allegiance to Your Country!",
 			"Short Desc": "Take 25M from enemy",
+			"Quantity": 17
+		}
+	],
+	
+	"prop50mil": [ 
+		{ 
+			"Name": "50 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/50millionpropaganda.png",
+			"PopulationDelta": 50,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Of The Enemys Population Declare Allegiance to Your Country!",
+			"Short Desc": "Take 50M from enemy",
 			"Quantity": 4
 		}
 	],
@@ -42,7 +45,7 @@
 		{ 
 			"Name": "10 Megatons",
 			"Type": "WARHEAD",
-			"Path": "images/10megaton.png",
+			"Path": "cardart/warheads/10megaton.png",
 			"PopulationDelta": -2,
 			"Capacity": 0,
 			"Weight": 10,
@@ -56,7 +59,7 @@
 		{ 
 			"Name": "20 Megatons",
 			"Type": "WARHEAD",
-			"Path": "images/20megaton.png",
+			"Path": "cardart/warheads/20megaton.png",
 			"PopulationDelta": -5,
 			"Capacity": 0,
 			"Weight": 20,
@@ -70,7 +73,7 @@
 		{ 
 			"Name": "50 Megatons",
 			"Type": "WARHEAD",
-			"Path": "images/50megaton.png",
+			"Path": "cardart/warheads/50megaton.png",
 			"PopulationDelta": -10,
 			"Capacity": 0,
 			"Weight": 50,
@@ -84,7 +87,7 @@
 		{ 
 			"Name": "100 Megatons",
 			"Type": "WARHEAD",
-			"Path": "images/100megaton.png",
+			"Path": "cardart/warheads/100megaton.png",
 			"PopulationDelta": -25,
 			"Capacity": 0,
 			"Weight": 100,
@@ -501,6 +504,7 @@
 		{ 
 			"Name": "B-70 Bomber",
 			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/B2bomber.png",
 			"PopulationDelta": 0,
 			"Capacity": 50,
 			"Weight": 0,
@@ -514,6 +518,7 @@
 		{ 
 			"Name": "Stealth Bomber",
 			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/B2bomber.png",
 			"PopulationDelta": 0,
 			"Capacity": 100,
 			"Weight": 0,
@@ -527,6 +532,7 @@
 		{ 
 			"Name": "Saturn Missile",
 			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/saturncard.png",
 			"PopulationDelta": 0,
 			"Capacity": 100,
 			"Weight": 0,
@@ -540,6 +546,7 @@
 		{ 
 			"Name": "Atlas Missile",
 			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/atlascard.png",
 			"PopulationDelta": 0,
 			"Capacity": 20,
 			"Weight": 0,
@@ -566,6 +573,7 @@
 		{ 
 			"Name": "Polaris",
 			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/polariscard.png",
 			"PopulationDelta": 0,
 			"Capacity": 100,
 			"Weight": 0,
