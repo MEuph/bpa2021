@@ -12,7 +12,6 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Button"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.prefabs.Spinner"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Label"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Group"/>
@@ -26,11 +25,14 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
 <fullyQualifiedTypeName name="com.esotericsoftware.kryonet.Listener"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.gamestages.MainGameStage"/>
-<fullyQualifiedTypeName name="com.backendless.Backendless"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.game.Player"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.prefabs.Card"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.TextField"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.multiplayer.NuclearWarServer"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
+<fullyQualifiedTypeName name="com.esotericsoftware.kryo.Kryo"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.multiplayer.NuclearWarServer"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.game.Player"/>
+<fullyQualifiedTypeName name="com.backendless.BackendlessUser"/>
+<fullyQualifiedTypeName name="com.backendless.Backendless"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
 </qualifiedTypeNameHistroy>

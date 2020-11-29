@@ -259,7 +259,7 @@ public class Card extends Widget {
 				super.clicked(event, x, y);
 
 				if (type != Type.BLANK)
-					((MainGameStage) Launcher.dev_stage).currentPlayer.holdCard(card);
+					((MainGameStage) Launcher.game_stage).currentPlayer.holdCard(card);
 			}
 		});
 		
@@ -341,8 +341,8 @@ public class Card extends Widget {
 				hovering = false;
 			}
 
-			if (((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard != null) {
-				if (((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard.equals(this)) {
+			if (((MainGameStage) Launcher.game_stage).currentPlayer.currentlyHeldCard != null) {
+				if (((MainGameStage) Launcher.game_stage).currentPlayer.currentlyHeldCard.equals(this)) {
 					hovering = false;
 				}
 			}
@@ -357,8 +357,8 @@ public class Card extends Widget {
 						Gdx.graphics.getDeltaTime() * speed);
 				setSize((int) newSize.x, (int) newSize.y);
 			} else {
-				if (((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard != null) {
-					if (!((MainGameStage) Launcher.dev_stage).currentPlayer.currentlyHeldCard.equals(this)) {
+				if (((MainGameStage) Launcher.game_stage).currentPlayer.currentlyHeldCard != null) {
+					if (!((MainGameStage) Launcher.game_stage).currentPlayer.currentlyHeldCard.equals(this)) {
 						Vector2 newPosition = new Vector2(getX(), getY()).lerp(originalPos,
 								Gdx.graphics.getDeltaTime() * speed);
 						setPosition(newPosition.x, newPosition.y);

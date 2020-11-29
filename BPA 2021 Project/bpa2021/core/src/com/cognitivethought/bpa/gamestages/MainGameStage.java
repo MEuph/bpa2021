@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.game.Player;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
 import com.cognitivethought.bpa.multiplayer.TurnPacket;
 import com.cognitivethought.bpa.tidiness.Strings;
 
@@ -60,6 +61,7 @@ public class MainGameStage extends GameStage {
 				super.clicked(event, x, y);
 
 				currentPlayer.placemat.advance();
+				NuclearWarServer.client.sendTCP(turn);
 			}
 		});
 		
@@ -78,7 +80,7 @@ public class MainGameStage extends GameStage {
 
 	@Override
 	public void draw() {
-		if (Launcher.currentStage == Launcher.dev_stage) {
+		if (Launcher.currentStage == Launcher.game_stage) {
 			if (Gdx.input.getInputProcessor() != this) {
 				Gdx.input.setInputProcessor(this);
 			}

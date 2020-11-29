@@ -20,13 +20,13 @@ import com.cognitivethought.bpa.tidiness.Strings;
 
 public abstract class UIStage extends Stage {
 	
-	BitmapFont font;
-	TextFieldStyle textStyle;
-	Pixmap bgColor;
-	TextButtonStyle buttonStyle;
-	TextButtonStyle noBackgroundButton;
-	Pixmap labelBg;
-	LabelStyle labelStyle;
+	public BitmapFont font;
+	public TextFieldStyle textStyle;
+	public Pixmap bgColor;
+	public TextButtonStyle buttonStyle;
+	public TextButtonStyle noBackgroundButton;
+	public Pixmap labelBg;
+	public LabelStyle labelStyle;
 	
 	public UIStage(Viewport vp) {
 		super(vp);

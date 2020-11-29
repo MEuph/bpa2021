@@ -18,10 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cognitivethought.bpa.gamestages.GameStage;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
+import com.cognitivethought.bpa.multiplayer.HostServerStage;
+import com.cognitivethought.bpa.multiplayer.JoinServerStage;
+import com.cognitivethought.bpa.multiplayer.MultiplayerQueueStage;
 import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.tidiness.Strings;
-import com.cognitivethought.bpa.gamestages.GameStage;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
 import com.cognitivethought.bpa.uistages.GameMenuStage;
 import com.cognitivethought.bpa.uistages.LauncherStage;
@@ -43,8 +46,11 @@ public class Launcher extends ApplicationAdapter {
 	public static Stage previousStage;
 
 	public static UIStage game_menu_stage;
+	public static UIStage js_stage;
+	public static UIStage hs_stage;
+	public static UIStage mq_stage;
 	
-	public static GameStage dev_stage;
+	public static GameStage game_stage;
 	
 	public static BackendlessUser currentUser = null;
 	
@@ -73,21 +79,30 @@ public class Launcher extends ApplicationAdapter {
 		fp_stage = new ForgotPasswordStage(vp);
 		main_stage = new MainLauncherStage(vp);
 		game_menu_stage = new GameMenuStage(vp);
-		dev_stage = new MainGameStage(vp);
+		game_stage = new MainGameStage(vp);
+		js_stage = new JoinServerStage(vp);
+		hs_stage = new HostServerStage(vp);
+		mq_stage = new MultiplayerQueueStage(vp);
 		
 		na_stage.getViewport().apply();
 		login_stage.getViewport().apply();
 		fp_stage.getViewport().apply();
 		main_stage.getViewport().apply();
 		game_menu_stage.getViewport().apply();
-		dev_stage.getViewport().apply();
+		game_stage.getViewport().apply();
+		js_stage.getViewport().apply();
+		hs_stage.getViewport().apply();
+		mq_stage.getViewport().apply();
 		
 		stages.add(na_stage);
 		stages.add(login_stage);
 		stages.add(fp_stage);
 		stages.add(main_stage);
 		stages.add(game_menu_stage);
-		stages.add(dev_stage);
+		stages.add(game_stage);
+		stages.add(js_stage);
+		stages.add(hs_stage);
+		stages.add(mq_stage);
 		
 		setStage(login_stage);
 		
@@ -175,6 +190,8 @@ public class Launcher extends ApplicationAdapter {
 		login_stage.dispose();
 		main_stage.dispose();
 		game_menu_stage.dispose();
-		dev_stage.dispose();
+		game_stage.dispose();
+		js_stage.dispose();
+		hs_stage.dispose();
 	}
 }

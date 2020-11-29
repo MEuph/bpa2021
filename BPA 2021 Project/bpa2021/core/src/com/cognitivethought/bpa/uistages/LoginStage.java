@@ -142,11 +142,7 @@ public class LoginStage extends LauncherStage {
 		login_continue.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (Backendless.UserService.isValidLogin()) {
-					Launcher.setStage(Launcher.main_stage);
-				} else {
-					System.out.println("Line 148 in LS");
-				}
+				Launcher.setStage(Launcher.main_stage);
 			}
 		});
 

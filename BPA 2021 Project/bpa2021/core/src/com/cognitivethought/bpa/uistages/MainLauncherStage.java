@@ -54,7 +54,8 @@ public class MainLauncherStage extends LauncherStage {
 		main_launch.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+				// TODO: Toggle between auto-full screen
+//				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 				
 				Launcher.setStage(Launcher.game_menu_stage);
 			}

@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		config.width = 640;
 		config.height = 480;
 		config.title = Strings.NAME;
-		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+//		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		new LwjglApplication(new Launcher(), config);
 	}
 }
