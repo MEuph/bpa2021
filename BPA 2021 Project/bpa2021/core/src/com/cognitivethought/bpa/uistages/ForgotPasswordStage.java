@@ -356,7 +356,7 @@ public class ForgotPasswordStage extends LauncherStage {
 				Strings.USER_ID = result.get(0).getObjectId();
 			}
 			isTruthful = true;
-		} catch (BackendlessException e) {
+		} catch (Exception e) {
 			fp_errors.getStyle().fontColor = Colors.TEXT_ERROR;
 			fp_errors.setText("User with that email username combo does not exist");
 		}

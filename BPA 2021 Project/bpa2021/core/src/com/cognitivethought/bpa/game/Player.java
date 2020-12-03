@@ -34,6 +34,7 @@ public class Player extends Group {
 	public ArrayList<WidgetGroup> populationCards;
 	
 	public int pop_i = 100;
+	public int country_id;
 	
 	public int[] possible_combos = {100, 50, 20, 10, 1};
 	public int[] pop = split(pop_i);

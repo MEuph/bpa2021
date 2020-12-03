@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "118560389752",
+    "project_id": "bpa2021",
+    "storage_bucket": "bpa2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118560389752:android:3039d4e48aa1f070e70b8d",
+        "android_client_info": {
+          "package_name": "com.cognitivethought.bpa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "118560389752-j9jn3vpid7508pm4vj8ejsgjh9gavote.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPLGntrey1hbNu15O69hqwQAUU22R1aes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "118560389752-j9jn3vpid7508pm4vj8ejsgjh9gavote.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

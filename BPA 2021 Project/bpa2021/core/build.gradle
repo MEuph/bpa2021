@@ -9,13 +9,15 @@ eclipse.project.name = appName + "-core"
 
 dependencies {  
 	compile 'com.backendless:backendless:VERSION FROM MAVEN'
-    implementation group: 'com.backendless', name: 'backendless', version: '5.0.+'  
+    implementation group: 'com.backendless', name: 'backendless', version: '5.0.+' 
     
+	implementation 'com.github.crykn:kryonet:2.22.7'
+	
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
     // required for real-time database and real-time messaging  
     implementation ('io.socket:socket.io-client:1.0.0') {  
       // excluding org.json which is provided by Android  
       exclude group: 'org.json', module: 'json'  
-    }  
+    }
 }

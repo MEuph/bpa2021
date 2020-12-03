@@ -10,18 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cognitivethought.bpa.game.GameMap;
 import com.cognitivethought.bpa.game.Player;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
 import com.cognitivethought.bpa.multiplayer.TurnPacket;
+import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.tidiness.Strings;
 
 public class MainGameStage extends GameStage {
 
-	public static final TooltipManager MANAGER = new TooltipManager();
 	public static boolean warInitiated = false;
 	
 	public HashMap<String, Player> players = new HashMap<String, Player>();
@@ -34,12 +34,12 @@ public class MainGameStage extends GameStage {
 	
 	public TurnPacket turn;
 	
+	public GameMap map;
+	
 	public float frameTime = 0f;
 
 	public MainGameStage(Viewport vp) {
 		super(vp);
-		MANAGER.instant();
-		
 	}
 
 	@Override
@@ -67,6 +67,10 @@ public class MainGameStage extends GameStage {
 		
 		fps = new Label("", labelStyle);
 		fps.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getWidth() / 2);
+		
+		for (String s : players.keySet()) {
+			map.addPlayer(players.get(s));
+		}
 
 		addActor(clientPlayer);
 		addActor(fps);
@@ -102,5 +106,11 @@ public class MainGameStage extends GameStage {
 
 	public void executeTurn(TurnPacket request) {
 		request.execute(this);
+	}
+
+	public void selectTarget(Card card) {
+//		top = center;
+//		center = bottom;
+//		bottom = Card.BLANK;
 	}
 }

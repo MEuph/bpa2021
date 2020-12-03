@@ -109,15 +109,13 @@ public class NuclearWarServer {
 				@Override
 				public void connected(Connection conn) {
 					System.out.println("CLIENT CONNECTED TO SERVER AS " + conn.getRemoteAddressTCP());
-
+					
 					StringPacket pdp = new StringPacket((String)Backendless.UserService.CurrentUser().getProperty("name"));
 					client.sendTCP(pdp);
 					StringPacket nameRequests = new StringPacket("updateNames");
 					System.out.println("SENT UPDATE NAMES REQUEST");
 					client.sendTCP(nameRequests);
 					System.out.println("SENT PDP AS TCP");
-					
-					super.connected(conn);
 				}
 				
 				@Override
@@ -166,7 +164,6 @@ public class NuclearWarServer {
 								((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
 						}
 					}
-					super.received(conn, dat);
 				}
 			});
 			

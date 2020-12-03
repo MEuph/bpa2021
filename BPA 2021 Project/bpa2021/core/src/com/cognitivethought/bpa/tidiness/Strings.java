@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 
 public class Strings {
 	
-	public static final String APP_ID = "C9C8C138-1803-0468-FFC0-A3452A1F9C00";
-	public static final String SECRET_KEY = "3153334D-BCEE-4F4F-BEE3-A452EB3FECDB";
+	public static final String APP_ID = "2F58B316-1219-B237-FFAF-2DE711766500";
+	public static final String SECRET_KEY = "8DED3655-07DA-4371-8B74-BFC89AB61CD1";
 	
 	public static String USER_ID = "";
 
@@ -89,7 +89,7 @@ public class Strings {
 	public static final String URL_HINJA = URL_COUNTRY_LOCATOR + "hinja.png";
 	public static final String URL_HURRIA = URL_COUNTRY_LOCATOR + "hurria.png";
 	public static final String URL_NIPPYO = URL_COUNTRY_LOCATOR + "nippyo.png";
-	public static final String URL_OUTLINE = URL_COUNTRY_LOCATOR + "outline.png";
+	public static final String URL_MAP_OUTLINE = URL_COUNTRY_LOCATOR + "outline.png";
 	public static final String URL_POPULA = URL_COUNTRY_LOCATOR + "popula.png";
 	public static final String URL_RADONIA = URL_COUNTRY_LOCATOR + "radonia.png";
 	public static final String URL_VISALIA = URL_COUNTRY_LOCATOR + "visalia.png";

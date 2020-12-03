@@ -24,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip.TextTooltipStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -84,8 +83,6 @@ public class Card extends Widget {
 	private LabelStyle descStyle;
 	private LabelStyle typeStyle;
 	
-	private TextTooltip t;
-	
 	boolean isOnPlacemat = false;
 	
 	public Card(Card card) {
@@ -120,8 +117,6 @@ public class Card extends Widget {
 		nameStyle = new LabelStyle();
 		descStyle = new LabelStyle();
 		typeStyle = new LabelStyle();
-		
-		t = card.t;
 
 		switch (type) {
 		case ANTI_MISSILE:
@@ -133,7 +128,10 @@ public class Card extends Widget {
 		case PROPAGANDA:
 			fontColor = Colors.FONT_PR;
 			break;
-		case SECRET:
+		case SECRET_SELF:
+			fontColor = Colors.FONT_SE;
+			break;
+		case SECRET_TARGET:
 			fontColor = Colors.FONT_SE;
 			break;
 		case SPECIAL:
@@ -179,7 +177,10 @@ public class Card extends Widget {
 		case PROPAGANDA:
 			fontColor = Colors.FONT_PR;
 			break;
-		case SECRET:
+		case SECRET_SELF:
+			fontColor = Colors.FONT_SE;
+			break;
+		case SECRET_TARGET:
 			fontColor = Colors.FONT_SE;
 			break;
 		case SPECIAL:
@@ -242,7 +243,6 @@ public class Card extends Widget {
 		ttPm.dispose();
 		ttStyle.label = descStyle;
 		ttStyle.wrapWidth = 1;
-		this.t = new TextTooltip(desc, MainGameStage.MANAGER, ttStyle);
 
 		l_type = new Label(type.toString().replace('_', ' '), typeStyle);
 		l_type.setColor(fontColor);
@@ -279,7 +279,10 @@ public class Card extends Widget {
 			case PROPAGANDA:
 				fill = Colors.FILL_PR;
 				break;
-			case SECRET:
+			case SECRET_TARGET:
+				fill = Colors.FILL_SE;
+				break;
+			case SECRET_SELF:
 				fill = Colors.FILL_SE;
 				break;
 			case SPECIAL:
@@ -317,8 +320,27 @@ public class Card extends Widget {
 		return ret;
 	}
 
-	public void play() {
-		if (type != Type.BLANK) System.out.println("Played card!");
+	public void play(MainGameStage mgs) {
+		switch (type) {
+		case BLANK:
+			break;
+		case SECRET_SELF:
+			if (populationDelta < 0) {
+				mgs.currentPlayer.removePopulation((int)Math.abs(populationDelta));
+				mgs.turn.data_removePopulation(mgs.currentPlayer.getName(), (int)Math.abs(populationDelta));
+			} else if (populationDelta > 0) {
+				mgs.currentPlayer.givePopulation((int)Math.abs(populationDelta));
+				mgs.turn.data_givePopulation(mgs.currentPlayer.getName(), (int)Math.abs(populationDelta));
+			}
+			break;
+		case DELIVERY_SYSTEM:
+			break;
+		case ANTI_MISSILE:
+			break;
+		default:
+			mgs.selectTarget(this);
+			break;
+		}
 	}
 
 	@Override
@@ -417,10 +439,6 @@ public class Card extends Widget {
 			} else {
 				batch.draw(tex, getX(), getY(), getWidth(), getHeight());
 				
-				if (!getListeners().contains(t, false)) {
-					addListener(t);
-				}
-				
 				// desc_wrap.setDebug(true, true);
 	
 				if (art != null) {
@@ -517,6 +535,7 @@ public class Card extends Widget {
 				long cap = (long) data.get("Capacity");
 				long quantity = (long) data.get("Quantity");
 				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path, short_desc);
+				card.id = id;
 				for (int i = 0; i < quantity + 1; i++)
 					DECK.add(card);
 			}
@@ -545,8 +564,10 @@ public class Card extends Widget {
 		switch (s) {
 		case "WARHEAD":
 			return Type.WARHEAD;
-		case "SECRET":
-			return Type.SECRET;
+		case "SECRET_SELF":
+			return Type.SECRET_SELF;
+		case "SECRET_TARGET":
+			return Type.SECRET_TARGET;
 		case "DELIVERY_SYSTEM":
 			return Type.DELIVERY_SYSTEM;
 		case "SPECIAL":
@@ -625,6 +646,6 @@ public class Card extends Widget {
 	}
 	
 	public enum Type {
-		WARHEAD, SECRET, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA, ANTI_MISSILE, BLANK;
+		WARHEAD, SECRET_TARGET, SECRET_SELF, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA, ANTI_MISSILE, BLANK;
 	}
 }

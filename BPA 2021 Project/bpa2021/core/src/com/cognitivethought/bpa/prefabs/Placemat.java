@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cognitivethought.bpa.external.GifDecoder;
+import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.tidiness.Strings;
 
 public class Placemat extends Actor {
@@ -195,9 +196,6 @@ public class Placemat extends Actor {
 	}
 
 	public void advance() {
-		top.play();
-		top = center;
-		center = bottom;
-		bottom = Card.BLANK;
+		top.play((MainGameStage)this.getParent().getStage());
 	}
 }

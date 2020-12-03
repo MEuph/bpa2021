@@ -130,6 +130,10 @@ public class TurnPacket {
 		}
 	}
 	
+	public void reset() {
+		data = "";
+	}
+	
 	/**
 	 * @return The player who issued the command to run the turn
 	 */

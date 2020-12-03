@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,8 +26,10 @@ public class MultiplayerQueueStage extends UIStage {
 	Label mq_errors, title;
 	TextButton back;
 	VerticalGroup mq_elements;
+	public SelectBox<String> select_country;
 	public ArrayList<String> player_names = new ArrayList<String>();
 	public VerticalGroup players;
+	
 	
 	public float delay = 0;
 	
@@ -45,6 +50,15 @@ public class MultiplayerQueueStage extends UIStage {
 		//	buttonStyle.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		buttonStyle.font = gen.generateFont(param);
+		
+		Skin s = new Skin(Gdx.files.absolute(Strings.URL_SKINS_DEFAULT_FILE), new TextureAtlas(Gdx.files.absolute(Strings.URL_SKINS_DEFAULT_ATLAS)));
+		select_country = new SelectBox<String>(s);
+		
+		select_country.setAlignment(Align.center);
+		select_country.setSize(400, 50);
+		select_country.setItems("Asguard", "Bagmad", "Bananaland", "Bermudania", 
+				"Bitland", "Great Bigland", "Han", "Hinja", "Hurria", "Nippyo", 
+				"Popula", "Radonia", "Visalia");
 		
 		mq_elements = new VerticalGroup();
 		mq_elements.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -95,6 +109,7 @@ public class MultiplayerQueueStage extends UIStage {
 			}
 		});
 		
+		mq_elements.addActor(select_country);
 		mq_elements.addActor(back);
 		mq_elements.addActor(mq_errors);
 		mq_elements.addActor(players);
@@ -103,6 +118,7 @@ public class MultiplayerQueueStage extends UIStage {
 		
 		addActor(title);
 		addActor(mq_elements);
+		addActor(select_country);
 		
 		refreshList();
 	}
