@@ -27,8 +27,8 @@ import com.cognitivethought.bpa.prefabs.Card;
  */
 public class TurnPacket {
 	
-	String issuer;
-	String data;
+	String issuer = "";
+	String data = "";
 	
 	public static final int ADD_DETERR = 0;
 	public static final int REVOKE = 1;
@@ -139,6 +139,10 @@ public class TurnPacket {
 	 */
 	public String getIssuer() {
 		return issuer;
+	}
+
+	public void setIssuer(String issuer) {
+		this.issuer = issuer;
 	}
 
 }

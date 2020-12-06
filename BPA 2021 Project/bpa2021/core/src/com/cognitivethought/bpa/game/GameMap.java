@@ -23,8 +23,8 @@ public class GameMap extends Widget {
 	public static final int ID_RADONIA = 12;
 	public static final int ID_VISALIA = 13;
 	
-	public Country[] countries = new Country[13];
-	public Player[] players = new Player[13];
+	public Country[] countries = new Country[14];
+	public Player[] players = new Player[14];
 	
 	public Sprite outline;
 	

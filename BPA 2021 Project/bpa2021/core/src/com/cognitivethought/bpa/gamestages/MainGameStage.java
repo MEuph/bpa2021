@@ -46,6 +46,7 @@ public class MainGameStage extends GameStage {
 	public void populate() {
 		super.populate();
 		
+		
 		players.put(Backendless.UserService.CurrentUser().getUserId(), new Player());
 		currentPlayer = players.get(Backendless.UserService.CurrentUser().getUserId());
 		
@@ -54,6 +55,9 @@ public class MainGameStage extends GameStage {
 		
 		nextTurn = new ImageButton(new Image(new Texture(Strings.URL_NEXT_TURN)).getDrawable());
 		nextTurn.setPosition(clientPlayer.placemat.getLeft().getX() - (currentPlayer.placemat.getLeft().getWidth() / 2), clientPlayer.placemat.getLeft().getY() - clientPlayer.placemat.getLeft().getHeight() - 40);
+
+		turn = new TurnPacket();
+		turn.setIssuer(clientPlayer.username);
 
 		nextTurn.addListener(new ClickListener() {
 			@Override
@@ -67,6 +71,8 @@ public class MainGameStage extends GameStage {
 		
 		fps = new Label("", labelStyle);
 		fps.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getWidth() / 2);
+		
+		map = new GameMap();
 		
 		for (String s : players.keySet()) {
 			map.addPlayer(players.get(s));

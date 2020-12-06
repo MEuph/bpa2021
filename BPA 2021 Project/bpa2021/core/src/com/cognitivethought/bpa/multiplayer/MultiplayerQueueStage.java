@@ -36,6 +36,7 @@ public class MultiplayerQueueStage extends UIStage {
 	public SelectBox<String> select_country;
 	public ArrayList<String> player_names = new ArrayList<String>();
 	public VerticalGroup players;
+	public boolean start = false;
 	
 	public float delay = 0;
 	
@@ -160,7 +161,9 @@ public class MultiplayerQueueStage extends UIStage {
 		start_game.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Launcher.setStage(Launcher.game_stage);
+				StringPacket startPacket = new StringPacket("@start@" + Integer.toString(NuclearWarServer.code));
+				NuclearWarServer.server.sendToAllTCP(startPacket);
+//				Launcher.setStage(Launcher.game_stage);
 			}
 		});
 		
@@ -226,6 +229,10 @@ public class MultiplayerQueueStage extends UIStage {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
+		}
+		
+		if (start) {
+			Launcher.setStage(Launcher.game_stage);
 		}
 	}
 	

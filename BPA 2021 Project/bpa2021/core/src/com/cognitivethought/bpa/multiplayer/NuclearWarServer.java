@@ -109,10 +109,6 @@ public class NuclearWarServer {
 		}
 	}
 	
-	public static void startGame() {
-		Launcher.setStage(Launcher.game_stage);
-	}
-	
 	public static void closeServer() {
 		StringPacket exit = new StringPacket("@disconnect");
 		server.sendToAllTCP(exit);
@@ -154,7 +150,7 @@ public class NuclearWarServer {
 						StringPacket data = (StringPacket)dat;
 						System.out.println("CLIENT RECEIVED PDP");
 						if(data.data.regionMatches(true, 0, "@start@" + Integer.toString(NuclearWarServer.code), 0, 7)) {
-							startGame();
+							((MultiplayerQueueStage)Launcher.mq_stage).start = true;
 						} else if (data.data.regionMatches(true, 0, "packet_updatedNames;", 0, 20)) {
 							String[] names = data.data.split(";");
 							System.out.println("CLIENT RECEIVED UPDATED NAMES\nBEGINNING DEBUG");
