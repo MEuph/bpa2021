@@ -57,6 +57,7 @@ public class LoginStage extends LauncherStage {
 			public void handleResponse(BackendlessUser response) {
 				login_errors.getStyle().fontColor = Colors.TEXT_INFO;
 				login_errors.setText("Successfully logged in as " + response.getProperty("name"));
+				Launcher.currentUser = response;
 				login_elements.removeActor(login_submit);
 				login_elements.removeActor(login_errors);
 				login_elements.removeActor(login_newAccount);

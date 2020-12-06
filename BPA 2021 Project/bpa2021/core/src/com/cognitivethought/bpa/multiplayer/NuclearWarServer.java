@@ -2,6 +2,7 @@ package com.cognitivethought.bpa.multiplayer;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 import com.backendless.Backendless;
 import com.cognitivethought.bpa.game.Player;
@@ -10,6 +11,7 @@ import com.cognitivethought.bpa.launcher.Launcher;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
@@ -57,6 +59,7 @@ public class NuclearWarServer {
 								names += ((MultiplayerQueueStage)Launcher.mq_stage).player_names.get(i) + ";";
 							}
 							StringPacket names_packet = new StringPacket(names);
+							System.out.println("SENDING NAMES PACKET " + names_packet.data);
 							server.sendToAllTCP(names_packet);
 						} else if (((StringPacket)req).toString().contains("@remove$")) {
 							String player_id = ((StringPacket)req).toString().substring(8);
@@ -64,11 +67,29 @@ public class NuclearWarServer {
 							System.out.println("SERVER SENDING REMOVE PLAYER REQUEST TO ALL CLIENTS");
 							server.sendToAllTCP((StringPacket)req);
 							conn.close();
+						}  else if (req.toString().charAt(0) == '?') {
+							if (req.toString().substring(1, 6).contains("ready")) {
+								System.out.println("SERVER RECEIVED UPDATED REQUEST ON WHETHER OR NOT PLAYER IS READY TO PLAY");
+								server.sendToAllTCP(req);
+							}
+						} else if (req.toString().contains("%change%")) {
+							String[] data = ((StringPacket) req).data.split(";");
+							String player_name = data[1];
+							int country_id = Integer.parseInt(data[2]);
+							StringPacket packet = new StringPacket("%change%;" + player_name + ";" + country_id);
+							server.sendToAllTCP(packet);
 						} else {
 							System.out.println("SERVER RECEIVED PDP " + req.toString());
 							StringPacket pdp = (StringPacket)req;
 							System.out.println(pdp.data);
 							server.sendToAllTCP(pdp);
+						}
+					} else if (req instanceof FrameworkMessage.KeepAlive) {
+						if (server.getConnections().size() != ((MultiplayerQueueStage)Launcher.mq_stage).player_names.size()) {
+							System.out.println("SENDING OUT UPDATE PACKET\nNUM CONNECTIONS: " + server.getConnections().size()
+									+ "\nNUM SUPPOSED PLAYERS: " + ((MultiplayerQueueStage)Launcher.mq_stage).player_names.size());
+							StringPacket update = new StringPacket("?update");
+							server.sendToAllTCP(update);
 						}
 					}
 				}
@@ -95,6 +116,7 @@ public class NuclearWarServer {
 	public static void closeServer() {
 		StringPacket exit = new StringPacket("@disconnect");
 		server.sendToAllTCP(exit);
+		server = null;
 	}
 	
 	public static void joinServer(int code) throws IOException {
@@ -135,12 +157,15 @@ public class NuclearWarServer {
 							startGame();
 						} else if (data.data.regionMatches(true, 0, "packet_updatedNames;", 0, 20)) {
 							String[] names = data.data.split(";");
+							System.out.println("CLIENT RECEIVED UPDATED NAMES\nBEGINNING DEBUG");
+							System.out.println(Arrays.toString(names));
 							for (int i = 1; i < names.length; i++) {
 								if (!((MultiplayerQueueStage)Launcher.mq_stage).player_names.contains(names[i])) {
-									((MainGameStage)Launcher.game_stage).players.put(data.data, new Player());
+									System.out.println(names[i] + " IS NOT CONTAINED IN PLAYER_NAMES");
+									((MainGameStage)Launcher.game_stage).players.put(names[i], new Player());
 									((MultiplayerQueueStage)Launcher.mq_stage).player_names.add(names[i]);
-									if (((MultiplayerQueueStage)Launcher.mq_stage).players != null)
-										((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
+								} else {
+									System.out.println(names[i] + " IS CONTAINED IN PLAYER_NAMES");
 								}
 							}
 						} else if (data.data.regionMatches(true, 0, "@remove$", 0, 8)) {
@@ -157,6 +182,26 @@ public class NuclearWarServer {
 							}
 						} else if (data.toString().equals("@disconnect")) {
 							disconnectClient();
+						} else if (data.toString().charAt(0) == '?') {
+							if (data.toString().substring(1, 6).contains("ready")) {
+								boolean ready = Boolean.parseBoolean(data.toString().split(":")[1]);
+								String user = data.toString().split(":")[2];
+								((MainGameStage)Launcher.game_stage).players.get(user).ready = ready;
+								if (((MultiplayerQueueStage)Launcher.mq_stage).players != null)
+									((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
+							} else if (data.toString().substring(1, 7).contains("update")) {
+								((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
+							}
+						}  else if (data.toString().contains("%change%")) {
+							String[] change_data = ((StringPacket) dat).data.split(";");
+							String player_name = change_data[1];
+							int country_id = Integer.parseInt(change_data[2]);
+//							if (player_name.equals((String)Launcher.currentUser.getProperty("name"))) return;
+//							else {
+								((MainGameStage)Launcher.game_stage).players.get(player_name).country_id = country_id;
+								if (((MultiplayerQueueStage)Launcher.mq_stage).players != null)
+									((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
+//							}
 						} else {
 							((MainGameStage)Launcher.game_stage).players.put(data.data, new Player());
 							((MultiplayerQueueStage)Launcher.mq_stage).player_names.add(data.data);
@@ -171,13 +216,15 @@ public class NuclearWarServer {
 			InetAddress address = client.discoverHost(code, 5000);
 			try {
 				client.connect(5000, address, code - 100, code);
-			} catch (IllegalArgumentException e) {
+			} catch (Exception e) {
 				System.err.println("SERVER DOES NOT EXIST");
 			}
 		}
 	}
 	
 	public static void disconnectClient() {
+		server = null;
+		
 		System.out.println("CLIENT DISCONNECTED");
 		
 		StringPacket removePlayer = new StringPacket("@remove$" + (String)Backendless.UserService.CurrentUser().getProperty("name"));

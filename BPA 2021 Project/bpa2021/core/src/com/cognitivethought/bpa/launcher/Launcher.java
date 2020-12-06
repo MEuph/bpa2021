@@ -23,6 +23,7 @@ import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.multiplayer.HostServerStage;
 import com.cognitivethought.bpa.multiplayer.JoinServerStage;
 import com.cognitivethought.bpa.multiplayer.MultiplayerQueueStage;
+import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
 import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.tidiness.Strings;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
@@ -115,6 +116,23 @@ public class Launcher extends ApplicationAdapter {
 							
 							@Override
 							public void handleResponse(BackendlessUser response) {
+								Launcher.currentUser = response;
+								System.out.println("Worked");
+							}
+							
+							@Override
+							public void handleFault(BackendlessFault fault) {
+								System.err.println("Failed");
+							}
+						});
+						
+						Launcher.setStage(main_stage);
+					} else if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
+							Backendless.UserService.login("MEuph2", "603Euph_", new AsyncCallback<BackendlessUser>() {
+							
+							@Override
+							public void handleResponse(BackendlessUser response) {
+								Launcher.currentUser = response;
 								System.out.println("Worked");
 							}
 							
@@ -167,7 +185,7 @@ public class Launcher extends ApplicationAdapter {
 	}
 
 	public void update() {
-		
+		currentStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 	}
 
 	@Override
@@ -185,6 +203,14 @@ public class Launcher extends ApplicationAdapter {
 
 	@Override
 	public void dispose() {
+		if (NuclearWarServer.server != null) {
+			NuclearWarServer.server.sendToAllTCP("@disconnect");
+		}
+		
+		if (NuclearWarServer.client != null) {
+			NuclearWarServer.disconnectClient();
+		}
+		
 		na_stage.dispose();
 		fp_stage.dispose();
 		login_stage.dispose();

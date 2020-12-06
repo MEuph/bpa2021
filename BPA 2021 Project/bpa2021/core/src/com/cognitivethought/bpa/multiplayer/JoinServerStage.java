@@ -91,15 +91,20 @@ public class JoinServerStage extends UIStage {
 		join.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				boolean success = false;
+				
 				try {
 					NuclearWarServer.joinServer(Integer.parseInt(server_code.getText()));
 					jss_errors.setText("Trying to connect...");
+					success = true;
 				} catch (IOException e) {
 					jss_errors.setText("Error, couldn\'t connect to server!");
 				}
 				
-				Launcher.setStage(Launcher.mq_stage);
-				jss_errors.setText("Connected succesfully");
+				if (success) {
+					NuclearWarServer.code = Integer.parseInt(server_code.getText());
+					Launcher.setStage(Launcher.mq_stage);
+				}
 			}
 		});
 		

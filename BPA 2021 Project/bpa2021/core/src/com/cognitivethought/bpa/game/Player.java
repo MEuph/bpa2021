@@ -51,6 +51,7 @@ public class Player extends Group {
 	public String username;
 	
 	public boolean skipNextTurn = false;
+	public boolean ready = false;
 	
 	public Player() {
 	}
