@@ -53,8 +53,12 @@ public class Strings {
 	public static final String URL_UBUNTU = URL_LOCATOR + "fonts/used/ubuntu/Ubuntu-Regular.ttf";
 	public static final String URL_ARIAL_UNICODE = URL_LOCATOR + "fonts/used/arial/arial-unicode-ms.ttf";
 	
-	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "skins/default/skin/uiskin.json";
-	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/default/skin/uiskin.atlas";
+//	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "skins/default/skin/uiskin.json";
+//	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/default/skin/uiskin.atlas";
+	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "skins/test/skin/skin.json";
+	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/test/skin/skin.atlas";
+	
+	public static final String URL_IMG_UI_DARK = URL_LOCATOR + "images/ui/dark.png";
 	
 	public static final String URL_TEAPOT = URL_LOCATOR + "models/teapot.obj";
 	public static final String URL_TEAPOT_TEXTURE = URL_LOCATOR + "textures/wood.png";
@@ -77,6 +81,10 @@ public class Strings {
 	public static final String URL_PLACEMAT_SPOTS = URL_LOCATOR + "placemat/placematspots.png";
 	public static final String URL_PLACEMAT_BACKGROUND = URL_LOCATOR + "placemat/placematbg.gif";
 	public static final String URL_PLACEMAT_CRACK = URL_LOCATOR + "placemat/crack.png";
+	
+	public static final String URL_TITLE_BACKGROUND_ON = URL_LOCATOR + "images/ui/title background.png";
+	public static final String URL_TITLE_BACKGROUND_OFF = URL_LOCATOR + "images/ui/title background off.png";
+	public static final String URL_MAP_BACKGROUND = URL_LOCATOR + "images/ui/mapbg.png";
 	
 	public static final String URL_COUNTRY_LOCATOR = URL_LOCATOR + "images/map/countries/";
 	public static final String URL_ASGUARD = URL_COUNTRY_LOCATOR + "asguard.png";

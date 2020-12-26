@@ -117,19 +117,19 @@ public class Placemat extends Actor {
 		this.right = right;
 	}
 
-	public Card getTopCard() {
+	public Card getBottomCard() {
 		return bottom;
 	}
 
-	public void setTop(Card top) {
+	public void setBottom(Card top) {
 		this.bottom = top;
 	}
 
-	public Card getBottom() {
+	public Card getTopCard() {
 		return top;
 	}
 
-	public void setBottom(Card bottom) {
+	public void setTopCard(Card bottom) {
 		this.top = bottom;
 	}
 
@@ -195,7 +195,46 @@ public class Placemat extends Actor {
 		batch.draw(outline, getX(), getY(), getWidth(), getHeight());
 	}
 
-	public void advance() {
-		top.play((MainGameStage)this.getParent().getStage());
+	public void advance(MainGameStage mgs, String advancingPlayer) {
+		// TODO: Fix the executing of turns
+		System.out.println("Advancing " + advancingPlayer + "\'s placemat");
+		if (top.getType().equals(Card.Type.DELIVERY_SYSTEM)) {
+			if (getCenter().getType().equals(Card.Type.WARHEAD)) {
+				getCenter().play(((MainGameStage)this.getParent().getStage()));
+			} else {
+				getTopCard().discard(mgs, advancingPlayer);
+			}
+		} else if (top.getType().equals(Card.Type.WARHEAD)) {
+			if (!getLeft().getType().equals(Card.Type.DELIVERY_SYSTEM) && !getRightCard().getType().equals(Card.Type.DELIVERY_SYSTEM)) {
+				top.discard(mgs, advancingPlayer);
+			} else {
+				chooseDeliverySystem();
+			}
+		} else {
+			if (!top.equals(Card.BLANK))
+				top.play((MainGameStage)this.getParent().getStage());
+			System.out.println("ADVANCING");
+			setTopCard(getCenter());
+			setCenter(getBottomCard());
+			setBottom(Card.BLANK);
+		}
+		
+		if (getCenter().equals(Card.BLANK)) {
+			if (!getBottomCard().equals(Card.BLANK)) {
+				setCenter(getBottomCard());
+				setBottom(Card.BLANK);
+			}
+		}
+		
+		if (getTopCard().equals(Card.BLANK)) {
+			if (!getCenter().equals(Card.BLANK)) {
+				setTopCard(getCenter());
+				setCenter(Card.BLANK);
+			}
+		}
+	}
+	
+	public void chooseDeliverySystem() {
+		// TODO: Implement the choosing of a delivery system based on left or right card
 	}
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,8 +29,16 @@ public abstract class UIStage extends Stage {
 	public Pixmap labelBg;
 	public LabelStyle labelStyle;
 	
+	float flicker = 0f;
+	Sprite background;
+	Texture on, off;
+	
 	public UIStage(Viewport vp) {
 		super(vp);
+		
+		on = new Texture(Strings.URL_TITLE_BACKGROUND_ON);
+		off = new Texture(Strings.URL_TITLE_BACKGROUND_OFF);
+		background = new Sprite(on);
 		
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -102,5 +111,17 @@ public abstract class UIStage extends Stage {
 	}
 
 	public abstract void clearFields();
+	
+	@Override
+	public void draw() {
+		act();
+		flicker += ((1f / (Math.random() * Math.random()))) / 5000;
+		getBatch().begin();
+		background = new Sprite(flicker > 1 ? off : on);
+		flicker = flicker > 2 ? 0 : flicker;
+		getBatch().draw(background, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		getBatch().end();
+		super.draw();
+	}
 	
 }

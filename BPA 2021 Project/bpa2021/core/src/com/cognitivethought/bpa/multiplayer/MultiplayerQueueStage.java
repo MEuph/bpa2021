@@ -1,6 +1,9 @@
 package com.cognitivethought.bpa.multiplayer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -20,16 +23,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cognitivethought.bpa.game.GameMap;
+import com.cognitivethought.bpa.game.Player;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.prefabs.GameMap;
 import com.cognitivethought.bpa.tidiness.Colors;
 import com.cognitivethought.bpa.tidiness.Strings;
 import com.cognitivethought.bpa.uistages.UIStage;
 
 public class MultiplayerQueueStage extends UIStage {
 	
-	Label mq_errors, title, code;
+	Label mq_errors, code;
 	TextButton back, start_game;
 	VerticalGroup mq_elements;
 	CheckBox mq_ready;
@@ -37,6 +41,8 @@ public class MultiplayerQueueStage extends UIStage {
 	public ArrayList<String> player_names = new ArrayList<String>();
 	public VerticalGroup players;
 	public boolean start = false;
+	
+	String[] debugUsers = new String[] {"XD_gamer2023", "meme.mlgpro91", "totallY_areal.player4013", "402funnynumbers6029"};
 	
 	public float delay = 0;
 	
@@ -110,10 +116,6 @@ public class MultiplayerQueueStage extends UIStage {
 		LabelStyle style = new LabelStyle();
 		style.font = gen.generateFont(param);
 		style.fontColor = Color.RED;
-		title = new Label(Strings.MUI_TITLE, style);
-//		title.scaleBy(scale);
-		title.setAlignment(Align.center);
-		title.setPosition(mq_elements.getX() - (title.getWidth() / 2), (int)(getViewport().getScreenHeight() * 1.3));
 		
 		players = new VerticalGroup();
 		players.align(Align.center);
@@ -161,9 +163,34 @@ public class MultiplayerQueueStage extends UIStage {
 		start_game.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				StringPacket startPacket = new StringPacket("@start@" + Integer.toString(NuclearWarServer.code));
-				NuclearWarServer.server.sendToAllTCP(startPacket);
-//				Launcher.setStage(Launcher.game_stage);
+				boolean duplicates = false;
+				boolean none = false;
+				ArrayList<Integer> ids = new ArrayList<>();
+				Iterator it = ((MainGameStage)Launcher.game_stage).players.entrySet().iterator();
+			    while (it.hasNext()) {
+			        Map.Entry pair = (Map.Entry)it.next();
+			        ids.add(((MainGameStage)Launcher.game_stage).players.get(pair.getKey()).country_id);
+			    }
+			    
+			    for (int i = 0; i < ids.size() && !duplicates && !none; i++) {
+			    	if (i > 0) {
+			    		if (ids.get(i - 1) == ids.get(i)) {
+			    			duplicates = true;
+			    		}			    		
+			    	}
+			    	
+			    	if (ids.get(i) == GameMap.ID_NONE) {
+			    		none = true;
+			    	}
+			    }
+			    
+			    if (!duplicates && !none) {
+				    StringPacket startPacket = new StringPacket("@start@" + Integer.toString(NuclearWarServer.code));
+					NuclearWarServer.server.sendToAllTCP(startPacket);
+	//				Launcher.setStage(Launcher.game_stage);
+			    } else {
+			    	mq_errors.setText("Error! Please make sure each player has selected a unique country!");
+			    }
 			}
 		});
 		
@@ -179,16 +206,16 @@ public class MultiplayerQueueStage extends UIStage {
 		});
 		
 //		mq_elements.addActor(mq_errors);
+		mq_elements.addActor(select_country);
 		mq_elements.addActor(players);
 		mq_elements.addActor(code);
 		mq_elements.addActor(back);
 		mq_elements.addActor(mq_ready);
-		mq_elements.addActor(select_country);
-
+		
 		mq_elements.space(30);
 		mq_elements.align(Align.center);
 		
-		addActor(title);
+		addActor(mq_errors);
 		addActor(mq_elements);
 		
 		refreshList();
@@ -206,20 +233,22 @@ public class MultiplayerQueueStage extends UIStage {
 		
 		if (NuclearWarServer.server != null) {
 			int x = 0;
-			for (int i = 0; i < (((MainGameStage)Launcher.game_stage).players.size()); i++) {
+			for (int i = 0; i < player_names.size(); i++) {
 				if ((((MainGameStage)Launcher.game_stage).players.get(player_names.get(i)).ready)) {
 					x++;
 				}
 			}
 			
-			// If the majority of players are ready
-			if (x >= ((float)(((MainGameStage)Launcher.game_stage).players.size())) / 2) {
-				if (start_game.isDisabled()) {
-					start_game.setDisabled(false);
-				}
-			} else {
-				if (!start_game.isDisabled()) {
-					start_game.setDisabled(true);
+			if (start_game != null) {
+				// If the majority of players are ready
+				if (x >= ((float)(((MainGameStage)Launcher.game_stage).players.size())) / 2) {
+					if (start_game.isDisabled()) {
+						start_game.setDisabled(false);
+					}
+				} else {
+					if (!start_game.isDisabled()) {
+						start_game.setDisabled(true);
+					}
 				}
 			}
 		}
@@ -251,7 +280,7 @@ public class MultiplayerQueueStage extends UIStage {
 
 	@Override
 	public void clearFields() {
-
+		start = false;
 	}
 
 }

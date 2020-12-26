@@ -65,7 +65,7 @@
 			"Weight": 20,
 			"Description": "Destroys 5 Million",
 			"Short Desc": "Kill 5M",
-			"Quantity": 20
+			"Quantity": 200
 		}
 	],
 	
@@ -100,7 +100,7 @@
 	"secret_revolution": [ 
 		{ 
 			"Name": "REVOLUTION!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -113,7 +113,7 @@
 	"secret_riots": [ 
 		{ 
 			"Name": "Riots!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -10,
 			"Capacity": 0,
 			"Weight": 0,
@@ -126,7 +126,7 @@
 	"secret_twister": [ 
 		{ 
 			"Name": "Twister!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": -10,
 			"Capacity": 0,
 			"Weight": 0,
@@ -139,7 +139,7 @@
 	"secret_annex": [ 
 		{ 
 			"Name": "WARCRIME!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -25,
 			"Capacity": 0,
 			"Weight": 0,
@@ -152,7 +152,7 @@
 	"secret_ghost": [ 
 		{ 
 			"Name": "Without a trace...",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -25,
 			"Capacity": 0,
 			"Weight": 0,
@@ -165,7 +165,7 @@
 	"secret_recession": [ 
 		{ 
 			"Name": "RECESSION!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -178,7 +178,7 @@
 	"secret_eco_terrorism": [ 
 		{ 
 			"Name": "NO NUKES!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -191,7 +191,7 @@
 	"secret_lose10mil": [ 
 		{ 
 			"Name": "YOU LOSE 10 MILLION",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": -10,
 			"Capacity": 0,
 			"Weight": 0,
@@ -204,7 +204,7 @@
 	"secret_retire": [ 
 		{ 
 			"Name": "RETIRING!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -217,7 +217,7 @@
 	"secret_virus": [ 
 		{ 
 			"Name": "COMPUTER VIRUS!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -230,7 +230,7 @@
 	"secret_ban": [ 
 		{ 
 			"Name": "TEST BAN!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -243,7 +243,7 @@
 	"secret_budget": [ 
 		{ 
 			"Name": "COMEDIC NAMING!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -256,7 +256,7 @@
 	"secret_taxes": [ 
 		{ 
 			"Name": "TAX HIKE!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 5,
 			"Capacity": 0,
 			"Weight": 0,
@@ -269,7 +269,7 @@
 	"secret_peace": [ 
 		{ 
 			"Name": "PEACE CORPS!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -282,7 +282,7 @@
 	"secret_massacre": [ 
 		{ 
 			"Name": "MASSACRE!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -295,7 +295,7 @@
 	"secret_summit": [ 
 		{ 
 			"Name": "Summit Talks",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -308,7 +308,7 @@
 	"secret_mars": [ 
 		{ 
 			"Name": "MARS PROBE!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 1,
 			"Capacity": 0,
 			"Weight": 0,
@@ -321,7 +321,7 @@
 	"secret_suicide_squad": [ 
 		{ 
 			"Name": "SUICIDE BOMBERS!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -1,
 			"Capacity": 0,
 			"Weight": 0,
@@ -334,7 +334,7 @@
 	"secret_moon_landing": [ 
 		{ 
 			"Name": "MOON LANDING!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -347,7 +347,7 @@
 	"secret_baby_boom": [ 
 		{ 
 			"Name": "BABY BOOM!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 5,
 			"Capacity": 0,
 			"Weight": 0,
@@ -360,7 +360,7 @@
 	"secret_market_boom": [ 
 		{ 
 			"Name": "Stock Market Super Boom!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -373,7 +373,7 @@
 	"secret_hippies": [ 
 		{ 
 			"Name": "BAN THE BOMB!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -386,7 +386,7 @@
 	"secret_alcohol": [ 
 		{ 
 			"Name": "DRUNK AT THE U.N.!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -399,7 +399,7 @@
 	"secret_grandmas": [ 
 		{ 
 			"Name": "GRANDMAS?!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": -2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -412,7 +412,7 @@
 	"secret_shoes": [ 
 		{ 
 			"Name": "Hoarder!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": 2,
 			"Capacity": 0,
 			"Weight": 0,
@@ -425,7 +425,7 @@
 	"secret_time_travel": [ 
 		{ 
 			"Name": "Time Travel!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -438,7 +438,7 @@
 	"secret_lizard_monster": [ 
 		{ 
 			"Name": "Klodzilla!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -5,
 			"Capacity": 0,
 			"Weight": 0,
@@ -451,7 +451,7 @@
 	"secret_rearm": [ 
 		{ 
 			"Name": "REARMAMENT!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -464,7 +464,7 @@
 	"secret_recall": [ 
 		{ 
 			"Name": "RECALL!",
-			"Type": "SECRET",
+			"Type": "SECRET_SELF",
 			"PopulationDelta": 0,
 			"Capacity": 0,
 			"Weight": 0,
@@ -477,7 +477,7 @@
 	"secret_germ": [ 
 		{ 
 			"Name": "Super Germ!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -25,
 			"Capacity": 0,
 			"Weight": 0,
@@ -490,7 +490,7 @@
 	"secret_earthquake": [ 
 		{ 
 			"Name": "EARTHQUAKE!",
-			"Type": "SECRET",
+			"Type": "SECRET_TARGET",
 			"PopulationDelta": -10,
 			"Capacity": 0,
 			"Weight": 0,
@@ -510,7 +510,7 @@
 			"Weight": 0,
 			"Description": "Carries any combination of warheads up to 50 megatons",
 			"Short Desc": "Carries 50 Megs",
-			"Quantity": 6
+			"Quantity": 600
 		}
 	],
 	
@@ -531,13 +531,14 @@
 	"delivery_saturn": [ 
 		{ 
 			"Name": "Saturn Missile",
+			"Consumable": true,
 			"Type": "DELIVERY_SYSTEM",
 			"Path": "cardart/delivery/saturncard.png",
 			"PopulationDelta": 0,
 			"Capacity": 100,
 			"Weight": 0,
-			"Description": "Carries one warhead up to 100 megatons",
-			"Short Desc": "Carries one warhead",
+			"Description": "Carries one warhead up to 100 megatons. Discard after use",
+			"Short Desc": "Carries one warhead. Consumable",
 			"Quantity": 3
 		}
 	],
@@ -545,13 +546,14 @@
 	"delivery_atlas": [ 
 		{ 
 			"Name": "Atlas Missile",
+			"Consumable": true,
 			"Type": "DELIVERY_SYSTEM",
 			"Path": "cardart/delivery/atlascard.png",
 			"PopulationDelta": 0,
 			"Capacity": 20,
 			"Weight": 0,
-			"Description": "Carries one warhead up to 20 megatons",
-			"Short Desc": "Carries one nuke up to 20 megs",
+			"Description": "Carries one warhead up to 20 megatons. Discard after use",
+			"Short Desc": "Carries one nuke up to 20 megs. Consumable",
 			"Quantity": 9
 		}
 	],
@@ -572,13 +574,14 @@
 	"delivery_polaris": [ 
 		{ 
 			"Name": "Polaris",
+			"Consumable": true,
 			"Type": "DELIVERY_SYSTEM",
 			"Path": "cardart/delivery/polariscard.png",
 			"PopulationDelta": 0,
 			"Capacity": 100,
 			"Weight": 0,
-			"Description": "Carries one warhead up to 10 megatons",
-			"Short Desc": "Carries 10 megs",
+			"Description": "Carries one warhead up to 10 megatons. Discard after use",
+			"Short Desc": "Carries 10 megs. Consumable",
 			"Quantity": 9
 		}
 	],
@@ -599,12 +602,13 @@
 	"delivery_scud": [ 
 		{ 
 			"Name": "Scud Missile",
+			"Consumable": true,
 			"Type": "DELIVERY_SYSTEM",
 			"PopulationDelta": 0,
 			"Capacity": 20,
 			"Weight": 0,
-			"Description": "Carries up to 20 megatons. Can be shot down by patriot <see actual card for more rules>",
-			"Short Desc": "Carries up to 20 megs",
+			"Description": "Carries up to 20 megatons. Can be shot down by patriot <see actual card for more rules>. Discard after use",
+			"Short Desc": "Carries up to 20 megs. Consumable",
 			"Quantity": 9
 		}
 	],

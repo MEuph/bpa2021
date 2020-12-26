@@ -53,14 +53,18 @@ public class TurnPacket {
 	
 	public void data_givePopulation(String target, int quantity) {
 		data += "$" + GIVE + ";" + target + ";" + quantity + ";";
+		System.out.println("UPDATED DATA TO " + data);
 	}
 	
 	public void data_removePopulation(String target, int quantity) {
 		data += "$" + TAKE + ";" + target + ";" + quantity + ";";
+		System.out.println("UPDATED DATA TO " + data);
 	}
 	
 	public void data_addCard(String target, String card_id) {
 		data += "$" + ADD_CARD + ";" + target + ";" + card_id + ";";
+		System.out.println("id: " + card_id);
+		System.out.println("UPDATED DATA TO " + data);
 	}
 	
 	public void exec_addDeterrent(MainGameStage mgs, String target, String deterrent_id, int leftOrRight) {
@@ -93,7 +97,7 @@ public class TurnPacket {
 	public void exec_removePopulation(MainGameStage mgs, String target, int quantity) {
 		mgs.players.get(target).removePopulation(quantity);
 		
-		System.out.println("Remoked " + quantity + "M population from " + target);
+		System.out.println("Removed " + quantity + "M population from " + target);
 	}
 	
 	public void exec_addCard(MainGameStage mgs, String target, String card_id) {
@@ -101,17 +105,19 @@ public class TurnPacket {
 		for (;i < Card.DECK.size(); i++) { 
 			if (Card.DECK.get(i).getId().equals(card_id)) break;
 		}
-		mgs.players.get(target).placemat.advance();
+		System.out.println("TARGET IS " + target);
 		mgs.players.get(target).placemat.setBottom(Card.DECK.get(i));
 		
 		System.out.println("Put card " + card_id + " onto " + target + "\'s placemat");
 	}
 	
 	public void execute(MainGameStage mgs) {
+//		if (getIssuer().equals(mgs.clientPlayer.username)) return;
+		if (data.isEmpty()) return;
 		String[] commands = data.split("$");
 		for (int i = 0; i < commands.length; i++) {
 			String[] comm = commands[i].split(";");
-			switch (Integer.parseInt(comm[0])) {
+			switch (Integer.parseInt(comm[0].substring(1))) {
 			case ADD_DETERR:
 				exec_addDeterrent(mgs, comm[1], comm[2], Integer.parseInt(comm[3]));
 				break;

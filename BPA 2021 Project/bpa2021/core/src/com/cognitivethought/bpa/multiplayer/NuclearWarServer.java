@@ -46,11 +46,12 @@ public class NuclearWarServer {
 			server.addListener(new Listener() {
 				@Override
 				public void received(Connection conn, Object req) {
+					if (server == null) return;
 					System.out.println("CONNECTION " + conn.getRemoteAddressTCP() + " SENT DATA " + req.toString());
 					if (req instanceof TurnPacket) {
 						TurnPacket request = (TurnPacket)req;
-						System.out.println("SERVER RECEIVED TP " + req.toString());
-						server.sendToAllTCP(request);
+						System.out.println("SERVER RECEIVED TP " + req.toString() + ", " + request.data);
+						server.sendToAllExceptTCP(conn.getID(), request);
 					} else if (req instanceof StringPacket) {
 						if (((StringPacket) req).data.equals("updateNames")) {
 							System.out.println("CONECTION " + conn.getRemoteAddressTCP() + " REQUESTED AN UPDATED LIST OF PLAYERS");
@@ -78,6 +79,8 @@ public class NuclearWarServer {
 							int country_id = Integer.parseInt(data[2]);
 							StringPacket packet = new StringPacket("%change%;" + player_name + ";" + country_id);
 							server.sendToAllTCP(packet);
+						} else if (req.toString().contains("#clickedCountry;")) {
+							server.sendToTCP(conn.getID(), req);
 						} else {
 							System.out.println("SERVER RECEIVED PDP " + req.toString());
 							StringPacket pdp = (StringPacket)req;
@@ -138,11 +141,15 @@ public class NuclearWarServer {
 				
 				@Override
 				public void received(Connection conn, Object dat) {
+					if (client == null) return;
+					if (server == null) disconnectClient();
 					if (dat instanceof TurnPacket) {
 						TurnPacket data = (TurnPacket)dat;
 						if (((MainGameStage)Launcher.game_stage).players.containsKey(data.getIssuer())) {
 							System.out.println("RECEIVED TURN PACKET " + data.data);
-							((MainGameStage)Launcher.game_stage).executeTurn(data);
+							data.execute((MainGameStage)Launcher.game_stage);
+							if (data.getIssuer() != ((MainGameStage)Launcher.game_stage).clientPlayer.username)
+								((MainGameStage)Launcher.game_stage).players.get(data.getIssuer()).placemat.advance(((MainGameStage)Launcher.game_stage), data.getIssuer());
 						} else {
 							System.err.println("Invalid username, possible hacking attempt");
 						}
@@ -198,6 +205,12 @@ public class NuclearWarServer {
 								if (((MultiplayerQueueStage)Launcher.mq_stage).players != null)
 									((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
 //							}
+						} else if (data.toString().contains("#clickedCountry;")) {
+							String[] cc_data = ((StringPacket)data).data.split(";");
+//							String sender = cc_data[1];
+//							if (sender.equals(((MainGameStage)Launcher.game_stage).clientPlayer.username)) return;
+							int country_id = Integer.parseInt(cc_data[2].trim());
+							((MainGameStage)Launcher.game_stage).clickedCountry = country_id;
 						} else {
 							((MainGameStage)Launcher.game_stage).players.put(data.data, new Player());
 							((MultiplayerQueueStage)Launcher.mq_stage).player_names.add(data.data);

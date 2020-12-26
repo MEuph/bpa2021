@@ -9,9 +9,10 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.resizable = false;
-		config.width = 640;
-		config.height = 480;
 		config.title = Strings.NAME;
+//		config.width = (int)(1280 / 1.5);
+//		config.height = (int)(720 / 1.5);
+		// TODO: Makes window have no decoration
 		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		new LwjglApplication(new Launcher(), config);
 	}

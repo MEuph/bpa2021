@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,10 +29,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip.TextTooltipStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
+import com.cognitivethought.bpa.multiplayer.TurnPacket;
 import com.cognitivethought.bpa.tidiness.Colors;
 import com.cognitivethought.bpa.tidiness.Strings;
 
@@ -40,7 +46,7 @@ public class Card extends Widget {
 	
 	public static final ArrayList<Card> DECK = new ArrayList<Card>();
 
-	public static final Card BLANK = new Card(Type.BLANK, "", "", 0, 0, 0, 1, null, "");
+	public static final Card BLANK = new Card(Type.BLANK, "", "", 0, 0, 0, 1, null, "", "", false);
 
 	private Label l_name, l_desc, l_type;
 //	private Table desc_wrap;
@@ -61,6 +67,8 @@ public class Card extends Widget {
 	private long weight;
 
 	private long quantity;
+	
+	private boolean consumable;
 	
 	public int scale;
 	public int rad = 20;
@@ -85,6 +93,7 @@ public class Card extends Widget {
 	
 	boolean isOnPlacemat = false;
 	
+	
 	public Card(Card card) {
 		type = card.type;
 		name = card.name;
@@ -93,7 +102,11 @@ public class Card extends Widget {
 		short_desc = card.short_desc;
 		
 		art = card.art;
-
+		
+		id = card.id;
+		
+		consumable = card.consumable;
+		
 		populationDelta = card.populationDelta;
 		capacity = card.capacity;
 		weight = card.weight;
@@ -151,7 +164,7 @@ public class Card extends Widget {
 	}
 
 	public Card(Type type, String name, String desc, long popDelta, long cap, long weight, long quantity,
-			String art_path, String short_desc) {
+			String art_path, String short_desc, String id, boolean consumable) {
 		this.type = type;
 		this.name = name;
 		this.desc = desc;
@@ -159,6 +172,8 @@ public class Card extends Widget {
 		this.capacity = cap;
 		this.weight = weight;
 		this.quantity = quantity;
+		this.id = id;
+		this.consumable = consumable;
 		
 		this.short_desc = short_desc;
 		
@@ -244,7 +259,11 @@ public class Card extends Widget {
 		ttStyle.label = descStyle;
 		ttStyle.wrapWidth = 1;
 
-		l_type = new Label(type.toString().replace('_', ' '), typeStyle);
+		if (type.toString().contains("SELF") || type.toString().contains("TARGET")) {
+			l_type = new Label("SECRET", typeStyle);
+		} else {
+			l_type = new Label(type.toString().replace('_', ' '), typeStyle);
+		}
 		l_type.setColor(fontColor);
 		l_type.setFontScaleX(1f);
 
@@ -317,23 +336,57 @@ public class Card extends Widget {
 		ret.fillRectangle(rad, 1, (ret.getWidth()) - (rad * 2) + 1, ret.getHeight() - 2);
 		ret.fillRectangle(1, rad, ret.getWidth() - 2, ret.getHeight() - (rad * 2));
 		
+		if (type == Type.SPECIAL) {
+			for (int x = 0; x < ret.getWidth(); x++) {
+				for (int y = 0; y < ret.getHeight(); y++) {
+					if ((ret.getPixel(x, y) & 0x000000ff) != 0 && (ret.getPixel(x, y) != 0x000000ff)) {
+						float red = MathUtils.lerp(0, 1, x / (float)ret.getWidth());
+						float green = MathUtils.lerp(1, 0, y / (float)ret.getHeight());
+						float blue = MathUtils.lerp(1, 0, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						ret.setColor(red, green, blue, 1.0f);
+						ret.drawPixel(x, y);
+					}
+				}
+			}
+		} else if (type == Type.SECRET_SELF || type == Type.SECRET_TARGET) {
+			for (int x = 0; x < ret.getWidth(); x++) {
+				for (int y = 0; y < ret.getHeight(); y++) {
+					if ((ret.getPixel(x, y) & 0x000000ff) != 0 && (ret.getPixel(x, y) != 0x000000ff)) {
+						float red = MathUtils.lerp(1, 0.15f, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						float green = MathUtils.lerp(0.15f, 0f, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						float blue = MathUtils.lerp(1f, 0f, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						ret.setColor(red, green, blue, 1.0f);
+						ret.drawPixel(x, y);
+					}
+				}
+			}
+		} else if (type == Type.WARHEAD) {
+			for (int x = 0; x < ret.getWidth(); x++) {
+				for (int y = 0; y < ret.getHeight(); y++) {
+					if ((ret.getPixel(x, y) & 0x000000ff) != 0 && (ret.getPixel(x, y) != 0x000000ff)) {
+						float red = MathUtils.lerp(1, 90f / 255f, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						float green = MathUtils.lerp(57 / 255f, 0f, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						float blue = MathUtils.lerp(57 / 255f, 0f, ((x / (float)ret.getWidth()) / 2) + ((y / (float)ret.getHeight()) / 2));
+						ret.setColor(red, green, blue, 1.0f);
+						ret.drawPixel(x, y);
+					}
+				}
+			}
+		}
+		
 		return ret;
 	}
 
+	// USED WHEN NO COUNTRY IS SELECTED
 	public void play(MainGameStage mgs) {
 		switch (type) {
 		case BLANK:
 			break;
 		case SECRET_SELF:
-			if (populationDelta < 0) {
-				mgs.currentPlayer.removePopulation((int)Math.abs(populationDelta));
-				mgs.turn.data_removePopulation(mgs.currentPlayer.getName(), (int)Math.abs(populationDelta));
-			} else if (populationDelta > 0) {
-				mgs.currentPlayer.givePopulation((int)Math.abs(populationDelta));
-				mgs.turn.data_givePopulation(mgs.currentPlayer.getName(), (int)Math.abs(populationDelta));
-			}
+			// TODO: Add special visual effects
 			break;
 		case DELIVERY_SYSTEM:
+			discard(mgs, mgs.clientPlayer.username);
 			break;
 		case ANTI_MISSILE:
 			break;
@@ -341,8 +394,58 @@ public class Card extends Widget {
 			mgs.selectTarget(this);
 			break;
 		}
+		
+		mgs.executingCard = this;
+		
+//		System.out.println("PLAYED CARD " + getId());
 	}
 
+	// USED WHEN A COUNTRY IS SELECTED
+	public void play(MainGameStage mgs, int clickedCountry) {
+		// TODO: Do the card's actions when a country is selected
+		String playerName = countryToPlayer(mgs, clickedCountry);
+		switch(type) {
+		case WARHEAD:
+			mgs.players.get(playerName).removePopulation((int)Math.abs(populationDelta));
+			TurnPacket tp = new TurnPacket();
+			tp.data_removePopulation(playerName, (int)Math.abs(populationDelta));
+			tp.setIssuer(mgs.clientPlayer.username);
+			NuclearWarServer.client.sendTCP(tp);
+			if (mgs.players.get(playerName).placemat.getTopCard().type == Type.DELIVERY_SYSTEM) {
+				if (mgs.players.get(playerName).placemat.getTopCard().consumable)
+					mgs.players.get(playerName).placemat.setTopCard(Card.BLANK);
+				mgs.players.get(playerName).placemat.setCenter(Card.BLANK);
+			} else if (mgs.players.get(playerName).placemat.getTopCard().type == Type.WARHEAD) {
+				mgs.players.get(playerName).placemat.setTopCard(Card.BLANK);
+			}
+			break;
+		case SECRET_TARGET:
+			break;
+		case PROPAGANDA:
+			break;
+		default:
+			break;
+		}
+		
+		System.out.println("PLAYING CARD " + id + " towards countryId " + clickedCountry);
+	}
+	
+	public String countryToPlayer(MainGameStage mgs, int countryId) {
+		String ret = "";
+		
+		ArrayList<Integer> ids = new ArrayList<>();
+		Iterator it = ((MainGameStage)Launcher.game_stage).players.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pair = (Map.Entry)it.next();
+	        if (mgs.players.get(pair.getKey()).country_id == countryId) {
+	        	ret = (String)pair.getKey();
+	        	break;
+	        }
+	    }
+		
+		return ret;
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		if (!isOnPlacemat) {
@@ -525,6 +628,8 @@ public class Card extends Widget {
 				String desc = (String) data.get("Description");
 				String short_desc = (String)data.get("Short Desc");
 				String art_path = "";
+				boolean consumable = false;
+				if (data.get("Consumable") != null) consumable = true;
 				try {
 					art_path = (String) data.get("Path");
 				} catch (Exception e) {
@@ -534,10 +639,11 @@ public class Card extends Widget {
 				long weight = (long) data.get("Weight");
 				long cap = (long) data.get("Capacity");
 				long quantity = (long) data.get("Quantity");
-				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path, short_desc);
-				card.id = id;
-				for (int i = 0; i < quantity + 1; i++)
+				// TODO: getId() always returns null. Find out why
+				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path, short_desc, new String(id), consumable);
+				for (int i = 0; i < quantity + 1; i++) {
 					DECK.add(card);
+				}
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
@@ -554,10 +660,11 @@ public class Card extends Widget {
 
 	@Override
 	public String toString() {
-		return name /*
+		return id + ", " + name + " " + desc + " " + populationDelta + " " + capacity + " " + weight + " " + quantity + " " + short_desc;
+		/*return name
 					 * + "\n\t" + type + "\n\t" + desc + "\n\tPopulation Delta: " + populationDelta
-					 * + "\n\tCan Carry " + capacity + " Megatons\n\tWeight: " + weight
-					 */;
+					 * + "\n\tCan Carry " + capacity + " Megatons\n\tWeight: " + weight;
+					 */
 	}
 
 	public static Type stringToType(String s) {
@@ -589,10 +696,12 @@ public class Card extends Widget {
 		this.type = type;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
-
+	
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -636,7 +745,7 @@ public class Card extends Widget {
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
 	}
-
+	
 	public String getId() {
 		return id;
 	}
@@ -645,7 +754,46 @@ public class Card extends Widget {
 		this.id = id;
 	}
 	
+	public boolean isConsumable() {
+		return consumable;
+	}
+	
+	public void setConsumable(boolean consumable) {
+		this.consumable = consumable;
+	}
+	
 	public enum Type {
 		WARHEAD, SECRET_TARGET, SECRET_SELF, DELIVERY_SYSTEM, SPECIAL, PROPAGANDA, ANTI_MISSILE, BLANK;
 	}
+
+	public void discard(MainGameStage mgs, String target) {
+		// TODO: Make some kind of animation for this
+		System.out.println("Discarding " + getId());
+		// if is top card of placemat
+		if (mgs.players.get(target).placemat.getTopCard().equals(this)) {
+			mgs.players.get(target).placemat.setTopCard(Card.BLANK);
+			System.out.println("Was top card");
+			return;
+		}
+		System.out.println("Was not top card");
+		// if is center of placemat
+		if (mgs.players.get(target).placemat.getCenter().equals(this)) {
+			mgs.players.get(target).placemat.setCenter(Card.BLANK);
+			System.out.println("Was center card");
+			return;
+		}
+		System.out.println("Was not center card");
+		// if in hand
+		for (WidgetGroup c : mgs.players.get(target).cards) {
+			for (int i = 0; i < c.getChildren().size; i++) {
+				if (c.getChild(i) instanceof Card) {
+					if (c.getChild(i).equals(this)) {
+						c.remove();
+						return;
+					}
+				}
+			}
+		}
+	}
+
 }

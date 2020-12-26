@@ -275,10 +275,12 @@ public class Player extends Group {
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
-				} else if (placemat.getTopCard().placematHover) {
-					currentlyHeldCard.setPosition(placemat.getTopCard().getX(), placemat.getTopCard().getY());
+				} else if (placemat.getBottomCard().placematHover) {
+					System.out.println(currentlyHeldCard.getId());
+					// TODO: This is what determines the card being placed on the placemat
+					currentlyHeldCard.setPosition(placemat.getBottomCard().getX(), placemat.getBottomCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
-					placemat.setTop(currentlyHeldCard);
+					placemat.setBottom(currentlyHeldCard);
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
@@ -290,6 +292,8 @@ public class Player extends Group {
 	}
 	
 	public void givePopulation(int quantity) {
+		System.out.println("Gave " + quantity + "M population to " + username);
+		
 		populationCards.clear();
 		population.clear();
 		
@@ -326,6 +330,7 @@ public class Player extends Group {
 	}
 
 	public void removePopulation(int quantity) {
+		System.out.println("Removed " + quantity + "M population from " + username);
 		populationCards.clear();
 		population.clear();
 		

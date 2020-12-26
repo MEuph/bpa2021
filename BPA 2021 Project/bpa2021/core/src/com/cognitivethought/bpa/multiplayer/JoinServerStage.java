@@ -24,7 +24,7 @@ import com.cognitivethought.bpa.uistages.UIStage;
 
 public class JoinServerStage extends UIStage {
 	
-	Label jss_errors, title;
+	Label jss_errors;
 	TextButton join, back;
 	TextField server_code;
 	VerticalGroup jss_elements;
@@ -57,10 +57,6 @@ public class JoinServerStage extends UIStage {
 		LabelStyle style = new LabelStyle();
 		style.font = gen.generateFont(param);
 		style.fontColor = Color.RED;
-		title = new Label(Strings.MUI_TITLE, style);
-//		title.scaleBy(scale);
-		title.setAlignment(Align.center);
-		title.setPosition(jss_elements.getX() - (title.getWidth() / 2), (int)(getViewport().getScreenHeight() * 1.3));
 				
 		jss_errors = new Label(Strings.EMPTY, labelStyle);
 		jss_errors.getStyle().fontColor = Colors.TEXT_INFO;
@@ -133,7 +129,6 @@ public class JoinServerStage extends UIStage {
 		
 		jss_elements.align(Align.center);
 		
-		addActor(title);
 		addActor(jss_elements);
 	}
 	

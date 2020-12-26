@@ -17,7 +17,7 @@ import com.cognitivethought.bpa.tidiness.Strings;
 
 public class GameMenuStage extends UIStage {
 	
-	Label mui_errors, title;
+	Label mui_errors;
 	TextButton start, help, quit, host_server;
 	VerticalGroup gm_elements;
 	
@@ -50,10 +50,7 @@ public class GameMenuStage extends UIStage {
 		LabelStyle style = new LabelStyle();
 		style.font = gen.generateFont(param);
 		style.fontColor = Color.RED;
-		title = new Label(Strings.MUI_TITLE, style);
-//		title.scaleBy(scale);
-		title.setAlignment(Align.center);
-		title.setPosition(gm_elements.getX() - (title.getWidth() / 2), (int)(getViewport().getScreenHeight() * 1.3));
+
 				
 		mui_errors = new Label(Strings.EMPTY, labelStyle);
 		mui_errors.getStyle().fontColor = Colors.TEXT_INFO;
@@ -108,7 +105,6 @@ public class GameMenuStage extends UIStage {
 		
 		gm_elements.align(Align.center);
 		
-		addActor(title);
 		addActor(gm_elements);
 	}
 	

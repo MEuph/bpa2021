@@ -24,7 +24,7 @@ import com.cognitivethought.bpa.uistages.UIStage;
 
 public class HostServerStage extends UIStage {
 	
-	Label hss_errors, title;
+	Label hss_errors;
 	TextButton host, start, back;
 	TextField host_code;
 	VerticalGroup hss_elements;
@@ -66,10 +66,6 @@ public class HostServerStage extends UIStage {
 		LabelStyle style = new LabelStyle();
 		style.font = gen.generateFont(param);
 		style.fontColor = Color.RED;
-		title = new Label(Strings.MUI_TITLE, style);
-//		title.scaleBy(scale);
-		title.setAlignment(Align.center);
-		title.setPosition(hss_elements.getX() - (title.getWidth() / 2), (int)(getViewport().getScreenHeight() * 1.3));
 		
 		players.setPosition(hss_elements.getX() - (players.getWidth() / 2), hss_elements.getY());
 		
@@ -168,7 +164,6 @@ public class HostServerStage extends UIStage {
 		
 		hss_elements.align(Align.center);
 		
-		addActor(title);
 		addActor(hss_elements);
 		
 		refreshList();
