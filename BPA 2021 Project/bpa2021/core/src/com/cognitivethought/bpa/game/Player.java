@@ -261,17 +261,17 @@ public class Player extends Group {
 				addActor(currentlyHeldCard);
 
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
-				if (placemat.getLeft().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
-					currentlyHeldCard.setPosition(placemat.getLeft().getX(), placemat.getLeft().getY());
-					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
-					placemat.setLeft(currentlyHeldCard);
+				if (placemat.getLeftCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
+					currentlyHeldCard.setPosition(placemat.getLeftCard().getX(), placemat.getLeftCard().getY());
+					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
+					placemat.setLeftCard(currentlyHeldCard);
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getRightCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
 					currentlyHeldCard.setPosition(placemat.getRightCard().getX(), placemat.getRightCard().getY());
-					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
-					placemat.setRight(currentlyHeldCard);
+					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
+					placemat.setRightCard(currentlyHeldCard);
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
@@ -279,8 +279,8 @@ public class Player extends Group {
 					System.out.println(currentlyHeldCard.getId());
 					// TODO: This is what determines the card being placed on the placemat
 					currentlyHeldCard.setPosition(placemat.getBottomCard().getX(), placemat.getBottomCard().getY());
-					currentlyHeldCard.setSize(placemat.getLeft().getWidth(), placemat.getLeft().getHeight());
-					placemat.setBottom(currentlyHeldCard);
+					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
+					placemat.setBottomCard(currentlyHeldCard);
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;

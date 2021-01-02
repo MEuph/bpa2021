@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cognitivethought.bpa.multiplayer.MultiplayerQueueStage;
 import com.cognitivethought.bpa.tidiness.Colors;
 import com.cognitivethought.bpa.tidiness.Strings;
 
@@ -114,13 +115,15 @@ public abstract class UIStage extends Stage {
 	
 	@Override
 	public void draw() {
-		act();
-		flicker += ((1f / (Math.random() * Math.random()))) / 5000;
-		getBatch().begin();
-		background = new Sprite(flicker > 1 ? off : on);
-		flicker = flicker > 2 ? 0 : flicker;
-		getBatch().draw(background, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		getBatch().end();
+		if (!(this instanceof MultiplayerQueueStage)) {
+			act();
+	//		flicker += ((1f / (Math.random() * Math.random()))) / 5000;
+			getBatch().begin();
+	//		background = new Sprite(on);
+	//		flicker = flicker > 2 ? 0 : flicker;
+			getBatch().draw(background, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			getBatch().end();
+		}
 		super.draw();
 	}
 	

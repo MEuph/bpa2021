@@ -75,7 +75,7 @@ public class MainGameStage extends GameStage {
 		clientPlayer = currentPlayer;
 		
 		nextTurn = new ImageButton(new Image(new Texture(Strings.URL_NEXT_TURN)).getDrawable());
-		nextTurn.setPosition(clientPlayer.placemat.getLeft().getX() - (currentPlayer.placemat.getLeft().getWidth() / 2), clientPlayer.placemat.getLeft().getY() - clientPlayer.placemat.getLeft().getHeight() - 40);
+		nextTurn.setPosition(clientPlayer.placemat.getLeftCard().getX() - (currentPlayer.placemat.getLeftCard().getWidth() / 2), clientPlayer.placemat.getLeftCard().getY() - clientPlayer.placemat.getLeftCard().getHeight() - 40);
 		
 		// TODO: Make it so that the turn can not be ended if any of the three center cards are empty, and implement turns using queue
 		
@@ -137,7 +137,7 @@ public class MainGameStage extends GameStage {
 		
 		super.draw();
 		
-		nextTurn.setPosition(clientPlayer.placemat.getLeft().getX() - (currentPlayer.placemat.getLeft().getWidth() / 2), clientPlayer.placemat.getLeft().getY() - clientPlayer.placemat.getLeft().getHeight() - 40);
+		nextTurn.setPosition(clientPlayer.placemat.getLeftCard().getX() - (currentPlayer.placemat.getLeftCard().getWidth() / 2), clientPlayer.placemat.getLeftCard().getY() - clientPlayer.placemat.getLeftCard().getHeight() - 40);
 		
 		frameTime += Gdx.graphics.getDeltaTime();
 		if (frameTime > 0.1) {

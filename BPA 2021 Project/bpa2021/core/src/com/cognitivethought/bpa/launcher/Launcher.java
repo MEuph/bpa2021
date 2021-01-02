@@ -128,7 +128,7 @@ public class Launcher extends ApplicationAdapter {
 						
 						Launcher.setStage(main_stage);
 					} else if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
-							Backendless.UserService.login("MEuph2", "603Euph_", new AsyncCallback<BackendlessUser>() {
+						Backendless.UserService.login("MEuph2", "603Euph_", new AsyncCallback<BackendlessUser>() {
 							
 							@Override
 							public void handleResponse(BackendlessUser response) {

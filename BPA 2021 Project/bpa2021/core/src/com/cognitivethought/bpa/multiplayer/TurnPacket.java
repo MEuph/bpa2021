@@ -74,9 +74,9 @@ public class TurnPacket {
 				break;
 		}
 		if (leftOrRight == LEFT) {
-			mgs.players.get(target).placemat.setLeft(Card.DECK.get(i));
+			mgs.players.get(target).placemat.setLeftCard(Card.DECK.get(i));
 		} else if (leftOrRight == RIGHT) {
-			mgs.players.get(target).placemat.setRight(Card.DECK.get(i));
+			mgs.players.get(target).placemat.setRightCard(Card.DECK.get(i));
 		}
 		
 		System.out.println("Added deterrent " + deterrent_id + "to " + (leftOrRight == LEFT ? "left " : "right ") + "slot (" + target + ")");
@@ -106,7 +106,7 @@ public class TurnPacket {
 			if (Card.DECK.get(i).getId().equals(card_id)) break;
 		}
 		System.out.println("TARGET IS " + target);
-		mgs.players.get(target).placemat.setBottom(Card.DECK.get(i));
+		mgs.players.get(target).placemat.setBottomCard(Card.DECK.get(i));
 		
 		System.out.println("Put card " + card_id + " onto " + target + "\'s placemat");
 	}

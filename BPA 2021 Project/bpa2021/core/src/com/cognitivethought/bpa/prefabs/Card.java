@@ -414,7 +414,7 @@ public class Card extends Widget {
 			if (mgs.players.get(playerName).placemat.getTopCard().type == Type.DELIVERY_SYSTEM) {
 				if (mgs.players.get(playerName).placemat.getTopCard().consumable)
 					mgs.players.get(playerName).placemat.setTopCard(Card.BLANK);
-				mgs.players.get(playerName).placemat.setCenter(Card.BLANK);
+				mgs.players.get(playerName).placemat.setCenterCard(Card.BLANK);
 			} else if (mgs.players.get(playerName).placemat.getTopCard().type == Type.WARHEAD) {
 				mgs.players.get(playerName).placemat.setTopCard(Card.BLANK);
 			}
@@ -473,7 +473,7 @@ public class Card extends Widget {
 			}
 
 			if (hovering) {
-				this.getParent().toFront();
+				if (this.hasParent()) this.getParent().toFront();
 				Vector2 newPosition = new Vector2(getX(), getY()).lerp(
 						new Vector2(originalPos.x, originalPos.y + hoverScale), Gdx.graphics.getDeltaTime() * speed);
 				setPosition(newPosition.x, newPosition.y);
@@ -777,8 +777,8 @@ public class Card extends Widget {
 		}
 		System.out.println("Was not top card");
 		// if is center of placemat
-		if (mgs.players.get(target).placemat.getCenter().equals(this)) {
-			mgs.players.get(target).placemat.setCenter(Card.BLANK);
+		if (mgs.players.get(target).placemat.getCenterCard().equals(this)) {
+			mgs.players.get(target).placemat.setCenterCard(Card.BLANK);
 			System.out.println("Was center card");
 			return;
 		}

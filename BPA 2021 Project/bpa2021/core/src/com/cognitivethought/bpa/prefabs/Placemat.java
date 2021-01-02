@@ -2,11 +2,13 @@ package com.cognitivethought.bpa.prefabs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -38,6 +40,13 @@ public class Placemat extends Actor {
 	float elapsed;
 	
 	boolean isDown = false;
+	
+	boolean highlightTop = false,
+			highlightCenter = false,
+			highlightBottom = false;
+	
+	int alphaTop = 0, alphaCenter = 1, alphaBottom = 2;
+	int[][][] alphaMap;
 	
 	public Placemat() {
 		mat = new Pixmap(new FileHandle(Strings.URL_PLACEMAT_SPOTS));
@@ -101,11 +110,11 @@ public class Placemat extends Actor {
 		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 	}
 	
-	public Card getLeft() {
+	public Card getLeftCard() {
 		return left;
 	}
 
-	public void setLeft(Card left) {
+	public void setLeftCard(Card left) {
 		this.left = left;
 	}
 
@@ -113,7 +122,7 @@ public class Placemat extends Actor {
 		return right;
 	}
 
-	public void setRight(Card right) {
+	public void setRightCard(Card right) {
 		this.right = right;
 	}
 
@@ -121,23 +130,23 @@ public class Placemat extends Actor {
 		return bottom;
 	}
 
-	public void setBottom(Card top) {
-		this.bottom = top;
+	public void setBottomCard(Card bottom) {
+		this.bottom = bottom;
 	}
 
 	public Card getTopCard() {
 		return top;
 	}
 
-	public void setTopCard(Card bottom) {
-		this.top = bottom;
+	public void setTopCard(Card top) {
+		this.top = top;
 	}
 
-	public Card getCenter() {
+	public Card getCenterCard() {
 		return center;
 	}
 
-	public void setCenter(Card center) {
+	public void setCenterCard(Card center) {
 		this.center = center;
 	}
 
@@ -154,6 +163,8 @@ public class Placemat extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		
+		setHighlighting(false/*getTopCard().getType() == Card.Type.BLANK*/, getCenterCard().getType() == Card.Type.BLANK, getBottomCard().getType() == Card.Type.BLANK);
 		
 		elapsed += Gdx.graphics.getDeltaTime() * 5;
 		batch.draw(background.getKeyFrame(elapsed), getX(), getY(), getWidth(), getHeight());
@@ -199,13 +210,13 @@ public class Placemat extends Actor {
 		// TODO: Fix the executing of turns
 		System.out.println("Advancing " + advancingPlayer + "\'s placemat");
 		if (top.getType().equals(Card.Type.DELIVERY_SYSTEM)) {
-			if (getCenter().getType().equals(Card.Type.WARHEAD)) {
-				getCenter().play(((MainGameStage)this.getParent().getStage()));
+			if (getCenterCard().getType().equals(Card.Type.WARHEAD)) {
+				getCenterCard().play(((MainGameStage)this.getParent().getStage()));
 			} else {
 				getTopCard().discard(mgs, advancingPlayer);
 			}
 		} else if (top.getType().equals(Card.Type.WARHEAD)) {
-			if (!getLeft().getType().equals(Card.Type.DELIVERY_SYSTEM) && !getRightCard().getType().equals(Card.Type.DELIVERY_SYSTEM)) {
+			if (!getLeftCard().getType().equals(Card.Type.DELIVERY_SYSTEM) && !getRightCard().getType().equals(Card.Type.DELIVERY_SYSTEM)) {
 				top.discard(mgs, advancingPlayer);
 			} else {
 				chooseDeliverySystem();
@@ -214,24 +225,82 @@ public class Placemat extends Actor {
 			if (!top.equals(Card.BLANK))
 				top.play((MainGameStage)this.getParent().getStage());
 			System.out.println("ADVANCING");
-			setTopCard(getCenter());
-			setCenter(getBottomCard());
-			setBottom(Card.BLANK);
+			setTopCard(getCenterCard());
+			setCenterCard(getBottomCard());
+			setBottomCard(Card.BLANK);
 		}
 		
-		if (getCenter().equals(Card.BLANK)) {
+		if (getCenterCard().equals(Card.BLANK)) {
 			if (!getBottomCard().equals(Card.BLANK)) {
-				setCenter(getBottomCard());
-				setBottom(Card.BLANK);
+				setCenterCard(getBottomCard());
+				setBottomCard(Card.BLANK);
 			}
 		}
 		
 		if (getTopCard().equals(Card.BLANK)) {
-			if (!getCenter().equals(Card.BLANK)) {
-				setTopCard(getCenter());
-				setCenter(Card.BLANK);
+			if (!getCenterCard().equals(Card.BLANK)) {
+				setTopCard(getCenterCard());
+				setCenterCard(Card.BLANK);
 			}
 		}
+	}
+	
+	public void setHighlighting(boolean top, boolean center, boolean bottom) {
+		if (highlightTop != top) {
+			Rectangle box = new Rectangle(164, 224 - 148 - 63, 73, 63);
+			for (int x = (int)box.getX(); x <= (int)box.getX() + box.getWidth(); x++) {
+				for (int y = (int)box.getY() + (int)box.getHeight(); y >= (int)box.getY(); y--) {
+					float r = 1;
+					float g = top ? 0 : 1;
+					float b = top ? 0 : 1;
+					Color c = new Color();
+					Color.rgba8888ToColor(c, mat.getPixel(x, y));
+					int a = (int)(c.a); // never change the alpha value
+					int pix = Color.rgba8888(r, g, b, a);
+					mat.drawPixel(x, y, pix);
+				}
+			}
+			if (highlightTop) System.out.println("Top " + this.top.getId());
+			highlightTop = top;
+		}
+		
+		if(highlightCenter != center) {
+			Rectangle box = new Rectangle(173, 224 - 81 - 63, 61, 63);
+			for (int x = (int)box.getX(); x <= (int)box.getX() + box.getWidth(); x++) {
+				for (int y = (int)box.getY() + (int)box.getHeight(); y >= (int)box.getY(); y--) {
+					float r = 1;
+					float g = center ? 0 : 1;
+					float b = center ? 0 : 1;
+					Color c = new Color();
+					Color.rgba8888ToColor(c, mat.getPixel(x, y));
+					int a = (int)(c.a); // never change the alpha value
+					int pix = Color.rgba8888(r, g, b, a);
+					mat.drawPixel(x, y, pix);
+				}
+			}
+			if (highlightCenter) System.out.println("Center " + this.center.getId());
+			highlightCenter = center;
+		}
+		
+		if (highlightBottom != bottom) {
+			Rectangle box = new Rectangle(164, 224 - 14 - 63, 76, 63);
+			for (int x = (int)box.getX(); x <= (int)box.getX() + box.getWidth(); x++) {
+				for (int y = (int)box.getY() + (int)box.getHeight(); y >= (int)box.getY(); y--) {
+					float r = 1;
+					float g = bottom ? 0 : 1;
+					float b = bottom ? 0 : 1;
+					Color c = new Color();
+					Color.rgba8888ToColor(c, mat.getPixel(x, y));
+					int a = (int)(c.a); // never change the alpha value
+					int pix = Color.rgba8888(r, g, b, a);
+					mat.drawPixel(x, y, pix);
+				}
+			}
+			if (highlightBottom) System.out.println("Bottom " + this.bottom.getId());
+			highlightBottom = bottom;
+		}
+		
+		tex = new Texture(mat);
 	}
 	
 	public void chooseDeliverySystem() {
