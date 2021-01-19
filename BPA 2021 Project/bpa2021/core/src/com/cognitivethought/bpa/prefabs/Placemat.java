@@ -8,18 +8,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cognitivethought.bpa.external.GifDecoder;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.tidiness.Strings;
 
-public class Placemat extends Actor {
+public class Placemat extends Group {
 
 	// 83 x 46 CARD SIZE
 
@@ -38,8 +41,10 @@ public class Placemat extends Actor {
 	Texture outline;
 	Animation<TextureRegion> background;
 	float elapsed;
+	Label firstTurnLabel;
 	
 	boolean isDown = false;
+	public boolean firstTurn = true;
 	
 	boolean highlightTop = false,
 			highlightCenter = false,
@@ -50,6 +55,10 @@ public class Placemat extends Actor {
 	
 	public Placemat() {
 		mat = new Pixmap(new FileHandle(Strings.URL_PLACEMAT_SPOTS));
+		
+		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
+		FreeTypeFontGenerator.FreeTypeFontParameter param = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		param.size = 15;
 		
 		tex = new Texture(mat);
 		
@@ -64,6 +73,12 @@ public class Placemat extends Actor {
 		
 		outline = new Texture(new Pixmap(new FileHandle(Strings.URL_PLACEMAT_OUTLINE)));
 		
+		LabelStyle style = new LabelStyle();
+		style.font = gen.generateFont(param);
+		style.fontColor = Color.RED;
+		firstTurnLabel = new Label("Please fill the center column of cards", style);
+		firstTurnLabel.setPosition(getX(), getY());
+		
 		clickArrow.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -77,6 +92,8 @@ public class Placemat extends Actor {
 		bottom = new Card(Card.BLANK);
 		top = new Card(Card.BLANK);
 		center = new Card(Card.BLANK);
+		
+		addActor(firstTurnLabel);
 	}
 	
 	@Override
@@ -94,6 +111,8 @@ public class Placemat extends Actor {
 	public void setPosition(float x, float y) {
 		super.setPosition(x, y);
 		
+		firstTurnLabel.setPosition(getX(), getY());
+		
 		left.setPosition(getX() + pixelToRelative(64, 131).x, getY() + pixelToRelative(64, 131).y);
 		left.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
 		
@@ -108,6 +127,15 @@ public class Placemat extends Actor {
 		
 		bottom.setPosition(getX() + pixelToRelative(185, 198).x, getY() + pixelToRelative(185, 198).y);
 		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+	}
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		
+		if (getTopCard().getType() != Card.Type.BLANK) getTopCard().act(delta);
+		if (getCenterCard().getType() != Card.Type.BLANK) getCenterCard().act(delta);
+		if (getBottomCard().getType() != Card.Type.BLANK) getBottomCard().act(delta);
 	}
 	
 	public Card getLeftCard() {
@@ -162,8 +190,6 @@ public class Placemat extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		
 		setHighlighting(false/*getTopCard().getType() == Card.Type.BLANK*/, getCenterCard().getType() == Card.Type.BLANK, getBottomCard().getType() == Card.Type.BLANK);
 		
 		elapsed += Gdx.graphics.getDeltaTime() * 5;
@@ -203,44 +229,54 @@ public class Placemat extends Actor {
 			clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
 		}
 		
+		if (firstTurn) {
+			if (!firstTurnLabel.isVisible()) firstTurnLabel.setVisible(true);
+		} else {
+			if (firstTurnLabel.isVisible()) firstTurnLabel.setVisible(false);
+		}
+		
 		batch.draw(outline, getX(), getY(), getWidth(), getHeight());
+
+		super.draw(batch, parentAlpha);
 	}
 
 	public void advance(MainGameStage mgs, String advancingPlayer) {
-		// TODO: Fix the executing of turns
+		// TODO: Fix the executing of turns; edit as of 1/14/2021: this isn't specific at all
+		if (firstTurn) {
+			if (!getTopCard().getType().equals(Card.Type.BLANK) && !getCenterCard().getType().equals(Card.Type.BLANK) && !getBottomCard().getType().equals(Card.Type.BLANK)) {
+				firstTurn = false;
+			} else {
+				return;
+			}
+		}
 		System.out.println("Advancing " + advancingPlayer + "\'s placemat");
 		if (top.getType().equals(Card.Type.DELIVERY_SYSTEM)) {
 			if (getCenterCard().getType().equals(Card.Type.WARHEAD)) {
 				getCenterCard().play(((MainGameStage)this.getParent().getStage()));
 			} else {
-				getTopCard().discard(mgs, advancingPlayer);
+				getTopCard().discard(false, mgs, advancingPlayer);
 			}
 		} else if (top.getType().equals(Card.Type.WARHEAD)) {
 			if (!getLeftCard().getType().equals(Card.Type.DELIVERY_SYSTEM) && !getRightCard().getType().equals(Card.Type.DELIVERY_SYSTEM)) {
-				top.discard(mgs, advancingPlayer);
+				top.discard(false, mgs, advancingPlayer);
 			} else {
 				chooseDeliverySystem();
 			}
 		} else {
-			if (!top.equals(Card.BLANK))
+			if (!top.getType().equals(Card.Type.BLANK))
 				top.play((MainGameStage)this.getParent().getStage());
 			System.out.println("ADVANCING");
 			setTopCard(getCenterCard());
 			setCenterCard(getBottomCard());
-			setBottomCard(Card.BLANK);
+			setBottomCard(new Card(Card.BLANK));
+			System.out.println("Played top, moved center to top, moved bottom to center, set bottom to blank");
 		}
 		
-		if (getCenterCard().equals(Card.BLANK)) {
+		if (getCenterCard().getType().equals(Card.Type.BLANK)) {
 			if (!getBottomCard().equals(Card.BLANK)) {
 				setCenterCard(getBottomCard());
-				setBottomCard(Card.BLANK);
-			}
-		}
-		
-		if (getTopCard().equals(Card.BLANK)) {
-			if (!getCenterCard().equals(Card.BLANK)) {
-				setTopCard(getCenterCard());
-				setCenterCard(Card.BLANK);
+				setBottomCard(new Card(Card.BLANK));
+				System.out.println("moved bottom to center, set bottom to blank");
 			}
 		}
 	}

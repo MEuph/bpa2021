@@ -127,7 +127,7 @@ public class MultiplayerQueueStage extends UIStage {
 		mq_errors = new Label(Strings.EMPTY, labelStyle);
 		mq_errors.getStyle().fontColor = Colors.TEXT_INFO;
 		
-		code = new Label("JOIN CODE: " + Integer.toString(NuclearWarServer.code), labelStyle);
+		code = new Label("JOIN CODE: " + NuclearWarServer.hostIpv4 + ":" + Integer.toString(NuclearWarServer.code), labelStyle);
 		
 		back = new TextButton(Strings.JSS_BACK, buttonStyle);
 		
@@ -266,7 +266,9 @@ public class MultiplayerQueueStage extends UIStage {
 	}
 	
 	public void refreshList() {
+		System.out.println("REFRESHING LIST");
 //		players.remove();
+		if (players == null) players = new VerticalGroup();
 		players.clearChildren();
 		for (int i = 0; i < player_names.size(); i++) {
 			System.out.println("PLAYER NAMES GET(i) " + i + " = null? " + (player_names.get(i) == null));

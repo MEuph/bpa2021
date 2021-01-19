@@ -90,15 +90,18 @@ public class JoinServerStage extends UIStage {
 				boolean success = false;
 				
 				try {
-					NuclearWarServer.joinServer(Integer.parseInt(server_code.getText()));
+					NuclearWarServer.hostIpv4 = server_code.getText().split(":")[0];
+					NuclearWarServer.joinServer(Integer.parseInt(server_code.getText().split(":")[1]));
 					jss_errors.setText("Trying to connect...");
 					success = true;
 				} catch (IOException e) {
 					jss_errors.setText("Error, couldn\'t connect to server!");
 				}
 				
+				// TODO: Multiplayer connection is not working. Fix it or go local (one-machine) multiplayer
+				
 				if (success) {
-					NuclearWarServer.code = Integer.parseInt(server_code.getText());
+					NuclearWarServer.code = Integer.parseInt(server_code.getText().split(":")[1]);
 					Launcher.setStage(Launcher.mq_stage);
 				}
 			}

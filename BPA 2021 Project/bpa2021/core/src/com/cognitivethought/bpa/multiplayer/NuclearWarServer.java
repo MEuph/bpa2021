@@ -1,8 +1,13 @@
 package com.cognitivethought.bpa.multiplayer;
 
 import java.io.IOException;
+import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 import com.backendless.Backendless;
 import com.cognitivethought.bpa.game.Player;
@@ -23,6 +28,8 @@ public class NuclearWarServer {
 	
 	public static String errorCode;
 	
+	public static String userIpv4, hostIpv4;
+	
 	/**
 	 * Returns true if server is successfully opened
 	 * @param code
@@ -40,6 +47,40 @@ public class NuclearWarServer {
 			kryo.register(StringPacket.class);
 			
 			NuclearWarServer.code = code;
+			
+			String ip;
+			
+			ArrayList<String> ips = new ArrayList<>();
+			
+			try {
+			    Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			    while (interfaces.hasMoreElements()) {
+			        NetworkInterface iface = interfaces.nextElement();
+			        // filters out 127.0.0.1 and inactive interfaces
+			        if (iface.isLoopback() || !iface.isUp())
+			            continue;
+
+			        Enumeration<InetAddress> addresses = iface.getInetAddresses();
+			        while(addresses.hasMoreElements()) {
+			            InetAddress addr = addresses.nextElement();
+
+			            if (addr instanceof Inet6Address) continue;
+
+			            ip = addr.getHostAddress();
+			            // VERY dirty hack and would never be used in a real production game
+			            if (iface.getDisplayName().toLowerCase().contains("wi-fi") || iface.getDisplayName().toLowerCase().contains("wireless") || iface.getDisplayName().toLowerCase().contains("wifi")) {
+			            	System.out.println(iface.getDisplayName() + " w/ip " + ip);
+			            	ips.add(ip);
+			            }
+			        }
+			    }
+			} catch (SocketException e) {
+			    throw new RuntimeException(e);
+			}
+			
+			for (String s : ips) System.out.println(s);
+			
+			NuclearWarServer.hostIpv4 = ips.get(0);
 			
 			System.out.println("HOSTED SERVER ON " + code);
 			
@@ -126,6 +167,8 @@ public class NuclearWarServer {
 			kryo.register(TurnPacket.class);
 			kryo.register(StringPacket.class);
 			
+			// IP is correctly found, but connecting to machine doesn't work still. Disconnects immediately. Googling isn't fucking working
+			
 			client.addListener(new Listener() {
 				@Override
 				public void connected(Connection conn) {
@@ -142,7 +185,7 @@ public class NuclearWarServer {
 				@Override
 				public void received(Connection conn, Object dat) {
 					if (client == null) return;
-					if (server == null) disconnectClient();
+					client.sendTCP(FrameworkMessage.keepAlive); // makes sure the server keeps the connection alive while the connection is sending any data packet
 					if (dat instanceof TurnPacket) {
 						TurnPacket data = (TurnPacket)dat;
 						if (((MainGameStage)Launcher.game_stage).players.containsKey(data.getIssuer())) {
@@ -179,9 +222,11 @@ public class NuclearWarServer {
 							if (((MultiplayerQueueStage)Launcher.mq_stage).players != null)
 								((MultiplayerQueueStage)Launcher.mq_stage).refreshList();
 							if (((MultiplayerQueueStage)Launcher.mq_stage).player_names.size() <= 0) {
-								server.close();
-								server.stop();
-								server = null;
+								if (server != null) {
+									server.close();
+									server.stop();
+									server = null;
+								}
 							}
 						} else if (data.toString().equals("@disconnect")) {
 							disconnectClient();
@@ -221,10 +266,13 @@ public class NuclearWarServer {
 				}
 			});
 			
-			client.start();
-			InetAddress address = client.discoverHost(code, 5000);
+			new Thread(client).start();
+			
+			InetAddress userIp = InetAddress.getLocalHost();
+			NuclearWarServer.userIpv4 = userIp.getHostAddress();
+			
 			try {
-				client.connect(5000, address, code - 100, code);
+				client.connect(5000000, NuclearWarServer.hostIpv4, code - 100, code);
 			} catch (Exception e) {
 				System.err.println("SERVER DOES NOT EXIST");
 			}

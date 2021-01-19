@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
@@ -23,37 +22,51 @@ import com.cognitivethought.bpa.prefabs.Placemat;
 import com.cognitivethought.bpa.prefabs.PopulationCard;
 import com.cognitivethought.bpa.prefabs.Spinner;
 
-public class Player extends Group {
-	
+public class Player extends WidgetGroup {
+
 	public HorizontalGroup hand;
 	public Placemat placemat;
 	public Spinner spinner;
 	public VerticalGroup population;
-	
+
 	public ArrayList<WidgetGroup> cards;
 	public ArrayList<WidgetGroup> populationCards;
-	
+
 	public int pop_i = 100;
 	public int country_id;
-	
-	public int[] possible_combos = {100, 50, 20, 10, 1};
+
+	public int[] possible_combos = { 100, 50, 20, 10, 1 };
 	public int[] pop = split(pop_i);
-	
+
 	public float cardWidth = 0;
 	public float popCardWidth = 0;
-	
+
 	public Label totalPop;
 	public Label dispUsername;
-	
+
 	public Card initialState;
 	public Card currentlyHeldCard;
-	
+
 	public String username;
-	
+
 	public boolean skipNextTurn = false;
 	public boolean ready = false;
-	
+
 	public Player() {
+	}
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		
+		placemat.act(delta);
+		for (WidgetGroup card : cards) {
+			if (card.getChildren().size > 0) {
+				if (card.getChild(0) instanceof Card) {
+					card.getChild(0).act(delta);
+				}
+			}
+		}
 	}
 	
 	public void populate(GameStage g) {
@@ -107,7 +120,7 @@ public class Player extends Group {
 		population.align(Align.center);
 		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70), Gdx.graphics.getHeight());
-		
+
 		for (WidgetGroup wg : cards) {
 			hand.addActor(wg);
 		}
@@ -120,8 +133,7 @@ public class Player extends Group {
 				population.getY() - ((((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)) * 32)
 						* population.getChildren().size));
 		totalPop.setAlignment(Align.left);
-		
-		
+
 		float scale = 2f;
 		placemat.setSize((400 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)),
 				(224 * scale) * ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
@@ -135,9 +147,10 @@ public class Player extends Group {
 		spinner.setSize(400 * scale, 224 * scale);
 		spinner.setPosition(hand.getX() - (spinner.getWidth() / 2) + 100,
 				(Gdx.graphics.getHeight() * 1.5f) - spinner.getHeight());
-		
+
 		dispUsername = new Label(username, g.labelStyle);
-		dispUsername.setPosition(hand.getX() - (Gdx.graphics.getWidth() / 2) + dispUsername.getWidth(), Gdx.graphics.getHeight() * 1.4f);
+		dispUsername.setPosition(hand.getX() - (Gdx.graphics.getWidth() / 2) + dispUsername.getWidth(),
+				Gdx.graphics.getHeight() * 1.4f);
 
 		addActor(spinner.clickArrow);
 		addActor(placemat.clickArrow);
@@ -159,7 +172,7 @@ public class Player extends Group {
 			}
 		});
 	}
-	
+
 	public int[] split(int num) {
 		ArrayList<Integer> a = new ArrayList<>();
 
@@ -177,7 +190,7 @@ public class Player extends Group {
 
 		return ret;
 	}
-	
+
 	public int occurences(int[] arr, int search) {
 		int ret = 0;
 
@@ -187,12 +200,11 @@ public class Player extends Group {
 
 		return ret;
 	}
-	
+
 	public void holdCard(Card card) {
 		currentlyHeldCard = card;
 		initialState = card;
 		WidgetGroup wg = (WidgetGroup) card.getParent();
-
 		hand.removeActor(wg);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 	}
@@ -210,14 +222,14 @@ public class Player extends Group {
 
 		resetHand();
 	}
-	
+
 	int sum(int[] arr) {
 		int ret = 0;
 		for (int i : arr)
 			ret += i;
 		return ret;
 	}
-	
+
 	public void resetHand() {
 		hand.remove();
 
@@ -239,14 +251,17 @@ public class Player extends Group {
 
 		addActor(hand);
 	}
-	
+
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		
-		placemat.clickArrow.setPosition(placemat.getX() + (placemat.getWidth() / 2)
-				- (MainGameStage.warInitiated ? placemat.clickArrow.getWidth() : placemat.clickArrow.getWidth() / 2), placemat.getY() - placemat.clickArrow.getHeight() + 5);
-		
+
+		placemat.clickArrow.setPosition(
+				placemat.getX() + (placemat.getWidth() / 2)
+						- (MainGameStage.warInitiated ? placemat.clickArrow.getWidth()
+								: placemat.clickArrow.getWidth() / 2),
+				placemat.getY() - placemat.clickArrow.getHeight() + 5);
+
 		totalPop.setText(Integer.toString(sum(pop)) + "M");
 
 		if (currentlyHeldCard != null) {
@@ -261,14 +276,17 @@ public class Player extends Group {
 				addActor(currentlyHeldCard);
 
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
-				if (placemat.getLeftCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
+				if (placemat.getLeftCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE
+						|| currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
 					currentlyHeldCard.setPosition(placemat.getLeftCard().getX(), placemat.getLeftCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
 					placemat.setLeftCard(currentlyHeldCard);
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
-				} else if (placemat.getRightCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE || currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
+				} else if (placemat.getRightCard().placematHover
+						&& (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE
+								|| currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
 					currentlyHeldCard.setPosition(placemat.getRightCard().getX(), placemat.getRightCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
 					placemat.setRightCard(currentlyHeldCard);
@@ -284,22 +302,45 @@ public class Player extends Group {
 
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
+				} else if (placemat.firstTurn) {
+					if (placemat.getCenterCard().placematHover) {
+						System.out.println(currentlyHeldCard.getId());
+						// TODO: This is what determines the card being placed on the placemat
+						currentlyHeldCard.setPosition(placemat.getCenterCard().getX(), placemat.getCenterCard().getY());
+						currentlyHeldCard.setSize(placemat.getCenterCard().getWidth(),
+								placemat.getCenterCard().getHeight());
+						placemat.setCenterCard(currentlyHeldCard);
+
+						currentlyHeldCard.remove();
+						currentlyHeldCard = null;
+					} else if (placemat.getTopCard().placematHover) {
+						System.out.println(currentlyHeldCard.getId());
+						// TODO: This is what determines the card being placed on the placemat
+						currentlyHeldCard.setPosition(placemat.getTopCard().getX(), placemat.getTopCard().getY());
+						currentlyHeldCard.setSize(placemat.getTopCard().getWidth(), placemat.getTopCard().getHeight());
+						placemat.setTopCard(currentlyHeldCard);
+
+						currentlyHeldCard.remove();
+						currentlyHeldCard = null;
+					} else {
+						putBackInHand();
+					}
 				} else {
 					putBackInHand();
 				}
 			}
 		}
 	}
-	
+
 	public void givePopulation(int quantity) {
 		System.out.println("Gave " + quantity + "M population to " + username);
-		
+
 		populationCards.clear();
 		population.clear();
-		
+
 		pop_i += quantity;
 		pop = split(pop_i);
-		
+
 		for (int i = 0; i < possible_combos.length; i++) {
 			if (occurences(pop, possible_combos[i]) > 0) {
 				PopulationCard p = new PopulationCard(possible_combos[i], occurences(pop, possible_combos[i]));
@@ -314,7 +355,7 @@ public class Player extends Group {
 				populationCards.add(w);
 			}
 		}
-		
+
 		population.align(Align.center);
 		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70), Gdx.graphics.getHeight());
@@ -333,10 +374,10 @@ public class Player extends Group {
 		System.out.println("Removed " + quantity + "M population from " + username);
 		populationCards.clear();
 		population.clear();
-		
+
 		pop_i -= quantity;
 		pop = split(pop_i);
-		
+
 		for (int i = 0; i < possible_combos.length; i++) {
 			if (occurences(pop, possible_combos[i]) > 0) {
 				PopulationCard p = new PopulationCard(possible_combos[i], occurences(pop, possible_combos[i]));
@@ -351,7 +392,7 @@ public class Player extends Group {
 				populationCards.add(w);
 			}
 		}
-		
+
 		population.align(Align.center);
 		population.space(((60 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 		population.setPosition((Gdx.graphics.getWidth() * 1.5f) - (popCardWidth + 70), Gdx.graphics.getHeight());

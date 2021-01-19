@@ -1,0 +1,122 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: { font: { file: default.fnt } }
+com.badlogic.gdx.graphics.Color: {
+	RGBA_0_0_0_255: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	RGBA_255_255_255_255: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: button up
+		down: button down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: check box checked
+		checkboxOff: check box unchecked
+		font: font
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		imageUp: button up
+		imageDown: button down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		font: font
+		up: button up
+		down: button down
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: font
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: font
+		fontColorSelected: RGBA_255_255_255_255
+		fontColorUnselected: RGBA_0_0_0_255
+		selection: check box unchecked
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: check box unchecked
+		knobBefore: bar
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: button up
+		vScroll: button down
+		vScrollKnob: button up
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: font
+		fontColor: RGBA_255_255_255_255
+		background: button up
+		scrollStyle: default
+		listStyle: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		background: button down
+		knob: bar
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
+	default-horizontal: {
+		handle: button up
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: font
+		fontColor: RGBA_255_255_255_255
+		downFontColor: RGBA_0_0_0_255
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: font
+		fontColor: RGBA_0_0_0_255
+		background: check box unchecked
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+		background: button up
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
+	default: {
+		plus: plus
+		minus: minus
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: button up
+		titleFont: font
+		titleFontColor: RGBA_255_255_255_255
+	}
+}
+}

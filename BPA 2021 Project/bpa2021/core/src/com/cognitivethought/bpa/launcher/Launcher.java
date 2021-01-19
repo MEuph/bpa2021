@@ -143,6 +143,22 @@ public class Launcher extends ApplicationAdapter {
 						});
 						
 						Launcher.setStage(main_stage);
+					} else if (Gdx.input.isKeyJustPressed(Input.Keys.F10)) {
+						Backendless.UserService.login("MEuph3", "603Euph_", new AsyncCallback<BackendlessUser>() {
+							
+							@Override
+							public void handleResponse(BackendlessUser response) {
+								Launcher.currentUser = response;
+								System.out.println("Worked");
+							}
+							
+							@Override
+							public void handleFault(BackendlessFault fault) {
+								System.err.println("Failed");
+							}
+						});
+						
+						Launcher.setStage(main_stage);
 					}
 					
 					return super.keyTyped(event, character);

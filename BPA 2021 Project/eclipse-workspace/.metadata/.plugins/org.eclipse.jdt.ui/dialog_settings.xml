@@ -42,8 +42,32 @@
 	<section name="JavaSearchPage">
 		<item key="CASE_SENSITIVE" value="false"/>
 		<item key="INCLUDE_MASK" value="1"/>
-		<item key="HISTORY_SIZE" value="2"/>
+		<item key="HISTORY_SIZE" value="4"/>
 		<section name="HISTORY0">
+			<item key="searchFor" value="0"/>
+			<item key="scope" value="0"/>
+			<item key="pattern" value="discard(true"/>
+			<item key="limitTo" value="2048"/>
+			<item key="matchLocations" value="2097088"/>
+			<item key="javaElement" value=""/>
+			<item key="isCaseSensitive" value="false"/>
+			<item key="includeMask" value="1"/>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY1">
+			<item key="searchFor" value="0"/>
+			<item key="scope" value="0"/>
+			<item key="pattern" value="NuclearWarServer.hostIpv4 = "/>
+			<item key="limitTo" value="2048"/>
+			<item key="matchLocations" value="2097088"/>
+			<item key="javaElement" value=""/>
+			<item key="isCaseSensitive" value="false"/>
+			<item key="includeMask" value="1"/>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY2">
 			<item key="searchFor" value="0"/>
 			<item key="scope" value="0"/>
 			<item key="pattern" value="placemat.advance()"/>
@@ -55,7 +79,7 @@
 			<list key="workingSets">
 			</list>
 		</section>
-		<section name="HISTORY1">
+		<section name="HISTORY3">
 			<item key="searchFor" value="0"/>
 			<item key="scope" value="0"/>
 			<item key="pattern" value="setId("/>
@@ -80,5 +104,24 @@
 		<item key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_HEIGHT" value="306"/>
 		<item key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_USE_PERSISTED_SIZE" value="true"/>
 		<item key="org.eclipse.jdt.internal.ui.typehierarchy.HierarchyInformationControlDIALOG_USE_PERSISTED_LOCATION" value="false"/>
+	</section>
+	<section name="FatJarPackageWizard">
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_SAVE" value="false"/>
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION" value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\eclipse-workspace"/>
+		<item key="FatJarPackageWizardPage.LIBRARY_HANDLING" value="1"/>
+		<item key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME" value="DesktopLauncher - bpa2021-desktop"/>
+		<item key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION" value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01182021\nw01182021_v1\nw01182021_v1.jar"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01182021\nw01182021_v1\nw01182021_v1.jar"/>
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01172021\nw01172021_v5\nw01172021_v5.jar"/>
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01172021\nw01172021_v4\nw01172021_v4.jar"/>
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01172021\nw01172021_v3\nw01172021_v3.jar"/>
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01172021\nw01172021_v2\nw01172021_v2.jar"/>
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\TestBuilds\01172021\nw01172021.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="C:\Users\Chris\Documents\GitHub\bpa2021\BPA 2021 Project\eclipse-workspace.xml"/>
+			<item value=".xml"/>
+		</list>
 	</section>
 </section>

@@ -135,6 +135,8 @@ public class MainGameStage extends GameStage {
 		getBatch().draw(background.getKeyFrame(elapsed), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		getBatch().end();
 		
+		clientPlayer.act(Gdx.graphics.getDeltaTime());
+		
 		super.draw();
 		
 		nextTurn.setPosition(clientPlayer.placemat.getLeftCard().getX() - (currentPlayer.placemat.getLeftCard().getWidth() / 2), clientPlayer.placemat.getLeftCard().getY() - clientPlayer.placemat.getLeftCard().getHeight() - 40);
