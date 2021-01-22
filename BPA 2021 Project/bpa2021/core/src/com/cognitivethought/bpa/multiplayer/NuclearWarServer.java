@@ -88,7 +88,7 @@ public class NuclearWarServer {
 				@Override
 				public void received(Connection conn, Object req) {
 					if (server == null) return;
-					System.out.println("CONNECTION " + conn.getRemoteAddressTCP() + " SENT DATA " + req.toString());
+					if (!(req instanceof FrameworkMessage.KeepAlive)) System.out.println("CONNECTION " + conn.getRemoteAddressTCP() + " SENT DATA " + req.toString());
 					if (req instanceof TurnPacket) {
 						TurnPacket request = (TurnPacket)req;
 						System.out.println("SERVER RECEIVED TP " + req.toString() + ", " + request.data);
@@ -121,6 +121,8 @@ public class NuclearWarServer {
 							StringPacket packet = new StringPacket("%change%;" + player_name + ";" + country_id);
 							server.sendToAllTCP(packet);
 						} else if (req.toString().contains("#clickedCountry;")) {
+							server.sendToTCP(conn.getID(), req);
+						} else if (req.toString().contains("#selectedDelivery")) {
 							server.sendToTCP(conn.getID(), req);
 						} else {
 							System.out.println("SERVER RECEIVED PDP " + req.toString());
@@ -256,6 +258,12 @@ public class NuclearWarServer {
 //							if (sender.equals(((MainGameStage)Launcher.game_stage).clientPlayer.username)) return;
 							int country_id = Integer.parseInt(cc_data[2].trim());
 							((MainGameStage)Launcher.game_stage).clickedCountry = country_id;
+//						} else if (data.toString().contains("#selectedDelivery;")) {
+//							String[] sd_data = ((StringPacket)data).data.split(";");
+////							String sender = cc_data[1];
+////							if (sender.equals(((MainGameStage)Launcher.game_stage).clientPlayer.username)) return;
+//							int selectedDelivery = Integer.parseInt(sd_data[2].trim());
+//							((MainGameStage)Launcher.game_stage).selectedDelivery = selectedDelivery;
 						} else {
 							((MainGameStage)Launcher.game_stage).players.put(data.data, new Player());
 							((MultiplayerQueueStage)Launcher.mq_stage).player_names.add(data.data);

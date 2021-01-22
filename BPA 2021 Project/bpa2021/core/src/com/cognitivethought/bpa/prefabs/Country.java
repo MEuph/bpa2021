@@ -179,6 +179,7 @@ public class Country extends Actor {
 		pmScaleY = s.getHeight() / (float) pm.getHeight();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void clicked(float x, float y) {
 		if (((MainGameStage)Launcher.game_stage).enableDark) {
 			Thread[] tarray = new Thread[Thread.activeCount()];
@@ -195,6 +196,16 @@ public class Country extends Actor {
 		}
 		isClicked = true;
 		// TODO: Pull up mini placemat of the country's player
+		
+		Player p = getAssignedPlayer();
+		if (p != null) {
+			System.out.println(p.dispUsername.getText());
+			System.out.println(this.id);
+			System.out.println(p.placemat.getTopCard());
+			System.out.println(p.placemat.getCenterCard());
+			System.out.println(p.placemat.getBottomCard());
+			System.out.println(p.totalPop.getText().toString());
+		}
 	}
 
 	public Player getAssignedPlayer() {

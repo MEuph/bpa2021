@@ -52,6 +52,8 @@ public class MainGameStage extends GameStage {
 	
 	public Animation<TextureRegion> background;
 	float elapsed;
+
+
 	
 	public MainGameStage(Viewport vp) {
 		super(vp);
@@ -157,17 +159,21 @@ public class MainGameStage extends GameStage {
 			getBatch().end();
 		}
 		
+		// TODO: Not working properly: select country, then select delivery system on placematt
+		
 		clientPlayer.setVisible(!enableDark);
 		nextTurn.setVisible(!enableDark);
 		
 		if (clickedCountry > 0 && (!executingCard.equals(Card.BLANK))) {
 			executingCard.play(this, clickedCountry);
 			clickedCountry = 0;
-			executingCard = clientPlayer.placemat.getTopCard();
+			// TODO may break game
+//				executingCard = clientPlayer.placemat.getTopCard();
+			executingCard = null;
 		}
 		
 		for (int i = 1; i < map.countries.length; i++) {
-			if (map.countries[i].isClicked) {
+			if (map.countries[i].isClicked && map.countries[i].getAssignedPlayer() != null) {
 				System.out.println(map.countries[i].getAssignedPlayer().username + " has " + map.countries[i].getAssignedPlayer().pop_i + "M population");
 				map.countries[i].isClicked = false;
 				break;

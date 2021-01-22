@@ -65,7 +65,7 @@
 			"Weight": 20,
 			"Description": "Destroys 5 Million",
 			"Short Desc": "Kill 5M",
-			"Quantity": 200
+			"Quantity": 20
 		}
 	],
 	
@@ -510,7 +510,7 @@
 			"Weight": 0,
 			"Description": "Carries any combination of warheads up to 50 megatons",
 			"Short Desc": "Carries 50 Megs",
-			"Quantity": 600
+			"Quantity": 6
 		}
 	],
 	
@@ -578,7 +578,7 @@
 			"Type": "DELIVERY_SYSTEM",
 			"Path": "cardart/delivery/polariscard.png",
 			"PopulationDelta": 0,
-			"Capacity": 100,
+			"Capacity": 10,
 			"Weight": 0,
 			"Description": "Carries one warhead up to 10 megatons. Discard after use",
 			"Short Desc": "Carries 10 megs. Consumable",

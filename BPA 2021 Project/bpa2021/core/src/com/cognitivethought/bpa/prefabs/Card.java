@@ -54,12 +54,13 @@ public class Card extends Widget {
 	private Type type;
 
 	private Image art;
-
+	private String art_path;
+	
 	private String name;
 	private String desc;
 	private String short_desc;
 	private String id;
-
+	
 	private Color fontColor;
 
 	private long populationDelta;
@@ -69,7 +70,7 @@ public class Card extends Widget {
 	private long quantity;
 
 	private boolean consumable;
-
+	
 	public int scale;
 	public int rad = 20;
 
@@ -79,7 +80,8 @@ public class Card extends Widget {
 
 	private Pixmap pm;
 	private Texture tex;
-
+	private Texture blank;
+	
 	private boolean hovering;
 
 	public int spacing = 0;
@@ -93,40 +95,51 @@ public class Card extends Widget {
 
 	boolean isOnPlacemat = false;
 	boolean discardingAnimation = false;
-
+	
 	String discardingTarget;
-
+	
+	public boolean isDeterrent;
+	
+	public Label prePlacematName;
+	
+	public boolean hasBeenOnTop = true;
+	
 	public Card(Card card) {
 		type = card.type;
-		name = card.name;
-		desc = card.desc;
+		name = new String(card.name);
+		desc = new String(card.desc);
 
-		short_desc = card.short_desc;
+		short_desc = new String(card.short_desc);
+		
+		art_path = card.art_path;
+		if (art_path != null)
+			art = new Image(new Texture(Strings.URL_LOCATOR + art_path));
+		else
+			art = null;
 
-		art = card.art;
+		id = new String(card.id);
 
-		id = card.id;
+		consumable = new Boolean(card.consumable);
 
-		consumable = card.consumable;
+		populationDelta = new Long(card.populationDelta);
+		capacity = new Long(card.capacity);
+		weight = new Long(card.weight);
 
-		populationDelta = card.populationDelta;
-		capacity = card.capacity;
-		weight = card.weight;
+		quantity = new Long(card.quantity);
 
-		quantity = card.quantity;
+		scale = new Integer(card.scale);
+		rad = new Integer(card.rad);
 
-		scale = card.scale;
-		rad = card.rad;
+		originalPos = new Vector2(card.originalPos);
+		originalSize = new Vector2(card.originalSize);
 
-		originalPos = card.originalPos;
-		originalSize = card.originalSize;
-
-		pm = card.pm;
+		pm = new Pixmap(card.pm.getWidth(), card.pm.getHeight(), card.pm.getFormat());
+		pm.drawPixmap(card.pm, 0, 0);
 
 		hovering = card.hovering = false;
 
 		spacing = card.spacing = 0;
-
+		
 		gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
 		param = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		nameStyle = new LabelStyle();
@@ -176,9 +189,10 @@ public class Card extends Widget {
 		this.quantity = quantity;
 		this.id = id;
 		this.consumable = consumable;
-
+		
 		this.short_desc = short_desc;
-
+		
+		this.art_path = art_path;
 		if (art_path != null)
 			art = new Image(new Texture(Strings.URL_LOCATOR + art_path));
 		else
@@ -217,7 +231,7 @@ public class Card extends Widget {
 	}
 
 	public void init() {
-		originalSize = new Vector2(getWidth(), getHeight());
+		originalSize = new Vector2();
 
 		this.pm = new Pixmap(60, 100, Pixmap.Format.RGBA8888);
 
@@ -260,7 +274,13 @@ public class Card extends Widget {
 		ttPm.dispose();
 		ttStyle.label = descStyle;
 		ttStyle.wrapWidth = 1;
-
+		
+		Pixmap blankpm = new Pixmap(20, 20, Pixmap.Format.RGBA8888);
+		blankpm.setColor(0, 1, 0, 0.5f);
+		blankpm.fill();
+		
+		blank = new Texture(blankpm);
+		
 		if (type.toString().contains("SELF") || type.toString().contains("TARGET")) {
 			l_type = new Label("SECRET", typeStyle);
 		} else {
@@ -278,7 +298,7 @@ public class Card extends Widget {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
-
+				
 				if (type != Type.BLANK)
 					((MainGameStage) Launcher.game_stage).currentPlayer.holdCard(card);
 			}
@@ -395,10 +415,15 @@ public class Card extends Widget {
 			// TODO: Add special visual effects
 			break;
 		case DELIVERY_SYSTEM:
-			discard(false, mgs, mgs.clientPlayer.username);
+			if (hasBeenOnTop)
+				discard(false, mgs, mgs.clientPlayer.username);
+			else
+				hasBeenOnTop = true;
 			break;
 		case ANTI_MISSILE:
 			break;
+		case WARHEAD:
+			mgs.selectTarget(this);
 		default:
 			mgs.selectTarget(this);
 			break;
@@ -408,7 +433,7 @@ public class Card extends Widget {
 
 //		System.out.println("PLAYED CARD " + getId());
 	}
-
+	
 	// USED WHEN A COUNTRY IS SELECTED
 	public void play(MainGameStage mgs, int clickedCountry) {
 		// TODO: Do the card's actions when a country is selected
@@ -420,13 +445,7 @@ public class Card extends Widget {
 			tp.data_removePopulation(playerName, (int) Math.abs(populationDelta));
 			tp.setIssuer(mgs.clientPlayer.username);
 			NuclearWarServer.client.sendTCP(tp);
-			if (mgs.players.get(playerName).placemat.getTopCard().type == Type.DELIVERY_SYSTEM) {
-				if (mgs.players.get(playerName).placemat.getTopCard().consumable)
-					mgs.players.get(playerName).placemat.setTopCard(Card.BLANK);
-				mgs.players.get(playerName).placemat.setCenterCard(Card.BLANK);
-			} else if (mgs.players.get(playerName).placemat.getTopCard().type == Type.WARHEAD) {
-				mgs.players.get(playerName).placemat.setTopCard(Card.BLANK);
-			}
+			discard(false, mgs, playerName);
 			break;
 		case SECRET_TARGET:
 			break;
@@ -439,10 +458,10 @@ public class Card extends Widget {
 		System.out.println("PLAYING CARD " + id + " towards countryId " + clickedCountry);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public String countryToPlayer(MainGameStage mgs, int countryId) {
 		String ret = "";
 
-		ArrayList<Integer> ids = new ArrayList<>();
 		Iterator it = ((MainGameStage) Launcher.game_stage).players.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
@@ -467,16 +486,22 @@ public class Card extends Widget {
 			float speed = 10f;
 
 			if (box != null) {
-				if (mouseLocalPosition.x < box.getX() + spacing)
+				if (mouseLocalPosition.x < box.getX() + spacing) {
 					hovering = true;
-				else
+				} else {
 					hovering = false;
+				}
 			} else {
 				hovering = false;
 			}
-
+			
+			batch.setColor(1,1,1,1);
+			if (art != null) art.setColor(1,1,1,1);
+			
 			if (((MainGameStage) Launcher.game_stage).currentPlayer.currentlyHeldCard != null) {
 				if (((MainGameStage) Launcher.game_stage).currentPlayer.currentlyHeldCard.equals(this)) {
+					batch.setColor(1, 1, 1, 0.5f);
+					if (art != null) art.setColor(1, 1, 1, 0.5f);
 					hovering = false;
 				}
 			}
@@ -541,19 +566,27 @@ public class Card extends Widget {
 			// param.size = 10 * (1 + scale);
 			// gen.dispose();
 		} else {
-			if (type == Type.BLANK) {
-				Vector2 mousePos = new Vector2(Gdx.input.getX() + Gdx.graphics.getWidth() / 2 - (16 / 2),
-						(Gdx.graphics.getHeight() * 1.5f) - Gdx.input.getY() - (16 / 2));
+			Vector2 mousePos = new Vector2(Gdx.input.getX() + Gdx.graphics.getWidth() / 2 - (16 / 2),
+					(Gdx.graphics.getHeight() * 1.5f) - Gdx.input.getY() - (16 / 2));
 
-				Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-				Rectangle cursor = new Rectangle(mousePos.x, mousePos.y, 16, 16);
+			Rectangle bounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
+			Rectangle cursor = new Rectangle(mousePos.x, mousePos.y, 16, 16);
 
-				placematHover = bounds.overlaps(cursor);
-			} else {
+			placematHover = bounds.overlaps(cursor);
+			
+			if (placematHover && ((MainGameStage)Launcher.game_stage).clientPlayer.currentlyHeldCard == null) {
+				batch.setColor(1,1,1,0.5f);
+			}
+			
+			if (getType() != Type.BLANK) { 
+				if (l_name.getText().toString().isEmpty()) resetLName();
+				if (l_desc.getText().toString().isEmpty()) resetLDesc();
+				if (l_type.getText().toString().isEmpty()) resetLType();
+				
 				batch.draw(tex, getX(), getY(), getWidth(), getHeight());
-
+	
 				// desc_wrap.setDebug(true, true);
-
+	
 				if (art != null) {
 					art.setSize(getWidth() / 1.15f, getWidth() / 1.15f);
 					art.setPosition(
@@ -561,13 +594,21 @@ public class Card extends Widget {
 							getY() + 10);
 					art.draw(batch, parentAlpha);
 				}
-
+				
+				
 				l_name.setFontScale(Placemat.cardWidth / getWidth());
 				l_name.setPosition(getX(), l_name.getY());
 				l_name.setWidth(getWidth());
 				l_name.draw(batch, parentAlpha);
+			} else {
+				if (placematHover && ((MainGameStage)Launcher.game_stage).clientPlayer.currentlyHeldCard != null) {
+					if (!batch.isDrawing()) batch.begin();
+					batch.draw(blank, getX(), getY(), getWidth(), getHeight());
+				}
 			}
 		}
+		
+		batch.setColor(1, 1, 1, 1);
 	}
 	
 	@Override
@@ -575,18 +616,6 @@ public class Card extends Widget {
 		super.act(delta);
 		
 		// TODO: Fix the discarding animation
-		
-		if (discardingAnimation) {
-			setPosition(getX(), getY() + (5f));
-			System.out.println("Moved to " + getY());
-//			float newAlpha = batch.getColor().a - (.1f);
-//			System.out.print(" to " + getY() + " and changed alpha to " + newAlpha + "\n");
-//			batch.setColor(1, 1, 1, newAlpha > 0 ? newAlpha : 0);
-		}
-
-//		if (batch.getColor().a <= 0f) {
-//			discard(false, (MainGameStage) Launcher.game_stage, discardingTarget);
-//		}
 	}
 	
 	public void setScale(int scale) {
@@ -736,7 +765,10 @@ public class Card extends Widget {
 
 	@Override
 	public String getName() {
-		return name;
+		if (isOnPlacemat && getType().equals(Type.DELIVERY_SYSTEM))
+			return "Capacity: " + capacity + "Meg";
+		else 
+			return name;
 	}
 
 	@Override
@@ -819,7 +851,10 @@ public class Card extends Widget {
 			if (mgs.players.get(target).placemat.getTopCard().equals(this)) {
 				mgs.players.get(target).placemat.setTopCard(new Card(Card.BLANK));
 				System.out.println("Was top card");
-				mgs.players.get(target).placemat.advance(mgs, target);
+				mgs.players.get(target).placemat.setTopCard(mgs.players.get(target).placemat.getCenterCard());
+				mgs.players.get(target).placemat.setCenterCard(mgs.players.get(target).placemat.getBottomCard());
+				mgs.players.get(target).placemat.setBottomCard(new Card(Card.BLANK));
+//				mgs.players.get(target).placemat.advance(mgs, target);
 				return;
 			}
 			System.out.println("Was not top card");
@@ -854,4 +889,46 @@ public class Card extends Widget {
 		}
 	}
 
+	public void resetLDesc() {
+		this.l_desc.setText(isOnPlacemat ? short_desc : desc);
+	}
+
+	public void resetLName() {
+		l_name.setFontScale(Placemat.cardWidth / getWidth());
+		l_name.setPosition(getX(), l_name.getY());
+		l_name.setWidth(getWidth());
+		l_name.setText(this.getName());
+	}
+	
+	public void resetLType() {
+		if (type.toString().contains("SELF") || type.toString().contains("TARGET")) {
+			l_type.setText("SECRET");;
+		} else {
+			l_type.setText(type.toString().replace('_', ' '));
+		}
+	}
+	
+	public Label getLName() {
+		return this.l_name;
+	}
+	
+	public Label getLDesc() {
+		return this.l_desc;
+	}
+	
+	public Label getLType() {
+		return this.l_type;
+	}
+
+	public void resetSize() {
+		setSize(originalSize.x, originalSize.y);
+	}
+
+	public void reset() {
+		isOnPlacemat = false;
+		isDeterrent = false;
+		
+		setSize(90, 140);
+		setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+	}
 }

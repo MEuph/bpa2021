@@ -20,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cognitivethought.bpa.external.GifDecoder;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
+import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.prefabs.Card.Type;
 import com.cognitivethought.bpa.tidiness.Strings;
 
 public class Placemat extends Group {
@@ -41,7 +43,7 @@ public class Placemat extends Group {
 	Texture outline;
 	Animation<TextureRegion> background;
 	float elapsed;
-	Label firstTurnLabel;
+	Label errorLabel;
 	
 	boolean isDown = false;
 	public boolean firstTurn = true;
@@ -74,10 +76,11 @@ public class Placemat extends Group {
 		outline = new Texture(new Pixmap(new FileHandle(Strings.URL_PLACEMAT_OUTLINE)));
 		
 		LabelStyle style = new LabelStyle();
+		param.size = 9;
 		style.font = gen.generateFont(param);
 		style.fontColor = Color.RED;
-		firstTurnLabel = new Label("Please fill the center column of cards", style);
-		firstTurnLabel.setPosition(getX(), getY());
+		errorLabel = new Label("Please fill the center column of cards,\n\nthen click [Next Turn]", style);
+		errorLabel.setPosition(getX() + 20, getY() + getHeight() - 70);
 		
 		clickArrow.addListener(new ClickListener() {
 			@Override
@@ -93,7 +96,7 @@ public class Placemat extends Group {
 		top = new Card(Card.BLANK);
 		center = new Card(Card.BLANK);
 		
-		addActor(firstTurnLabel);
+		addActor(errorLabel);
 	}
 	
 	@Override
@@ -110,23 +113,23 @@ public class Placemat extends Group {
 	@Override
 	public void setPosition(float x, float y) {
 		super.setPosition(x, y);
-		
-		firstTurnLabel.setPosition(getX(), getY());
+
+		errorLabel.setPosition(getX() + 20, getY() + getHeight() - 70);
 		
 		left.setPosition(getX() + pixelToRelative(64, 131).x, getY() + pixelToRelative(64, 131).y);
-		left.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		left.setSize(cardWidth * (getWidth() / matWidth) + 5, cardHeight * (getHeight() / matHeight));
 		
 		right.setPosition(getX() + pixelToRelative(305, 131).x, getY() + pixelToRelative(305, 131).y);
-		right.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		right.setSize(cardWidth * (getWidth() / matWidth) + 5, cardHeight * (getHeight() / matHeight));
 		
 		top.setPosition(getX() + pixelToRelative(185, 64).x, getY() + pixelToRelative(185, 64).y);
-		top.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		top.setSize(cardWidth * (getWidth() / matWidth) + 5, cardHeight * (getHeight() / matHeight));
 		
 		center.setPosition(getX() + pixelToRelative(185, 131).x, getY() + pixelToRelative(185, 131).y);
-		center.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		center.setSize(cardWidth * (getWidth() / matWidth) + 5, cardHeight * (getHeight() / matHeight));
 		
 		bottom.setPosition(getX() + pixelToRelative(185, 198).x, getY() + pixelToRelative(185, 198).y);
-		bottom.setSize(cardWidth * (getWidth() / matWidth), cardHeight * (getHeight() / matHeight));
+		bottom.setSize(cardWidth * (getWidth() / matWidth) + 5, cardHeight * (getHeight() / matHeight));
 	}
 	
 	@Override
@@ -136,6 +139,8 @@ public class Placemat extends Group {
 		if (getTopCard().getType() != Card.Type.BLANK) getTopCard().act(delta);
 		if (getCenterCard().getType() != Card.Type.BLANK) getCenterCard().act(delta);
 		if (getBottomCard().getType() != Card.Type.BLANK) getBottomCard().act(delta);
+		if (getRightCard().getType() != Card.Type.BLANK) getRightCard().act(delta);
+		if (getLeftCard().getType() != Card.Type.BLANK) getLeftCard().act(delta);
 	}
 	
 	public Card getLeftCard() {
@@ -209,6 +214,12 @@ public class Placemat extends Group {
 		top.isOnPlacemat = true;
 		right.isOnPlacemat = true;
 		
+		left.isDeterrent = left.getType() != Type.BLANK;
+		right.isDeterrent = right.getType() != Type.BLANK;
+		bottom.isDeterrent = false;
+		center.isDeterrent = false;
+		top.isDeterrent = false;
+		
 		if (isDown && getY() >= downY + 2) {
 			Vector2 newPos = new Vector2(getX(), getY()).
 					lerp(new Vector2(0, downY), Gdx.graphics.getDeltaTime() * 5f);
@@ -229,39 +240,58 @@ public class Placemat extends Group {
 			clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
 		}
 		
-		if (firstTurn) {
-			if (!firstTurnLabel.isVisible()) firstTurnLabel.setVisible(true);
-		} else {
-			if (firstTurnLabel.isVisible()) firstTurnLabel.setVisible(false);
+		if (!getTopCard().getType().equals(Card.Type.BLANK) && !getCenterCard().getType().equals(Card.Type.BLANK) && !getBottomCard().getType().equals(Card.Type.BLANK) && firstTurn) {
+			firstTurn = false;
+			errorLabel.setText("");
 		}
 		
 		batch.draw(outline, getX(), getY(), getWidth(), getHeight());
+		if (firstTurn)
+			errorLabel.draw(batch, parentAlpha);
+		else if (!firstTurn && !errorLabel.getText().toString().isEmpty()) {
+			errorLabel.draw(batch, parentAlpha);
+		}
 
 		super.draw(batch, parentAlpha);
 	}
 
 	public void advance(MainGameStage mgs, String advancingPlayer) {
-		// TODO: Fix the executing of turns; edit as of 1/14/2021: this isn't specific at all
-		if (firstTurn) {
-			if (!getTopCard().getType().equals(Card.Type.BLANK) && !getCenterCard().getType().equals(Card.Type.BLANK) && !getBottomCard().getType().equals(Card.Type.BLANK)) {
-				firstTurn = false;
-			} else {
-				return;
-			}
+		// TODO: Fix the executing of turns; edit as of 1/14/2021: this isn't specific at all. Edit as of 1/22/2021: oh i see the problem
+		if (!(getTopCard().getType() != Card.Type.BLANK && getCenterCard().getType() != Card.Type.BLANK && getBottomCard().getType() != Card.Type.BLANK)) {
+			errorLabel.setText("Please make sure the center\ncolumn is filled");
+			return;
+		} else {
+			errorLabel.setText("");
 		}
 		System.out.println("Advancing " + advancingPlayer + "\'s placemat");
+		((MainGameStage)Launcher.game_stage).players.get(advancingPlayer).drawCard();
 		if (top.getType().equals(Card.Type.DELIVERY_SYSTEM)) {
 			if (getCenterCard().getType().equals(Card.Type.WARHEAD)) {
-				getCenterCard().play(((MainGameStage)this.getParent().getStage()));
+				getTopCard().setCapacity(getTopCard().getCapacity() - getCenterCard().getWeight());
+				if (getTopCard().getCapacity() >= 0) {
+					getTopCard().resetLName();
+					getCenterCard().play(((MainGameStage)this.getParent().getStage()));
+					getTopCard().hasBeenOnTop = false;
+					errorLabel.setText("");
+					if (getTopCard().getCapacity() == 0) {
+						getTopCard().discard(false, mgs, advancingPlayer);
+						getTopCard().discard(false, mgs, advancingPlayer);
+						errorLabel.setText("Delivery system was used\n\nfor only one warhead!\n\nThis is fine, but\n\ntry to underfill non-single-use\n\ndelivery systems");
+					}
+				} else {
+					if (getTopCard().getCapacity() < 0) errorLabel.setText("The payload was too much for that\n\ndelivery system. Both cards have been\n\ndiscarded!");
+					getTopCard().discard(false, mgs, advancingPlayer);
+					getTopCard().discard(false, mgs, advancingPlayer);
+				}
 			} else {
-				getTopCard().discard(false, mgs, advancingPlayer);
+				if (getTopCard().hasBeenOnTop || getTopCard().isConsumable()) {
+					getTopCard().discard(false, mgs, advancingPlayer);
+				} else {
+					getTopCard().hasBeenOnTop = true;
+				}
 			}
 		} else if (top.getType().equals(Card.Type.WARHEAD)) {
-			if (!getLeftCard().getType().equals(Card.Type.DELIVERY_SYSTEM) && !getRightCard().getType().equals(Card.Type.DELIVERY_SYSTEM)) {
-				top.discard(false, mgs, advancingPlayer);
-			} else {
-				chooseDeliverySystem();
-			}
+			top.discard(false, mgs, advancingPlayer);
 		} else {
 			if (!top.getType().equals(Card.Type.BLANK))
 				top.play((MainGameStage)this.getParent().getStage());
@@ -270,6 +300,7 @@ public class Placemat extends Group {
 			setCenterCard(getBottomCard());
 			setBottomCard(new Card(Card.BLANK));
 			System.out.println("Played top, moved center to top, moved bottom to center, set bottom to blank");
+			return;
 		}
 		
 		if (getCenterCard().getType().equals(Card.Type.BLANK)) {
@@ -277,6 +308,7 @@ public class Placemat extends Group {
 				setCenterCard(getBottomCard());
 				setBottomCard(new Card(Card.BLANK));
 				System.out.println("moved bottom to center, set bottom to blank");
+				return;
 			}
 		}
 	}
@@ -337,9 +369,5 @@ public class Placemat extends Group {
 		}
 		
 		tex = new Texture(mat);
-	}
-	
-	public void chooseDeliverySystem() {
-		// TODO: Implement the choosing of a delivery system based on left or right card
 	}
 }

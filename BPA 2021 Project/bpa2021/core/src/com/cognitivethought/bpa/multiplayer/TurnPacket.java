@@ -38,6 +38,9 @@ public class TurnPacket {
 	
 	public static final int LEFT = 0;
 	public static final int RIGHT = 1;
+	public static final int BOTTOM = 2;
+	public static final int CENTER = 3;
+	public static final int TOP = 4;
 	
 	public TurnPacket() {
 		
@@ -61,9 +64,9 @@ public class TurnPacket {
 		System.out.println("UPDATED DATA TO " + data);
 	}
 	
-	public void data_addCard(String target, String card_id) {
-		data += "$" + ADD_CARD + ";" + target + ";" + card_id + ";";
-		System.out.println("id: " + card_id);
+	public void data_addCard(String target, String card_id, int placeOnPlacemat) {
+		data += "$" + ADD_CARD + ";" + target + ";" + card_id + ";" + placeOnPlacemat;
+		System.out.println("id: " + card_id + " on placemat spot " + placeOnPlacemat);
 		System.out.println("UPDATED DATA TO " + data);
 	}
 	
@@ -100,15 +103,28 @@ public class TurnPacket {
 		System.out.println("Removed " + quantity + "M population from " + target);
 	}
 	
-	public void exec_addCard(MainGameStage mgs, String target, String card_id) {
+	public void exec_addCard(MainGameStage mgs, String target, String card_id, int placeOnPlacemat) {
 		int i = 0;
 		for (;i < Card.DECK.size(); i++) { 
 			if (Card.DECK.get(i).getId().equals(card_id)) break;
 		}
 		System.out.println("TARGET IS " + target);
-		mgs.players.get(target).placemat.setBottomCard(Card.DECK.get(i));
+		switch (placeOnPlacemat) {
+		case BOTTOM:
+			mgs.players.get(target).placemat.setBottomCard(Card.DECK.get(i));
+			break;
+		case CENTER:
+			mgs.players.get(target).placemat.setCenterCard(Card.DECK.get(i));
+			break;
+		case TOP:
+			mgs.players.get(target).placemat.setTopCard(Card.DECK.get(i));
+			break;
+		default:
+			System.err.println(placeOnPlacemat + " is not a valid place to put a card on the placemat");
+			break;
+		}
 		
-		System.out.println("Put card " + card_id + " onto " + target + "\'s placemat");
+		System.out.println("Put card " + card_id + " onto " + target + "\'s placemat" + " at " + placeOnPlacemat + "th slot");
 	}
 	
 	public void execute(MainGameStage mgs) {
@@ -131,7 +147,7 @@ public class TurnPacket {
 				exec_removePopulation(mgs, comm[1], Integer.parseInt(comm[2]));
 				break;
 			case ADD_CARD:
-				exec_addCard(mgs, comm[1], comm[2]);
+				exec_addCard(mgs, comm[1], comm[2], Integer.parseInt(comm[3]));
 			}
 		}
 	}

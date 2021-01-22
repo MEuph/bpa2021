@@ -41,24 +41,24 @@
 	</section>
 	<section name="JavaSearchPage">
 		<item key="CASE_SENSITIVE" value="false"/>
-		<item key="INCLUDE_MASK" value="1"/>
-		<item key="HISTORY_SIZE" value="4"/>
+		<item key="INCLUDE_MASK" value="15"/>
+		<item key="HISTORY_SIZE" value="6"/>
 		<section name="HISTORY0">
-			<item key="searchFor" value="0"/>
+			<item key="searchFor" value="1"/>
 			<item key="scope" value="0"/>
-			<item key="pattern" value="discard(true"/>
-			<item key="limitTo" value="2048"/>
-			<item key="matchLocations" value="2097088"/>
+			<item key="pattern" value="setName("/>
+			<item key="limitTo" value="2"/>
+			<item key="matchLocations" value="0"/>
 			<item key="javaElement" value=""/>
 			<item key="isCaseSensitive" value="false"/>
-			<item key="includeMask" value="1"/>
+			<item key="includeMask" value="15"/>
 			<list key="workingSets">
 			</list>
 		</section>
 		<section name="HISTORY1">
 			<item key="searchFor" value="0"/>
 			<item key="scope" value="0"/>
-			<item key="pattern" value="NuclearWarServer.hostIpv4 = "/>
+			<item key="pattern" value="removeListener"/>
 			<item key="limitTo" value="2048"/>
 			<item key="matchLocations" value="2097088"/>
 			<item key="javaElement" value=""/>
@@ -70,7 +70,7 @@
 		<section name="HISTORY2">
 			<item key="searchFor" value="0"/>
 			<item key="scope" value="0"/>
-			<item key="pattern" value="placemat.advance()"/>
+			<item key="pattern" value="discard(true"/>
 			<item key="limitTo" value="2048"/>
 			<item key="matchLocations" value="2097088"/>
 			<item key="javaElement" value=""/>
@@ -80,6 +80,30 @@
 			</list>
 		</section>
 		<section name="HISTORY3">
+			<item key="searchFor" value="0"/>
+			<item key="scope" value="0"/>
+			<item key="pattern" value="NuclearWarServer.hostIpv4 = "/>
+			<item key="limitTo" value="2048"/>
+			<item key="matchLocations" value="2097088"/>
+			<item key="javaElement" value=""/>
+			<item key="isCaseSensitive" value="false"/>
+			<item key="includeMask" value="1"/>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY4">
+			<item key="searchFor" value="0"/>
+			<item key="scope" value="0"/>
+			<item key="pattern" value="placemat.advance()"/>
+			<item key="limitTo" value="2048"/>
+			<item key="matchLocations" value="2097088"/>
+			<item key="javaElement" value=""/>
+			<item key="isCaseSensitive" value="false"/>
+			<item key="includeMask" value="1"/>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY5">
 			<item key="searchFor" value="0"/>
 			<item key="scope" value="0"/>
 			<item key="pattern" value="setId("/>

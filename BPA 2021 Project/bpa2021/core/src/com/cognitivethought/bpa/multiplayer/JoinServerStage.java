@@ -1,7 +1,5 @@
 package com.cognitivethought.bpa.multiplayer;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -94,7 +92,7 @@ public class JoinServerStage extends UIStage {
 					NuclearWarServer.joinServer(Integer.parseInt(server_code.getText().split(":")[1]));
 					jss_errors.setText("Trying to connect...");
 					success = true;
-				} catch (IOException e) {
+				} catch (Exception e) {
 					jss_errors.setText("Error, couldn\'t connect to server!");
 				}
 				

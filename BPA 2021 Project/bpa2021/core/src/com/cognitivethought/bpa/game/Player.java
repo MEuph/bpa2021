@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.Align;
 import com.cognitivethought.bpa.gamestages.GameStage;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
+import com.cognitivethought.bpa.multiplayer.TurnPacket;
 import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.prefabs.Placemat;
 import com.cognitivethought.bpa.prefabs.PopulationCard;
@@ -52,13 +53,16 @@ public class Player extends WidgetGroup {
 	public boolean skipNextTurn = false;
 	public boolean ready = false;
 
+	public TurnPacket tp;
+
 	public Player() {
+		tp = new TurnPacket();
 	}
-	
+
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
+
 		placemat.act(delta);
 		for (WidgetGroup card : cards) {
 			if (card.getChildren().size > 0) {
@@ -67,6 +71,25 @@ public class Player extends WidgetGroup {
 				}
 			}
 		}
+	}
+	
+	public void drawCard() {
+		System.out.println("Drawing card");
+		
+		Card card = new Card(Card.DECK.get(0));
+		card.setSize(90, 140);
+		card.setScale(((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)));
+		card.spacing = ((int) (card.getWidth() / 2) - 2);
+		cardWidth = card.getWidth();
+
+		WidgetGroup w = new WidgetGroup();
+		w.addActor(card);
+		
+		hand.addActor(w);
+		
+		Card.DECK.remove(0);
+		
+		resetHand();
 	}
 	
 	public void populate(GameStage g) {
@@ -204,14 +227,26 @@ public class Player extends WidgetGroup {
 	public void holdCard(Card card) {
 		currentlyHeldCard = card;
 		initialState = card;
+		currentlyHeldCard.getLDesc().setText("");
+		currentlyHeldCard.getLName().setText("");
+		currentlyHeldCard.getLType().setText("");
 		WidgetGroup wg = (WidgetGroup) card.getParent();
 		hand.removeActor(wg);
 		hand.space(((90 * (1 + (((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768)))))) / 2);
 	}
 
 	public void putBackInHand() {
-		currentlyHeldCard = initialState;
-
+//		currentlyHeldCard = initialState;
+		currentlyHeldCard.reset();
+		currentlyHeldCard.resetLDesc();
+		currentlyHeldCard.resetLName();
+		currentlyHeldCard.resetLType();
+		currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x, currentlyHeldCard.originalSize.y);
+		currentlyHeldCard.setPosition(0, 0);
+		currentlyHeldCard.getLName().setFontScale(1.0f);
+		System.out.println("new name: " + currentlyHeldCard.getName() + ", " + currentlyHeldCard.getLName().getText()
+				+ ", " + currentlyHeldCard.getLName().getWidth() + ", " + currentlyHeldCard.getLName().getFontScaleX()
+				+ ", " + currentlyHeldCard.getLName().isVisible());
 		WidgetGroup w = new WidgetGroup();
 		w.addActor(currentlyHeldCard);
 
@@ -265,32 +300,31 @@ public class Player extends WidgetGroup {
 		totalPop.setText(Integer.toString(sum(pop)) + "M");
 
 		if (currentlyHeldCard != null) {
-			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 1.15f,
-					currentlyHeldCard.originalSize.y / 1.15f);
+			currentlyHeldCard.setSize(currentlyHeldCard.originalSize.x / 2f, currentlyHeldCard.originalSize.y / 2f);
 			currentlyHeldCard.setPosition(
 					Gdx.input.getX() + (Gdx.graphics.getWidth() / 2) - (currentlyHeldCard.getWidth() / 2),
 					Gdx.graphics.getHeight() - Gdx.input.getY()
-							+ (Gdx.graphics.getHeight() >= 1080 ? currentlyHeldCard.getHeight() * 2
-									: currentlyHeldCard.getHeight()));
+							+ (Gdx.graphics.getHeight() >= 1080 ? currentlyHeldCard.getHeight() * 3.5f
+									: currentlyHeldCard.getHeight() * 2));
 			if (!getChildren().contains((Actor) currentlyHeldCard, true))
 				addActor(currentlyHeldCard);
 
 			if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
 				if (placemat.getLeftCard().placematHover && (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE
 						|| currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
+					currentlyHeldCard.prePlacematName = currentlyHeldCard.getLName();
 					currentlyHeldCard.setPosition(placemat.getLeftCard().getX(), placemat.getLeftCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
 					placemat.setLeftCard(currentlyHeldCard);
-
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getRightCard().placematHover
 						&& (currentlyHeldCard.getType() == Card.Type.ANTI_MISSILE
 								|| currentlyHeldCard.getType() == Card.Type.DELIVERY_SYSTEM)) {
+					currentlyHeldCard.prePlacematName = currentlyHeldCard.getLName();
 					currentlyHeldCard.setPosition(placemat.getRightCard().getX(), placemat.getRightCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
 					placemat.setRightCard(currentlyHeldCard);
-
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
 				} else if (placemat.getBottomCard().placematHover) {
@@ -299,35 +333,46 @@ public class Player extends WidgetGroup {
 					currentlyHeldCard.setPosition(placemat.getBottomCard().getX(), placemat.getBottomCard().getY());
 					currentlyHeldCard.setSize(placemat.getLeftCard().getWidth(), placemat.getLeftCard().getHeight());
 					placemat.setBottomCard(currentlyHeldCard);
-
+					tp.data_addCard(this.username, placemat.getBottomCard().getId(), TurnPacket.BOTTOM);
 					currentlyHeldCard.remove();
 					currentlyHeldCard = null;
-				} else if (placemat.firstTurn) {
-					if (placemat.getCenterCard().placematHover) {
-						System.out.println(currentlyHeldCard.getId());
-						// TODO: This is what determines the card being placed on the placemat
-						currentlyHeldCard.setPosition(placemat.getCenterCard().getX(), placemat.getCenterCard().getY());
-						currentlyHeldCard.setSize(placemat.getCenterCard().getWidth(),
-								placemat.getCenterCard().getHeight());
-						placemat.setCenterCard(currentlyHeldCard);
-
-						currentlyHeldCard.remove();
-						currentlyHeldCard = null;
-					} else if (placemat.getTopCard().placematHover) {
-						System.out.println(currentlyHeldCard.getId());
-						// TODO: This is what determines the card being placed on the placemat
-						currentlyHeldCard.setPosition(placemat.getTopCard().getX(), placemat.getTopCard().getY());
-						currentlyHeldCard.setSize(placemat.getTopCard().getWidth(), placemat.getTopCard().getHeight());
-						placemat.setTopCard(currentlyHeldCard);
-
-						currentlyHeldCard.remove();
-						currentlyHeldCard = null;
-					} else {
-						putBackInHand();
-					}
+				} else if (placemat.getCenterCard().placematHover) {
+					System.out.println(currentlyHeldCard.getId());
+					// TODO: This is what determines the card being placed on the placemat
+					currentlyHeldCard.setPosition(placemat.getCenterCard().getX(), placemat.getCenterCard().getY());
+					currentlyHeldCard.setSize(placemat.getCenterCard().getWidth(),
+							placemat.getCenterCard().getHeight());
+					placemat.setCenterCard(currentlyHeldCard);
+					tp.data_addCard(this.username, placemat.getBottomCard().getId(), TurnPacket.CENTER);
+					currentlyHeldCard.remove();
+					currentlyHeldCard = null;
+				} else if (placemat.getTopCard().placematHover) {
+					System.out.println(currentlyHeldCard.getId());
+					// TODO: This is what determines the card being placed on the placemat
+					currentlyHeldCard.setPosition(placemat.getTopCard().getX(), placemat.getTopCard().getY());
+					currentlyHeldCard.setSize(placemat.getTopCard().getWidth(), placemat.getTopCard().getHeight());
+					placemat.setTopCard(currentlyHeldCard);
+					tp.data_addCard(this.username, placemat.getBottomCard().getId(), TurnPacket.TOP);
+					currentlyHeldCard.remove();
+					currentlyHeldCard = null;
 				} else {
 					putBackInHand();
 				}
+			}
+		} else if (Gdx.input.isButtonJustPressed(Buttons.LEFT)) {
+			System.out.println("Left pressed while not holding card. That\'s something i guess");
+			if (placemat.getLeftCard().placematHover && (currentlyHeldCard == null ? currentlyHeldCard == null
+					: currentlyHeldCard.getType().equals(Card.Type.BLANK)) && !placemat.getLeftCard().getType().equals(Card.Type.BLANK)) {
+				currentlyHeldCard = placemat.getLeftCard();
+				currentlyHeldCard.resetSize();
+				placemat.setLeftCard(Card.BLANK);
+			} else if (placemat.getRightCard().placematHover && (currentlyHeldCard == null ? currentlyHeldCard == null
+					: currentlyHeldCard.getType().equals(Card.Type.BLANK)) && !placemat.getRightCard().getType().equals(Card.Type.BLANK)) {
+				currentlyHeldCard = placemat.getRightCard();
+				currentlyHeldCard.resetSize();
+				placemat.setRightCard(Card.BLANK);
+				currentlyHeldCard.remove();
+				currentlyHeldCard = null;
 			}
 		}
 	}

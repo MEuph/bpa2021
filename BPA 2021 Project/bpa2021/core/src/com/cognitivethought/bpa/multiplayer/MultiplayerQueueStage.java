@@ -3,7 +3,6 @@ package com.cognitivethought.bpa.multiplayer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -23,7 +22,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cognitivethought.bpa.game.Player;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.GameMap;
@@ -161,6 +159,7 @@ public class MultiplayerQueueStage extends UIStage {
 		};
 		start_game.align(Align.center);
 		start_game.addListener(new ClickListener() {
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				boolean duplicates = false;
