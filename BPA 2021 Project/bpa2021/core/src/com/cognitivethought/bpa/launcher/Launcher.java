@@ -24,7 +24,6 @@ import com.cognitivethought.bpa.multiplayer.HostServerStage;
 import com.cognitivethought.bpa.multiplayer.JoinServerStage;
 import com.cognitivethought.bpa.multiplayer.MultiplayerQueueStage;
 import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
-import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.tidiness.Strings;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
 import com.cognitivethought.bpa.uistages.GameMenuStage;
@@ -72,8 +71,6 @@ public class Launcher extends ApplicationAdapter {
 		
 		vp = new ScalingViewport(Scaling.none, Toolkit.getDefaultToolkit().getScreenSize().width,
 				Toolkit.getDefaultToolkit().getScreenSize().height, camera);
-		
-		Card.loadCards();
 
 		na_stage = new NewAccountStage(vp);
 		login_stage = new LoginStage(vp);
@@ -201,7 +198,9 @@ public class Launcher extends ApplicationAdapter {
 	}
 
 	public void update() {
-		currentStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		if (currentStage != null) {
+			currentStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		}
 	}
 
 	@Override

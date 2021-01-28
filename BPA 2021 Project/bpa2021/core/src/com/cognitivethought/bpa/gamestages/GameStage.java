@@ -71,8 +71,8 @@ public abstract class GameStage extends Stage {
 
 			param.size = 12;
 			
-			labelBg = new Pixmap(200, 200, Pixmap.Format.RGB888);
-			labelBg.setColor(Color.BLACK);
+			labelBg = new Pixmap(200, 200, Pixmap.Format.RGBA8888);
+			labelBg.setColor(new Color(0, 0, 0, 0.1f));
 			labelBg.fill();
 
 			labelStyle = new LabelStyle();

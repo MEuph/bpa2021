@@ -1,5 +1,6 @@
 package com.cognitivethought.bpa.prefabs;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -64,9 +65,11 @@ public class GameMap extends Group {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
+		
+		batch.setColor(new Color(0.1f, 0.7f, 0.1f, 1f));
 		batch.draw(background, getX() - (getWidth() * mapBorderScale), getY() - (getHeight() * mapBorderScale),
 				getWidth() + (getWidth() * mapBorderScale * 2), getHeight() + (getHeight() * mapBorderScale * 2));
+		batch.setColor(Color.WHITE);
 		batch.draw(outline, getX(), getY(), getWidth(), getHeight());
 	}
 
@@ -142,6 +145,12 @@ public class GameMap extends Group {
 			return "Visalia";
 		default:
 			return "";
+		}
+	}
+
+	public void clearPopups() {
+		for (int i = 1; i < countries.length; i++) {
+			countries[i].popup.setVisible(false);
 		}
 	}
 }

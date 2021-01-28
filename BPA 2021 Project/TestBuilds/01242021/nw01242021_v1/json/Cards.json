@@ -1,0 +1,836 @@
+{
+	"prop10mil": [ 
+		{ 
+			"Name": "10 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/10millionpropaganda.png",
+			"PopulationDelta": 10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Enemy Denounce Their Form Of Government For Yours!",
+			"Short Desc": "Take 10M from enemy",
+			"Quantity": 24
+		}
+	],
+	
+	"prop25mil": [ 
+		{ 
+			"Name": "25 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/25millionpropaganda.png",
+			"PopulationDelta": 25,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Of The Enemys Population Declare Allegiance to Your Country!",
+			"Short Desc": "Take 25M from enemy",
+			"Quantity": 17
+		}
+	],
+	
+	"prop50mil": [ 
+		{ 
+			"Name": "50 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/50millionpropaganda.png",
+			"PopulationDelta": 50,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Of The Enemys Population Declare Allegiance to Your Country!",
+			"Short Desc": "Take 50M from enemy",
+			"Quantity": 4
+		}
+	],
+	
+	"nuke10meg": [ 
+		{ 
+			"Name": "10 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/10megaton.png",
+			"PopulationDelta": -2,
+			"Capacity": 0,
+			"Weight": 10,
+			"Description": "Destroys 2 Million",
+			"Short Desc": "Kill 2M",
+			"Quantity": 38
+		}
+	],
+	
+	"nuke20meg": [ 
+		{ 
+			"Name": "20 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/20megaton.png",
+			"PopulationDelta": -5,
+			"Capacity": 0,
+			"Weight": 20,
+			"Description": "Destroys 5 Million",
+			"Short Desc": "Kill 5M",
+			"Quantity": 20
+		}
+	],
+	
+	"nuke50meg": [ 
+		{ 
+			"Name": "50 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/50megaton.png",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 50,
+			"Description": "Destroys 10 Million",
+			"Short Desc": "Kill 10M",
+			"Quantity": 8
+		}
+	],
+	
+	"nuke100meg": [ 
+		{ 
+			"Name": "100 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/100megaton.png",
+			"PopulationDelta": -25,
+			"Capacity": 0,
+			"Weight": 100,
+			"Description": "Destroys 25 Million",
+			"Short Desc": "Kill 25M",
+			"Quantity": 2
+		}
+	],
+	
+	"secret_revolution": [ 
+		{ 
+			"Name": "REVOLUTION!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your enemys political system collapses and half of their provinces declare independence. While they are sorting it out, they lose a turn, must throw away their entire hand, and must draw 9 new cards on their next turn. (This includes all face up cards, submarines, cannons, etc.)",
+			"Short Desc": "Target player loses a turn and all of their cards, but draws 9 new cards",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_riots": [ 
+		{ 
+			"Name": "Riots!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Due to an unfortunate decision by a referee at a sports event, your enemys biggest city erupts in riots and they lose 10 million people.",
+			"Short Desc": "Enemy loses 10M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_twister": [ 
+		{ 
+			"Name": "Twister!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "A violent tornado results in a loss of 10 MILLION to your own population",
+			"Short Desc": "Lose 10M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_annex": [ 
+		{ 
+			"Name": "WARCRIME!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -25,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your enemy attempts to annex their smaller neighbor, but to their dismay, the ENTIRE WORLD comes to the rescue of the neighbor, accusing your enemy of crimes against humanity. The disaster costs them 25 Million people.",
+			"Short Desc": "Enemy loses 25M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_ghost": [ 
+		{ 
+			"Name": "Without a trace...",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -25,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "25 Million people mysteriously vanish from the enemy's country",
+			"Short Desc": "Enemy loses 25M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_recession": [ 
+		{ 
+			"Name": "RECESSION!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "The entire world is having an economic recession except for your country! Two million people move to your country from every other player in the game.",
+			"Short Desc": "Gain 2M for each player in the game, each enemy loses 2M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_eco_terrorism": [ 
+		{ 
+			"Name": "NO NUKES!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Eco-Terrorists sabotage your defense headquarters. They claim nuclear war is bad for the planet. YOU LOSE TWO TURNS.",
+			"Short Desc": "Lose two turns",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_lose10mil": [ 
+		{ 
+			"Name": "YOU LOSE 10 MILLION",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "10 Million of your own people leave your country (and the game) for a neutral country.",
+			"Short Desc": "Lose 10M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_retire": [ 
+		{ 
+			"Name": "RETIRING!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Famous talk show host retires. Tonight is his last show. Everyone in your country is watching TV. YOU LOSE ONE TURN",
+			"Short Desc": "Lose one turn",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_virus": [ 
+		{ 
+			"Name": "COMPUTER VIRUS!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "A nasty computer virus has infected computers world-wide. When this card is drawn, everyone in the game must immediately switch their two face-down cards",
+			"Short Desc": "All players swap their two face-down cards",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_ban": [ 
+		{ 
+			"Name": "TEST BAN!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your president declares a Test Ban on nuclear weapons and FORFEITS ONE TURN.",
+			"Short Desc": "Lose one turn",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_budget": [ 
+		{ 
+			"Name": "COMEDIC NAMING!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your budget proposal for a defense system with a silly name is laughed out of the legislature. YOU LOSE ONE TURN.",
+			"Short Desc": "Lose one turn",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_taxes": [ 
+		{ 
+			"Name": "TAX HIKE!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 5,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your enemy raises taxes 100% this year. 5 Million of their people move to your country",
+			"Short Desc": "Take 5M from enemy",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_peace": [ 
+		{ 
+			"Name": "PEACE CORPS!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "2 Million of the enemy's people leave their homeland to join your form of superior government. NOTE: Does not apply once nuclear war has started",
+			"Short Desc": "Take 2M from enemy if not at war",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_massacre": [ 
+		{ 
+			"Name": "MASSACRE!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your enemy cancels a public demonstration with machine guns. It was a BIG demonstration. They lose 2 million people",
+			"Short Desc": "Enemy loses 2M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_summit": [ 
+		{ 
+			"Name": "Summit Talks",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "You have tricked the enemy into an ineffective but time-consuming Summit Talk. Their wasted efforts result in the LOSS OF ONE TURN.",
+			"Short Desc": "Enemy loses one turn",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_mars": [ 
+		{ 
+			"Name": "MARS PROBE!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 1,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your country lands the first successful Mars probe. One million people flock to your country from neutral countries (take one million from the discard pile)",
+			"Short Desc": "Gain 1M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_suicide_squad": [ 
+		{ 
+			"Name": "SUICIDE BOMBERS!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -1,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "You lose 1 million people, but your enemy loses 5 million.",
+			"Short Desc": "Lose 1M, enemy loses 5M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_moon_landing": [ 
+		{ 
+			"Name": "MOON LANDING!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your Cold War prestige soars due to being first on the moon! 5 Million of the enemy defect to seek aerospace jobs in your country.",
+			"Short Desc": "Take 5M from enemy",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_baby_boom": [ 
+		{ 
+			"Name": "BABY BOOM!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 5,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your country's population increases by 5 Million",
+			"Short Desc": "Gain 5M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_market_boom": [ 
+		{ 
+			"Name": "Stock Market Super Boom!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "2 Million of the enemy's population immigrate to your country in hopes of reaping the benefits of your system.",
+			"Short Desc": "Take 2M from enemy",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_hippies": [ 
+		{ 
+			"Name": "BAN THE BOMB!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "2 Million of the enemy's Hippy Pacifists protest nuclear war and deflect to your country.",
+			"Short Desc": "Take 2M from enemy",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_alcohol": [ 
+		{ 
+			"Name": "DRUNK AT THE U.N.!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Enemy ambassador gets drunk at UN Party! Their country LOSES ONE TURN to restore diplomatic relations. NOTE: Does not apply once nuclear war has been started.",
+			"Short Desc": "Enemy loses one turn if not at war",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_grandmas": [ 
+		{ 
+			"Name": "GRANDMAS?!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": -2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "2 Million of your highly moral little old ladies rebel against your country's military policies and disgustedly drive off in their electric cars to the enemy's country.",
+			"Short Desc": "Lose 2M, random enemy gains 2M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_shoes": [ 
+		{ 
+			"Name": "Hoarder!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": 2,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your enemy is caught with 400 pairs of shoes in their spouse's closet. 2 million barefoot natives disgustedly immigrate to your country",
+			"Short Desc": "Take 2M from enemy",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_time_travel": [ 
+		{ 
+			"Name": "Time Travel!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Your scientists have learned the secret of time travel and although it is expensive YOU GET TWO TURNS IN A ROW",
+			"Short Desc": "Take two extra turns",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_lizard_monster": [ 
+		{ 
+			"Name": "Klodzilla!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -5,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "A giant lizard attacks your enemys biggest city. 5 million people are chewed up!",
+			"Short Desc": "Enemy loses 5M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_rearm": [ 
+		{ 
+			"Name": "REARMAMENT!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "You may (at your option) discard up to 7 cards from your hand (all at once) and immediately replace them from the deck." ,
+			"Short Desc": "Discard up to 7 cards and re-draw from deck",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_recall": [ 
+		{ 
+			"Name": "RECALL!",
+			"Type": "SECRET_SELF",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Atomic Cannon manufacturer discovers defect - recalls all cannons. Anyone who has a face-up atomic cannon must discard it." ,
+			"Short Desc": "All face-up atomic cannons are discarded",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_germ": [ 
+		{ 
+			"Name": "Super Germ!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -25,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "The result of a blunder in your enemy's germ warfare experiments destroys 25 MILLION of their own people" ,
+			"Short Desc": "Enemy loses 25M",
+			"Quantity": 1
+		}
+	],
+	
+	"secret_earthquake": [ 
+		{ 
+			"Name": "EARTHQUAKE!",
+			"Type": "SECRET_TARGET",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "A disastrous earthquake destroys 10 MILLION of the enemy population" ,
+			"Short Desc": "Enemy loses 10M",
+			"Quantity": 1
+		}
+	],
+	
+	"delivery_b70": [ 
+		{ 
+			"Name": "B-70 Bomber",
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/B2bomber.png",
+			"PopulationDelta": 0,
+			"Capacity": 50,
+			"Weight": 0,
+			"Description": "Carries any combination of warheads up to 50 megatons",
+			"Short Desc": "Carries 50 Megs",
+			"Quantity": 6
+		}
+	],
+	
+	"delivery_stealth_bomber": [ 
+		{ 
+			"Name": "Stealth Bomber",
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/B2bomber.png",
+			"PopulationDelta": 0,
+			"Capacity": 100,
+			"Weight": 0,
+			"Description": "Carries up to 100",
+			"Short Desc": "Carries 100 Megs",
+			"Quantity": 3
+		}
+	],
+	
+	"delivery_saturn": [ 
+		{ 
+			"Name": "Saturn Missile",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/saturncard.png",
+			"PopulationDelta": 0,
+			"Capacity": 100,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 100 megatons. Discard after use",
+			"Short Desc": "Carries one warhead. Consumable",
+			"Quantity": 3
+		}
+	],
+	
+	"delivery_atlas": [ 
+		{ 
+			"Name": "Atlas Missile",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/atlascard.png",
+			"PopulationDelta": 0,
+			"Capacity": 20,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 20 megatons. Discard after use",
+			"Short Desc": "Carries one nuke up to 20 megs. Consumable",
+			"Quantity": 9
+		}
+	],
+	
+	"delivery_submarine": [ 
+		{ 
+			"Name": "Submarine",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 20,
+			"Weight": 0,
+			"Description": "Carries 10 or 20 megatons",
+			"Short Desc": "Carries 10 or 20 megs",
+			"Quantity": 4
+		}
+	],
+	
+	"delivery_polaris": [ 
+		{ 
+			"Name": "Polaris",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/polariscard.png",
+			"PopulationDelta": 0,
+			"Capacity": 10,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 10 megatons. Discard after use",
+			"Short Desc": "Carries 10 megs. Consumable",
+			"Quantity": 9
+		}
+	],
+	
+	"delivery_cannon": [ 
+		{ 
+			"Name": "Atomic Cannon",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 10,
+			"Weight": 0,
+			"Description": "Fire 10 megatons at your neighbor",
+			"Short Desc": "Fires 10 megs at adjacent player",
+			"Quantity": 4
+		}
+	],
+	
+	"delivery_scud": [ 
+		{ 
+			"Name": "Scud Missile",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 20,
+			"Weight": 0,
+			"Description": "Carries up to 20 megatons. Can be shot down by patriot <see actual card for more rules>. Discard after use",
+			"Short Desc": "Carries up to 20 megs. Consumable",
+			"Quantity": 9
+		}
+	],
+
+	"delivery_space_shuttle": [ 
+		{ 
+			"Name": "Space Shuttle",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 50,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 50 megatons or can be used to reload your space platform",
+			"Short Desc": "Carries 50 megs",
+			"Quantity": 2
+		}
+	],
+	
+	"am_patriot": [ 
+		{ 
+			"Name": "Patriot Anti-Missile",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Shoots down Scud, Atlas, Polaris, Titan, or Minuteman missiles",
+			"Short Desc": "Counters Scud, Atlas, Polaris, Titan, or Minuteman",
+			"Quantity": 2
+		}
+	],	
+	
+	"am_decoy": [ 
+		{ 
+			"Name": "Decoy Missile",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Cancel out one anti-missile or fighter",
+			"Short Desc": "Counter one anti-missile or fighter",
+			"Quantity": 2
+		}
+	],
+	
+	"am_s": [ 
+		{ 
+			"Name": "Anti-Missile S",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Intercept Capability:\nSaturn\nB-70 Bomber\nATLAS\nPOLARIS",
+			"Short Desc": "Counters Saturn, B-70, Atlas, & Polaris",
+			"Quantity": 1
+		}
+	],
+	
+	"am_a": [ 
+		{ 
+			"Name": "Anti-Missile A",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Intercept Capability:\nATLAS\nPOLARIS",
+			"Short Desc": "Counters Atlas & Polaris",
+			"Quantity": 1
+		}
+	],
+	
+	"am_p": [ 
+		{ 
+			"Name": "Anti-Missile P",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Intercept Capability:\nPOLARIS",
+			"Short Desc": "Counters Polaris",
+			"Quantity": 1
+		}
+	],
+	
+	"am_b": [ 
+		{ 
+			"Name": "Anti-Missile B",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Intercept Capability:\nB-70 Bomber\nATLAS\nPOLARIS",
+			"Short Desc": "Counters B-70, Atlas, & Polaris",
+			"Quantity": 1
+		}
+	],
+	
+	"am_stealth_fighter": [ 
+		{ 
+			"Name": "Stealth Fighter",
+			"Type": "ANTI_MISSILE",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "HOLD THIS CARD. Can be used to shoot down any bomber <see actual card for more rules>",
+			"Short Desc": "Shoots down any bomber",
+			"Quantity": 2
+		}
+	],	
+	
+	"special_trading": [ 
+		{ 
+			"Name": "TRADING SESSION",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "HOLD THIS CARD. Use when you wish to start a trading session",
+			"Short Desc": "Starts a trading session",
+			"Quantity": 2
+		}
+	],
+	
+	"special_bomb": [ 
+		{ 
+			"Name": "Smart Bomb",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "HOLD THIS CARD. This card may be used to double the power of a 10 or 20 megaton warhead",
+			"Short Desc": "Doubles a 10 or 20 meg warhead",
+			"Quantity": 2
+		}
+	],
+	
+	"special_salvage": [ 
+		{ 
+			"Name": "Military Salvage",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "Take an enemy's delivery system? <See card>",
+			"Short Desc": "Take an enemy's delivery system",
+			"Quantity": 1
+		}
+	],
+	
+	"special_bomb_shelter": [ 
+		{ 
+			"Name": "Bomb Shelter",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_recycling": [ 
+		{ 
+			"Name": "ADVANCED RECYCLING",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_angel": [ 
+		{ 
+			"Name": "Guardian Angel",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_spy": [ 
+		{ 
+			"Name": "SPY",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 2
+		}
+	],
+	
+	"special_saboteur": [ 
+		{ 
+			"Name": "Saboteur",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "<UPDATE WHEN POSSIBLE>",
+			"Short Desc": "<UPDATE WHEN POSSIBLE>",
+			"Quantity": 1
+		}
+	],
+	
+	"special_coup": [ 
+		{ 
+			"Name": "Public Relations Coup",
+			"Type": "SPECIAL",
+			"PopulationDelta": 0,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "SAVE UNTIL NEEDED. This card will cancel out one PROPAGANDA card played against you",
+			"Short Desc": "Counters one propaganda against you",
+			"Quantity": 1
+		}
+	]
+}

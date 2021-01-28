@@ -220,14 +220,18 @@ public class Placemat extends Group {
 		center.isDeterrent = false;
 		top.isDeterrent = false;
 		
-		if (isDown && getY() >= downY + 2) {
-			Vector2 newPos = new Vector2(getX(), getY()).
-					lerp(new Vector2(0, downY), Gdx.graphics.getDeltaTime() * 5f);
-			setPosition(getX(), newPos.y);
-			clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
-		} else if (isDown && getY() < downY + 2) {
-			setPosition(getX(), downY);
-			clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
+		if (isDown) {
+			if (getY() >= downY + 2) {
+				Vector2 newPos = new Vector2(getX(), getY()).
+						lerp(new Vector2(0, downY), Gdx.graphics.getDeltaTime() * 5f);
+				setPosition(getX(), newPos.y);
+				clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
+			} else if (getY() < downY + 2) {
+				setPosition(getX(), downY);
+				clickArrow.setPosition(getX() + (getWidth() / 2) - (clickArrow.getWidth()), getY() - clickArrow.getHeight() + 5);
+			}
+			
+			((MainGameStage)getStage()).map.clearPopups();
 		}
 		
 		if (!isDown && getY() <= upY - 2) {
@@ -264,7 +268,7 @@ public class Placemat extends Group {
 			errorLabel.setText("");
 		}
 		System.out.println("Advancing " + advancingPlayer + "\'s placemat");
-		((MainGameStage)Launcher.game_stage).players.get(advancingPlayer).drawCard();
+		((MainGameStage)Launcher.game_stage).players.get(advancingPlayer).shouldDrawCard = true;
 		if (top.getType().equals(Card.Type.DELIVERY_SYSTEM)) {
 			if (getCenterCard().getType().equals(Card.Type.WARHEAD)) {
 				getTopCard().setCapacity(getTopCard().getCapacity() - getCenterCard().getWeight());
@@ -276,7 +280,8 @@ public class Placemat extends Group {
 					if (getTopCard().getCapacity() == 0) {
 						getTopCard().discard(false, mgs, advancingPlayer);
 						getTopCard().discard(false, mgs, advancingPlayer);
-						errorLabel.setText("Delivery system was used\n\nfor only one warhead!\n\nThis is fine, but\n\ntry to underfill non-single-use\n\ndelivery systems");
+						if (!getTopCard().isConsumable())
+							errorLabel.setText("Delivery system was used\n\nfor only one warhead!\n\nThis is fine, but\n\ntry to underfill non-single-use\n\ndelivery systems");
 					}
 				} else {
 					if (getTopCard().getCapacity() < 0) errorLabel.setText("The payload was too much for that\n\ndelivery system. Both cards have been\n\ndiscarded!");
@@ -368,6 +373,7 @@ public class Placemat extends Group {
 			highlightBottom = bottom;
 		}
 		
+		tex.dispose();
 		tex = new Texture(mat);
 	}
 }

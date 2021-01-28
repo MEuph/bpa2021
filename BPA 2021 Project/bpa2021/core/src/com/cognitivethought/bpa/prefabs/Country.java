@@ -2,6 +2,7 @@ package com.cognitivethought.bpa.prefabs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cognitivethought.bpa.game.Player;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
@@ -16,11 +18,12 @@ import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
 import com.cognitivethought.bpa.multiplayer.StringPacket;
 
-public class Country extends Actor {
+public class Country extends WidgetGroup {
 
 	public boolean selected = false;
 
 	Sprite s;
+	Sprite white_s;
 	
 	float pmScaleX = 1.0f, pmScaleY = 1.0f;
 	float offsX, offsY;
@@ -32,13 +35,30 @@ public class Country extends Actor {
 
 	public boolean isClicked;
 	
+	InfoPopup popup;
+	
+	int zIndex = -1;
+	
 	public Country(int id, Texture t) {
 		s = new Sprite(t);
-
+		
+		popup = new InfoPopup();
+		popup.setVisible(false);
+		
 		this.id = id;
 		
 		t.getTextureData().prepare();
 		pm = t.getTextureData().consumePixmap();
+		Pixmap white_pm = new Pixmap(pm.getWidth(), pm.getHeight(), pm.getFormat());
+		white_pm.drawPixmap(pm, 0, 0);
+		for (int x = 0; x < white_pm.getWidth(); x++) {
+			for (int y = 0; y < white_pm.getHeight(); y++) {
+				white_pm.setColor(white_pm.getPixel(x, y) != 0 ? new Color(0xffffffff) : new Color(0x00000000));
+				white_pm.drawPixel(x, y);
+			}
+		}
+		
+		white_s = new Sprite(new Texture(white_pm));
 		
 		final Country c = this;
 		addListener(new ClickListener() {
@@ -92,10 +112,16 @@ public class Country extends Actor {
 		});
 
 		setBounds();
+		
+		addActor(popup);
 	}
 	
 	public void assignPlayer(Player p) {
 		assignedPlayer = p;
+		
+		System.out.println("Assigned " + p.username + " to " + id);
+		
+		popup.setCountry(this);
 	}
 	
 	public void setBounds() {
@@ -143,6 +169,9 @@ public class Country extends Actor {
 		offsX = x - getX();
 		offsY = y - getY();
 		
+		popup.setPosition(x + (getWidth() / 2), y + (getHeight() / 2));
+		popup.setSize(200, 200);
+		
 		setBounds(x, y, w, h);
 	}
 
@@ -181,6 +210,8 @@ public class Country extends Actor {
 	
 	@SuppressWarnings("deprecation")
 	public void clicked(float x, float y) {
+		if (getAssignedPlayer() == null) return;
+		
 		if (((MainGameStage)Launcher.game_stage).enableDark) {
 			Thread[] tarray = new Thread[Thread.activeCount()];
 			Thread.enumerate(tarray);
@@ -196,15 +227,19 @@ public class Country extends Actor {
 		}
 		isClicked = true;
 		// TODO: Pull up mini placemat of the country's player
+		popup.setVisible(!popup.isVisible());
+		
+		System.out.println("Made popup visible");
 		
 		Player p = getAssignedPlayer();
 		if (p != null) {
-			System.out.println(p.dispUsername.getText());
-			System.out.println(this.id);
-			System.out.println(p.placemat.getTopCard());
-			System.out.println(p.placemat.getCenterCard());
-			System.out.println(p.placemat.getBottomCard());
-			System.out.println(p.totalPop.getText().toString());
+			toFront();
+//			System.out.println(p.dispUsername.getText());
+//			System.out.println(this.id);
+//			System.out.println(p.placemat.getTopCard());
+//			System.out.println(p.placemat.getCenterCard());
+//			System.out.println(p.placemat.getBottomCard());
+//			System.out.println(p.totalPop.getText().toString());
 		}
 	}
 
@@ -214,23 +249,35 @@ public class Country extends Actor {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
 		update();
 		
+		if (zIndex == -1) {
+			zIndex = getZIndex();
+		}
 		
 		if (assignedPlayer != null) {
 			if (assignedPlayer.equals(((MainGameStage)Launcher.game_stage).clientPlayer)) {
-				batch.setColor(0.1f, 1.0f, 0.1f, 1.0f);
+				batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 			}
 			
 			if (selected) {
-				batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+				batch.setColor(0f, 1.0f, 0f, 1.0f);
 			}
+			
+			batch.draw(s, s.getX(), s.getY(), s.getWidth(), s.getHeight());
 		} else {
-			batch.setColor(0f, 0f, 0f, 1.0f);
+			batch.draw(white_s, s.getX(), s.getY(), s.getWidth(), s.getHeight());
 		}
+		
+		batch.setColor(Color.WHITE);
 
+		super.draw(batch, parentAlpha);
 
-		batch.draw(s, s.getX(), s.getY(), s.getWidth(), s.getHeight());
+		if (popup.isVisible()) {
+			popup.setCountry(this);
+			popup.draw(batch, parentAlpha);
+		} else {
+			setZIndex(zIndex);
+		}
 	}
 }

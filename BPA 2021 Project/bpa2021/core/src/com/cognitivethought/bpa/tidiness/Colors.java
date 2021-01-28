@@ -22,7 +22,7 @@ public class Colors {
 
 	public static final Color FONT_WH = new Color(Color.BLACK);
 //	public static final Color FONT_WH = new Color(0xd20909ff).sub(.2f, .2f, .2f, 0);
-	public static final Color FONT_PR = new Color(0xc706d4ff).sub(.2f, .2f, .2f, 0);
+	public static final Color FONT_PR = new Color(0xc706d4ff).sub(.3f, .3f, .3f, 0);
 	public static final Color FONT_SE = new Color(0x490dc5ff).sub(.2f, .2f, .2f, 0);
 	public static final Color FONT_SP = new Color(Color.BLACK);
 	public static final Color FONT_DS = new Color(0xbf4c00ff).sub(.2f, .2f, .2f, 0);

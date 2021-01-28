@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
+import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.prefabs.GameMap;
 import com.cognitivethought.bpa.tidiness.Colors;
 import com.cognitivethought.bpa.tidiness.Strings;
@@ -39,6 +40,7 @@ public class MultiplayerQueueStage extends UIStage {
 	public ArrayList<String> player_names = new ArrayList<String>();
 	public VerticalGroup players;
 	public boolean start = false;
+	public boolean shouldLoad;
 	
 	String[] debugUsers = new String[] {"XD_gamer2023", "meme.mlgpro91", "totallY_areal.player4013", "402funnynumbers6029"};
 	
@@ -255,12 +257,16 @@ public class MultiplayerQueueStage extends UIStage {
 		try {
 			super.draw();
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(-1);
+			
 		}
 		
 		if (start) {
 			Launcher.setStage(Launcher.game_stage);
+		}
+		
+		if (shouldLoad) {
+			Card.loadCards();
+			shouldLoad = false;
 		}
 	}
 	

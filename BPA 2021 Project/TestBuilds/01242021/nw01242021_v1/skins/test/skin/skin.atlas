@@ -1,0 +1,61 @@
+
+skin.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bar
+  rotate: false
+  xy: 1, 1
+  size: 32, 32
+  split: 6, 6, 8, 8
+  pad: 8, 8, 8, 8
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+button down
+  rotate: false
+  xy: 1, 35
+  size: 32, 32
+  split: 5, 4, 5, 4
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+button up
+  rotate: false
+  xy: 1, 69
+  size: 32, 32
+  split: 5, 4, 5, 4
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+check box checked
+  rotate: false
+  xy: 35, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+check box unchecked
+  rotate: false
+  xy: 35, 69
+  size: 32, 32
+  split: 5, 4, 5, 4
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+minus
+  rotate: false
+  xy: 69, 69
+  size: 32, 32
+  split: 3, 2, 15, 15
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+plus
+  rotate: false
+  xy: 35, 35
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
