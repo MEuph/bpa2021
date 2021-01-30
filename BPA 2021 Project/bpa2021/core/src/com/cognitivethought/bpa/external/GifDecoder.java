@@ -9,11 +9,12 @@ import java.io.InputStream;
 import java.util.Vector;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.cognitivethought.bpa.launcher.Launcher;
 
 public class GifDecoder {
     /**
@@ -281,6 +282,7 @@ public class GifDecoder {
         try {
             is.close();
         } catch (Exception e) {
+        	Launcher.log();
         }
         return status;
     }
@@ -313,7 +315,7 @@ public class GifDecoder {
         code_size = data_size + 1;
         code_mask = (1 << code_size) - 1;
         for (code = 0; code < clear; code++) {
-            prefix[code] = 0; // XXX ArrayIndexOutOfBoundsException
+            prefix[code] = 0;
             suffix[code] = (byte) code;
         }
         // Decode GIF pixel stream.
@@ -418,6 +420,7 @@ public class GifDecoder {
         try {
             curByte = in.read();
         } catch (Exception e) {
+        	Launcher.log();
             status = STATUS_FORMAT_ERROR;
         }
         return curByte;
@@ -443,6 +446,7 @@ public class GifDecoder {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            	Launcher.log();
             }
             if (n < blockSize) {
                 status = STATUS_FORMAT_ERROR;
@@ -467,6 +471,7 @@ public class GifDecoder {
             n = in.read(c);
         } catch (Exception e) {
             e.printStackTrace();
+        	Launcher.log();
         }
         if (n < nbytes) {
             status = STATUS_FORMAT_ERROR;

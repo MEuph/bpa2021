@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,11 +29,12 @@ import com.cognitivethought.bpa.multiplayer.StringPacket;
 import com.cognitivethought.bpa.multiplayer.TurnPacket;
 import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.prefabs.GameMap;
+import com.cognitivethought.bpa.sound.Sounds;
 import com.cognitivethought.bpa.tidiness.Strings;
 
 public class MainGameStage extends GameStage {
 
-	public static boolean warInitiated = false;
+	public boolean warInitiated = false;
 
 	public HashMap<String, Player> players = new HashMap<String, Player>();
 
@@ -41,6 +43,7 @@ public class MainGameStage extends GameStage {
 	public Label fps;
 
 	public ImageButton nextTurn;
+	public TextButton returnToMenu;
 
 	public GameMap map;
 	public InputMultiplexer im = new InputMultiplexer();
@@ -48,13 +51,14 @@ public class MainGameStage extends GameStage {
 	public float frameTime = 0f;
 
 	public Sprite dark;
-
+	
 	public boolean enableDark = false;
-
+	
 	public int clickedCountry;
 
 	public Card executingCard;
 
+	public Animation<TextureRegion> warDeclaration;
 	public Animation<TextureRegion> background;
 	float elapsed;
 
@@ -62,13 +66,27 @@ public class MainGameStage extends GameStage {
 	
 	String[] turns;
 
-	public int currentTurn;
-
 	public Label pleaseWait;
+	
+	public boolean hasWon = false;
+
+	public boolean shouldSendData = false;
 	
 	public MainGameStage(Viewport vp) {
 		super(vp);
+	}
 
+	@Override
+	public void populate() {
+		super.populate();
+
+		int vol_i = (int) Backendless.UserService.CurrentUser().getProperty("nw_volume");
+		float vol = (float)(vol_i) / 100f;
+		Sounds.music_intro.stop();
+		Sounds.music_war.stop();
+		Sounds.music_queue.stop();
+		Sounds.music_queue.setLooping(Sounds.music_queue.play(vol), true);
+		
 		addListener(new InputListener() {
 			@Override
 			public boolean keyTyped(InputEvent event, char character) {
@@ -85,15 +103,14 @@ public class MainGameStage extends GameStage {
 		// LibGDX version by Anton Persson
 		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP,
 				new FileHandle(Strings.URL_PLACEMAT_BACKGROUND).read());
-
+		
+		warDeclaration = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, new FileHandle(Strings.URL_ALERT_ATTACK_GIF).read());
+		
 		dark = new Sprite(new Texture(Strings.URL_IMG_UI_DARK));
 		executingCard = Card.BLANK;
-	}
-
-	@Override
-	public void populate() {
-		super.populate();
-
+		
+		warInitiated = false;
+		
 		im.addProcessor(this);
 
 		currentPlayer = players.get(Backendless.UserService.CurrentUser().getProperty("name").toString());
@@ -121,11 +138,32 @@ public class MainGameStage extends GameStage {
 		nextTurn.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (clientPlayer.username.equals(turns[currentTurn])) {
+				if (clientPlayer.username.equals(turns[NuclearWarServer.currentTurn])) {
 					clientPlayer.placemat.advance(mgs, clientPlayer.username);
-					NuclearWarServer.client.sendTCP(clientPlayer.tp);
-					((MainGameStage) Launcher.game_stage).currentTurn++;
-					NuclearWarServer.client.sendTCP(new StringPacket("&advance"));
+					new Thread() {
+						public void run() {
+							while (!mgs.shouldSendData) {
+								try {
+									sleep(1);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+						        	Launcher.log();
+								}
+							}
+							
+							if (mgs.shouldSendData) {
+								NuclearWarServer.client.sendTCP(clientPlayer.tp);
+								clientPlayer.tp.reset();
+								mgs.shouldSendData = false;
+								try {
+									this.join();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+						        	Launcher.log();
+								}
+							}
+						};
+					}.start();
 				}
 				super.clicked(event, x, y);
 			}
@@ -134,7 +172,23 @@ public class MainGameStage extends GameStage {
 		fps = new Label("00", labelStyle);
 		fps.setPosition(Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() * 1.5f) - fps.getHeight());
 		
+		returnToMenu = new TextButton("Quit to Menu", buttonStyle);
+		returnToMenu.pad(10f);
+		returnToMenu.setPosition(Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() * 1.5f) - fps.getHeight() - returnToMenu.getHeight() - 15);
+		returnToMenu.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				NuclearWarServer.closeServer();
+				NuclearWarServer.disconnectClient();
+				Sounds.music_queue.stop();
+				Launcher.setStage(Launcher.game_menu_stage);
+				super.clicked(event, x, y);
+			}
+		});
+		
+		
 		pleaseWait = new Label("Please wait for your turn...", labelStyle);
+		pleaseWait.setFontScale(0.75f);
 		pleaseWait.setPosition(Gdx.graphics.getWidth() - (pleaseWait.getWidth() / 2), Gdx.graphics.getHeight());
 		pleaseWait.setAlignment(Align.center);
 		
@@ -145,7 +199,7 @@ public class MainGameStage extends GameStage {
 				((clientPlayer.hand.getY() + clientPlayer.placemat.getY()) / 2) - (map.getHeight() / 3));
 
 		for (String s : players.keySet()) {
-			System.out.println("Added player " + s + " playing as " + GameMap.idToString(players.get(s).country_id));
+			System.out.println("Added player " + s + " playing as " + GameMap.idToString(players.get(s).countryId));
 			map.addPlayer(players.get(s));
 		}
 
@@ -157,7 +211,10 @@ public class MainGameStage extends GameStage {
 		addActor(clientPlayer);
 		addActor(nextTurn);
 		addActor(pleaseWait);
-
+		addActor(returnToMenu);
+		
+		pleaseWait.setVisible(false);
+		
 //		setDebugAll(true);
 	}
 
@@ -165,20 +222,66 @@ public class MainGameStage extends GameStage {
 	public void clearFields() {
 
 	}
+	
+	boolean b = false;
+	float y = -200;
 
+	float wd_elapsed = 0;
+
+	
 	@Override
 	public void draw() {
-		if (currentTurn >= turns.length) {
-			currentTurn = 0;
+		
+		if ((b != warInitiated) && warInitiated) {
+			int vol_i = (int) Backendless.UserService.CurrentUser().getProperty("nw_volume");
+			float vol = (float)(vol_i) / 100f;
+			Sounds.music_queue.stop();
+			Sounds.music_war.stop();
+			Sounds.music_war.setLooping(Sounds.music_war.play(vol), true);
+			b = warInitiated;
 		}
 		
-		System.out.println(currentTurn);
+		if (clientPlayer.populationInteger > 0) {
+			int num_lost = 0;
+			for (String s : players.keySet()) {
+				Player p = players.get(s);
+				if (p.populationInteger <= 0) {
+					num_lost++;
+				}
+				
+				if (num_lost == players.keySet().size() - 1) { // client won
+					hasWon = true;
+				}
+			}
+		}
 		
-		if (!turns[currentTurn].equals(clientPlayer.username)) { // it's not this user's turn
+		if (hasWon) {
+			enableDark = true;
+		}
+		
+		if (clientPlayer.populationInteger <= 0) {
+			NuclearWarServer.currentTurn++;
+		}
+		
+		if (NuclearWarServer.currentTurn >= turns.length) {
+			NuclearWarServer.currentTurn = 0;
+		}
+		
+		if (!turns[NuclearWarServer.currentTurn].equals(clientPlayer.username)) { // it's not this user's turn
 			enableDark = true;
 		} else {
-			enableDark = false;
-			pleaseWait.setVisible(false);
+			if (executingCard == null) {
+				if (!hasWon) {
+					enableDark = false;
+					pleaseWait.setVisible(false);
+				}
+			}
+		}
+		
+		if (clientPlayer.populationInteger <= 0) {
+			enableDark = true;
+			pleaseWait.setText("You lost!\n\nIf you\'re the host, please wait for all other players\n\nto finish before exiting");
+			pleaseWait.setVisible(true);
 		}
 		
 		if (NuclearWarServer.DECK.size() <= 0) {
@@ -204,14 +307,17 @@ public class MainGameStage extends GameStage {
 
 		elapsed += Gdx.graphics.getDeltaTime() * 2.5f;
 		getBatch().begin();
-		getBatch().setColor(0f, 1f, 0f, 0.9f);
+		if (warInitiated) {
+			getBatch().setColor(1f, 0f, 0f, 0.9f);
+		} else {
+			getBatch().setColor(0f, 1f, 0f, 0.9f);
+		}
 		getBatch().draw(background.getKeyFrame(elapsed), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2,
 				Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		getBatch().end();
 
 		clientPlayer.act(Gdx.graphics.getDeltaTime());
 
-		super.draw();
 
 		nextTurn.setPosition(
 				clientPlayer.placemat.getLeftCard().getX() - (currentPlayer.placemat.getLeftCard().getWidth() / 2),
@@ -222,20 +328,35 @@ public class MainGameStage extends GameStage {
 			fps.setText(Integer.toString((int) (1 / Gdx.graphics.getDeltaTime())) + " FPS");
 			frameTime = 0f;
 		}
+		
+		clientPlayer.dispUsername.setPosition(clientPlayer.dispUsername.getX(), fps.getY() - 150);
 
 		checkOnlyOneCountrySelected();
 
 		if (enableDark) {
-			if (!turns[currentTurn].equals(clientPlayer.username)) {
-				pleaseWait.setVisible(true);
-				pleaseWait.toFront();
+			if (hasWon) pleaseWait.setText("Congratulations! You won!");
+			
+			if (NuclearWarServer.currentTurn >= turns.length) {
+				NuclearWarServer.client.sendTCP(new StringPacket("&turn:0"));
+				NuclearWarServer.currentTurn = 0;
 			}
-			getBatch().begin();
-			getBatch().setColor(1, 1, 1, 0.5f);
-			getBatch().draw(dark, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(),
-					Gdx.graphics.getHeight());
-			getBatch().setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			getBatch().end();
+			
+			if (!turns[NuclearWarServer.currentTurn].equals(clientPlayer.username) || hasWon) {
+				pleaseWait.setVisible(true);
+			}
+			
+			pleaseWait.toFront();
+			returnToMenu.toFront();
+			
+			if (clientPlayer.populationInteger <= 0 || hasWon) {
+				map.setVisible(false);
+				
+				returnToMenu.setPosition(Gdx.graphics.getWidth() - (returnToMenu.getWidth() / 2), Gdx.graphics.getHeight() - 100);
+				
+				for (int i = 1; i < map.countries.length; i++) {
+					map.countries[i].setVisible(false);
+				}
+			}
 			
 			if (clientPlayer.isVisible()) clientPlayer.setVisible(false);
 			if (nextTurn.isVisible()) nextTurn.setVisible(false);
@@ -248,18 +369,29 @@ public class MainGameStage extends GameStage {
 		if (clickedCountry > 0 && (!executingCard.equals(Card.BLANK))) {
 			executingCard.play(this, clickedCountry);
 			clickedCountry = 0;
-			// TODO may break game
-//				executingCard = clientPlayer.placemat.getTopCard();
 			executingCard = null;
 		}
 
 		for (int i = 1; i < map.countries.length; i++) {
 			if (map.countries[i].isClicked && map.countries[i].getAssignedPlayer() != null) {
 				System.out.println(map.countries[i].getAssignedPlayer().username + " has "
-						+ map.countries[i].getAssignedPlayer().pop_i + "M population");
+						+ map.countries[i].getAssignedPlayer().populationInteger + "M population");
 				map.countries[i].isClicked = false;
 				break;
 			}
+		}
+		
+		super.draw();
+		
+		if (enableDark) {
+			getBatch().begin();
+			getBatch().setColor(1, 1, 1, clientPlayer.populationInteger <= 0 ? 0.9f : 0.5f);
+			getBatch().draw(dark, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(),
+					Gdx.graphics.getHeight());
+			if (pleaseWait.isVisible()) pleaseWait.draw(getBatch(), 1);
+			returnToMenu.draw(getBatch(), 1);
+			getBatch().setColor(1.0f, 1.0f, 1.0f, 1.0f);
+			getBatch().end();
 		}
 	}
 
@@ -284,7 +416,7 @@ public class MainGameStage extends GameStage {
 	public void executeTurn(TurnPacket request) {
 		request.execute(this);
 	}
-
+	
 	public void selectTarget(Card card) {
 		final MainGameStage mgs = this;
 		this.executingCard = card;
@@ -292,6 +424,7 @@ public class MainGameStage extends GameStage {
 			@Override
 			public void run() {
 				setName("selectTarget");
+				System.out.println("Selecting target");
 				mgs.enableDark = true;
 				boolean wait = true;
 				int i = 1;

@@ -12,8 +12,7 @@ public class DesktopLauncher {
 		config.title = Strings.NAME;
 //		config.width = (int)(1280 / 1.5);
 //		config.height = (int)(720 / 1.5);
-		// TODO: Makes window have no decoration
-//		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		new LwjglApplication(new Launcher(), config);
 	}
 }

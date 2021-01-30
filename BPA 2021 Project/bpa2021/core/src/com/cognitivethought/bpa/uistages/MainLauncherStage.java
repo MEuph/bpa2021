@@ -54,7 +54,7 @@ public class MainLauncherStage extends LauncherStage {
 		main_launch.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				// TODO: Toggles between fullscreen and not
+				// Toggles between fullscreen and not
 				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 				
 				Launcher.setStage(Launcher.game_menu_stage);

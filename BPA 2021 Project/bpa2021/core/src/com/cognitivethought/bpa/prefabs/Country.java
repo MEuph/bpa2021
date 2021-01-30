@@ -1,7 +1,6 @@
 package com.cognitivethought.bpa.prefabs;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.backendless.Backendless;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.cognitivethought.bpa.game.Player;
@@ -17,6 +15,7 @@ import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
 import com.cognitivethought.bpa.multiplayer.StringPacket;
+import com.cognitivethought.bpa.sound.Sounds;
 
 public class Country extends WidgetGroup {
 
@@ -97,17 +96,6 @@ public class Country extends WidgetGroup {
 				if (selected)
 					isClicked = false;
 				super.touchUp(event, x, y, pointer, button);
-			}
-		});
-		
-		addListener(new InputListener() {
-			@Override
-			public boolean keyTyped(InputEvent event, char character) {
-				if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-					setBounds();
-				}
-
-				return super.keyTyped(event, character);
 			}
 		});
 
@@ -211,6 +199,10 @@ public class Country extends WidgetGroup {
 	@SuppressWarnings("deprecation")
 	public void clicked(float x, float y) {
 		if (getAssignedPlayer() == null) return;
+
+		int vol_i = (int) Backendless.UserService.CurrentUser().getProperty("nw_volume");
+		float vol = (float)(vol_i) / 100f;
+		Sounds.country_clicked.play(vol);
 		
 		if (((MainGameStage)Launcher.game_stage).enableDark) {
 			Thread[] tarray = new Thread[Thread.activeCount()];
@@ -225,8 +217,9 @@ public class Country extends WidgetGroup {
 				}
 			}
 		}
+		
 		isClicked = true;
-		// TODO: Pull up mini placemat of the country's player
+		
 		popup.setVisible(!popup.isVisible());
 		
 		System.out.println("Made popup visible");

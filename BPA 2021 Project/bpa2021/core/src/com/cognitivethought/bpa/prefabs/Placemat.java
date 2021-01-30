@@ -1,5 +1,6 @@
 package com.cognitivethought.bpa.prefabs;
 
+import com.backendless.Backendless;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -22,6 +23,7 @@ import com.cognitivethought.bpa.external.GifDecoder;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.Card.Type;
+import com.cognitivethought.bpa.sound.Sounds;
 import com.cognitivethought.bpa.tidiness.Strings;
 
 public class Placemat extends Group {
@@ -36,6 +38,7 @@ public class Placemat extends Group {
 	
 	Card left, right, bottom, top, center;
 	Pixmap mat;
+	Texture crack;
 	Texture tex;
 	Pixmap arrow;
 	Texture aTex;
@@ -63,6 +66,7 @@ public class Placemat extends Group {
 		param.size = 15;
 		
 		tex = new Texture(mat);
+		crack = new Texture(new Pixmap(new FileHandle(Strings.URL_PLACEMAT_CRACK)));
 		
 		// NOTE: GifDecoder written by Johannes Borchardt and converted to the latest LibGDX version by Anton Persson
 		background = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, new FileHandle(Strings.URL_PLACEMAT_BACKGROUND).read());
@@ -87,6 +91,11 @@ public class Placemat extends Group {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				isDown = !isDown;
+				if (isDown) {
+					int vol_i = (int) Backendless.UserService.CurrentUser().getProperty("nw_volume");
+					float vol = (float)(vol_i) / 100f;
+					Sounds.placemat_pulled_down.play(vol);
+				}
 			}
 		});
 
@@ -250,6 +259,8 @@ public class Placemat extends Group {
 		}
 		
 		batch.draw(outline, getX(), getY(), getWidth(), getHeight());
+		if (((MainGameStage)Launcher.game_stage).clientPlayer.populationInteger <= 25)
+			batch.draw(crack, getX(), getY(), getWidth(), getHeight());
 		if (firstTurn)
 			errorLabel.draw(batch, parentAlpha);
 		else if (!firstTurn && !errorLabel.getText().toString().isEmpty()) {
@@ -257,10 +268,17 @@ public class Placemat extends Group {
 		}
 
 		super.draw(batch, parentAlpha);
+		
+		if (getLeftCard() == null) {
+			setLeftCard(Card.BLANK);
+		}
+		
+		if (getRightCard() == null) {
+			setRightCard(Card.BLANK);
+		}
 	}
 
 	public void advance(MainGameStage mgs, String advancingPlayer) {
-		// TODO: Fix the executing of turns; edit as of 1/14/2021: this isn't specific at all. Edit as of 1/22/2021: oh i see the problem
 		if (!(getTopCard().getType() != Card.Type.BLANK && getCenterCard().getType() != Card.Type.BLANK && getBottomCard().getType() != Card.Type.BLANK)) {
 			errorLabel.setText("Please make sure the center\ncolumn is filled");
 			return;
@@ -281,25 +299,23 @@ public class Placemat extends Group {
 						getTopCard().discard(false, mgs, advancingPlayer);
 						getTopCard().discard(false, mgs, advancingPlayer);
 						if (!getTopCard().isConsumable())
-							errorLabel.setText("Delivery system was used\n\nfor only one warhead!\n\nThis is fine, but\n\ntry to underfill non-single-use\n\ndelivery systems");
+							errorLabel.setText("Previous Delivery system was used\n\nfor only one warhead!\n\nThis is fine, but\n\ntry to underfill non-single-use\n\ndelivery systems");
 					}
 				} else {
 					if (getTopCard().getCapacity() < 0) errorLabel.setText("The payload was too much for that\n\ndelivery system. Both cards have been\n\ndiscarded!");
 					getTopCard().discard(false, mgs, advancingPlayer);
 					getTopCard().discard(false, mgs, advancingPlayer);
+					((MainGameStage)Launcher.game_stage).shouldSendData = true;
 				}
 			} else {
-				if (getTopCard().hasBeenOnTop || getTopCard().isConsumable()) {
-					getTopCard().discard(false, mgs, advancingPlayer);
-				} else {
-					getTopCard().hasBeenOnTop = true;
-				}
+				getTopCard().discard(false, mgs, advancingPlayer);
+				((MainGameStage)Launcher.game_stage).shouldSendData = true;
 			}
 		} else if (top.getType().equals(Card.Type.WARHEAD)) {
 			top.discard(false, mgs, advancingPlayer);
-		} else {
-			if (!top.getType().equals(Card.Type.BLANK))
-				top.play((MainGameStage)this.getParent().getStage());
+			((MainGameStage)Launcher.game_stage).shouldSendData = true;
+		} else if (top.getType().equals(Card.Type.PROPAGANDA)) {
+			top.play((MainGameStage)this.getParent().getStage());
 			System.out.println("ADVANCING");
 			setTopCard(getCenterCard());
 			setCenterCard(getBottomCard());

@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.google.firebase.FirebaseOptions"/>
-<fullyQualifiedTypeName name="com.google.auth.oauth2.GoogleCredentials"/>
-<fullyQualifiedTypeName name="com.google.firebase.cloud.FirestoreClient"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.tidiness.Strings"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.List"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Table"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.utils.ChangeListener"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Action"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.InputMultiplexer"/>
@@ -22,13 +16,11 @@
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.MathUtils"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.math.Rectangle"/>
-<fullyQualifiedTypeName name="com.backendless.Backendless"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Group"/>
 <fullyQualifiedTypeName name="java.net.InetSocketAddress"/>
 <fullyQualifiedTypeName name="java.net.UnknownHostException"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="com.esotericsoftware.minlog.Log"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
@@ -40,24 +32,32 @@
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.multiplayer.NuclearWarServer"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.multiplayer.StringPacket"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.Array"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.PixmapTextureData"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.DelayedRemovalArray"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.utils.IntArray"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Blending"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Gdx2DPixmap"/>
-<fullyQualifiedTypeName name="java.util.Random"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.prefabs.Card"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Label"/>
-<fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.Actor"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.game.Player"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.utils.Align"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.utils.ChangeListener"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Slider"/>
+<fullyQualifiedTypeName name="com.backendless.async.callback.AsyncCallback"/>
+<fullyQualifiedTypeName name="com.backendless.Backendless"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.sound.Sounds"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Animation.PlayMode"/>
+<fullyQualifiedTypeName name="com.cognitivethought.bpa.prefabs.Card"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.prefabs.Card.Type"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Color"/>
-<fullyQualifiedTypeName name="com.cognitivethought.bpa.game.Player"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.scenes.scene2d.ui.Image"/>
+<fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Pixmap.Format"/>
+<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="com.cognitivethought.bpa.launcher.Launcher"/>
-<fullyQualifiedTypeName name="java.util.Arrays"/>
 </qualifiedTypeNameHistroy>

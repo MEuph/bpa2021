@@ -57,9 +57,9 @@ public class GameMap extends Group {
 	}
 
 	public void addPlayer(Player p) {
-		players[p.country_id] = p;
-		if (p.country_id != 0)
-			countries[p.country_id].assignPlayer(p);
+		players[p.countryId] = p;
+		if (p.countryId != 0)
+			countries[p.countryId].assignPlayer(p);
 	}
 
 	@Override

@@ -35,7 +35,7 @@ import com.badlogic.gdx.utils.Align;
 import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
-import com.cognitivethought.bpa.multiplayer.TurnPacket;
+import com.cognitivethought.bpa.multiplayer.StringPacket;
 import com.cognitivethought.bpa.tidiness.Colors;
 import com.cognitivethought.bpa.tidiness.Strings;
 
@@ -349,15 +349,25 @@ public class Card extends Widget {
 		case BLANK:
 			break;
 		case DELIVERY_SYSTEM:
-			if (hasBeenOnTop)
+			if (hasBeenOnTop) {
 				discard(false, mgs, mgs.clientPlayer.username);
-			else
+			} else {
 				hasBeenOnTop = true;
+			}
 			break;
 		case WARHEAD:
 			mgs.selectTarget(this);
+			break;
+		case PROPAGANDA:
+			if (((MainGameStage)Launcher.game_stage).warInitiated) {
+				discard(false, mgs, mgs.clientPlayer.username);
+				((MainGameStage)Launcher.game_stage).shouldSendData = true;
+			} else {
+				mgs.selectTarget(this);
+			}
+			break;
 		default:
-			mgs.selectTarget(this);
+			discard(false, mgs, mgs.clientPlayer.username);
 			break;
 		}
 
@@ -368,30 +378,42 @@ public class Card extends Widget {
 
 	// USED WHEN A COUNTRY IS SELECTED
 	public void play(MainGameStage mgs, int clickedCountry) {
-		// TODO: Do the card's actions when a country is selected
 		String playerName = countryToPlayer(mgs, clickedCountry);
-		TurnPacket tp = new TurnPacket();
 		switch (type) {
 		case WARHEAD:
+			((MainGameStage) Launcher.game_stage).warInitiated = true;
+			NuclearWarServer.client.sendTCP(new StringPacket("#war:true"));
 			mgs.players.get(playerName).removePopulation((int) Math.abs(populationDelta));
-			tp.data_removePopulation(playerName, (int) Math.abs(populationDelta));
-			tp.setIssuer(mgs.clientPlayer.username);
-			NuclearWarServer.client.sendTCP(tp);
+			mgs.clientPlayer.tp.data_removePopulation(playerName, (int) Math.abs(populationDelta));
+			mgs.clientPlayer.tp.setIssuer(mgs.clientPlayer.username);
+//			((MainGameStage) Launcher.game_stage).currentTurn++;
+//			NuclearWarServer.client.sendTCP(new StringPacket("&advance"));
+			((MainGameStage) Launcher.game_stage).shouldSendData = true;
 			discard(false, mgs, playerName);
 			break;
 		case PROPAGANDA:
-			mgs.players.get(playerName).removePopulation((int) Math.abs(populationDelta));
-			tp.data_removePopulation(playerName, (int) Math.abs(populationDelta));
-			tp.setIssuer(mgs.clientPlayer.username);
-			mgs.clientPlayer.givePopulation((int) Math.abs(populationDelta));
-			tp.data_givePopulation(mgs.clientPlayer.username, (int) Math.abs(populationDelta));
-			NuclearWarServer.client.sendTCP(tp);
+			if (!((MainGameStage)Launcher.game_stage).warInitiated) {
+				mgs.players.get(playerName).removePopulation((int) Math.abs(populationDelta));
+				mgs.clientPlayer.tp.data_removePopulation(playerName, (int) Math.abs(populationDelta));
+				mgs.clientPlayer.tp.setIssuer(mgs.clientPlayer.username);
+				mgs.clientPlayer.givePopulation((int) Math.abs(populationDelta));
+				mgs.clientPlayer.tp.data_givePopulation(mgs.clientPlayer.username, (int) Math.abs(populationDelta));
+//				((MainGameStage) Launcher.game_stage).currentTurn++;
+//				NuclearWarServer.client.sendTCP(new StringPacket("&advance"));
+				((MainGameStage) Launcher.game_stage).shouldSendData = true;
+			} else {
+//				((MainGameStage) Launcher.game_stage).currentTurn++;
+//				NuclearWarServer.client.sendTCP(new StringPacket("&advance"));
+				((MainGameStage) Launcher.game_stage).shouldSendData = true;
+			}
 			discard(false, mgs, playerName);
 			break;
 		default:
 			break;
 		}
-
+		
+		mgs.executingCard = this;
+		
 		System.out.println("PLAYING CARD " + id + " towards countryId " + clickedCountry);
 	}
 
@@ -402,7 +424,7 @@ public class Card extends Widget {
 		Iterator it = ((MainGameStage) Launcher.game_stage).players.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			if (mgs.players.get(pair.getKey()).country_id == countryId) {
+			if (mgs.players.get(pair.getKey()).countryId == countryId) {
 				ret = (String) pair.getKey();
 				break;
 			}
@@ -556,8 +578,6 @@ public class Card extends Widget {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-
-		// TODO: Fix the discarding animation
 	}
 
 	public void setScale(int scale) {
@@ -642,12 +662,12 @@ public class Card extends Widget {
 					art_path = (String) data.get("Path");
 				} catch (Exception e) {
 					art_path = "";
+		        	Launcher.log();
 				}
 				long popDelta = (long) data.get("PopulationDelta");
 				long weight = (long) data.get("Weight");
 				long cap = (long) data.get("Capacity");
 				long quantity = (long) data.get("Quantity");
-				// TODO: getId() always returns null. Find out why
 				Card card = new Card(stringToType(type), name, desc, popDelta, cap, weight, quantity, art_path,
 						short_desc, new String(id), consumable);
 				for (int i = 0; i < quantity + 1; i++) {
@@ -656,6 +676,7 @@ public class Card extends Widget {
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
+			Launcher.log();
 		}
 
 		for (int i = 0; i < 100; i++) {
@@ -773,8 +794,6 @@ public class Card extends Widget {
 	}
 
 	public void discard(boolean doAnimation, MainGameStage mgs, String target) {
-		// TODO: Make some kind of animation for this
-
 		discardingAnimation = doAnimation;
 
 		if (doAnimation) {

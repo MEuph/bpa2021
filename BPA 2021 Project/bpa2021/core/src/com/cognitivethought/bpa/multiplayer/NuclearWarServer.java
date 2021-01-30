@@ -35,7 +35,9 @@ public class NuclearWarServer {
 	public static String errorCode;
 
 	public static String userIpv4, hostIpv4;
-
+	
+	public static int currentTurn = 0;
+	
 	public static ArrayList<Card> DECK = new ArrayList<>();
 
 	/**
@@ -89,6 +91,7 @@ public class NuclearWarServer {
 					}
 				}
 			} catch (SocketException e) {
+	        	Launcher.log();
 				throw new RuntimeException(e);
 			}
 
@@ -110,6 +113,8 @@ public class NuclearWarServer {
 						TurnPacket request = (TurnPacket) req;
 						System.out.println("SERVER RECEIVED TP " + req.toString() + ", " + request.data);
 						server.sendToAllExceptTCP(conn.getID(), request);
+						NuclearWarServer.currentTurn++;
+						server.sendToAllTCP(new StringPacket("&turn:" + currentTurn));
 					} else if (req instanceof StringPacket) {
 						if (((StringPacket) req).data.equals("updateNames")) {
 							System.out.println("CONECTION " + conn.getRemoteAddressTCP()
@@ -121,7 +126,11 @@ public class NuclearWarServer {
 							StringPacket names_packet = new StringPacket(names);
 							System.out.println("SENDING NAMES PACKET " + names_packet.data);
 							server.sendToAllTCP(names_packet);
+						} else if (((StringPacket)req).toString().contains("#war:")) {
+							server.sendToAllTCP(req);
 						} else if (((StringPacket)req).toString().contains("&advance")) {
+							server.sendToAllExceptTCP(conn.getID(), req);
+						} else if (((StringPacket)req).toString().contains("%pop:")) {
 							server.sendToAllExceptTCP(conn.getID(), req);
 						} else if (((StringPacket) req).toString().contains("@remove$")) {
 							String player_id = ((StringPacket) req).toString().substring(8);
@@ -136,6 +145,8 @@ public class NuclearWarServer {
 								server.sendToAllTCP(req);
 							}
 						} else if (req.toString().contains("%drawCard%")) {
+							server.sendToAllExceptTCP(conn.getID(), req);
+						} else if (req.toString().contains("&turn:")) {
 							server.sendToAllExceptTCP(conn.getID(), req);
 						} else if (req.toString().contains("%change%")) {
 							String[] data = ((StringPacket) req).data.split(";");
@@ -181,7 +192,8 @@ public class NuclearWarServer {
 				@Override
 				public void disconnected(Connection conn) {
 					System.out.println("USER " + conn.getRemoteAddressTCP() + " DISCONNECTED");
-
+					
+					if (((MultiplayerQueueStage) Launcher.mq_stage).player_names == null || (server == null)) return;
 					if (server.getConnections().size() != ((MultiplayerQueueStage) Launcher.mq_stage).player_names
 							.size()) {
 						System.out.println("SENDING OUT UPDATE PACKET\nNUM CONNECTIONS: "
@@ -198,9 +210,12 @@ public class NuclearWarServer {
 	}
 	
 	public static void closeServer() {
-		StringPacket exit = new StringPacket("@disconnect");
-		server.sendToAllTCP(exit);
-		server = null;
+		if (server != null) {
+			StringPacket exit = new StringPacket("@disconnect");
+			server.sendToAllTCP(exit);
+			server.close();
+			server = null;
+		}
 	}
 
 	public static void joinServer(int code) throws IOException {
@@ -249,8 +264,6 @@ public class NuclearWarServer {
 						if (data.data.regionMatches(true, 0, "@start@" + Integer.toString(NuclearWarServer.code), 0,
 								7)) {
 							((MultiplayerQueueStage) Launcher.mq_stage).start = true;
-						} else if ((data.data.contains("&advance"))) {
-							((MainGameStage) Launcher.game_stage).currentTurn++;
 						} else if (data.data.regionMatches(true, 0, "packet_updatedNames;", 0, 20)) {
 							String[] names = data.data.split(";");
 							System.out.println("CLIENT RECEIVED UPDATED NAMES\nBEGINNING DEBUG");
@@ -280,8 +293,15 @@ public class NuclearWarServer {
 							}
 						} else if (data.toString().equals("@disconnect")) {
 							disconnectClient();
+						} else if (((StringPacket)data).toString().contains("#war:")) {
+							((MainGameStage)Launcher.game_stage).warInitiated = Boolean.parseBoolean(data.toString().split(":")[1]);
+						} else if (((StringPacket)data).toString().contains("&turn:")) {
+							NuclearWarServer.currentTurn = Integer.parseInt(((StringPacket)data).toString().split(":")[1]);
 						} else if (dat.toString().contains("%drawCard%")) {
 							DECK.remove(0);
+						} else if (((StringPacket)data).toString().contains("%pop:")) {
+							((MainGameStage)Launcher.game_stage).players.get(data.toString().split(":")[1]).populationInteger = Integer.parseInt(data.toString().split(":")[2]);
+							((MainGameStage)Launcher.game_stage).players.get(data.toString().split(":")[1]).shouldRefreshPopulation = true;
 						} else if (data.toString().charAt(0) == '?') {
 							if (data.toString().substring(1, 6).contains("ready")) {
 								boolean ready = Boolean.parseBoolean(data.toString().split(":")[1]);
@@ -298,7 +318,7 @@ public class NuclearWarServer {
 							int country_id = Integer.parseInt(change_data[2]);
 //							if (player_name.equals((String)Launcher.currentUser.getProperty("name"))) return;
 //							else {
-							((MainGameStage) Launcher.game_stage).players.get(player_name).country_id = country_id;
+							((MainGameStage) Launcher.game_stage).players.get(player_name).countryId = country_id;
 							if (((MultiplayerQueueStage) Launcher.mq_stage).players != null)
 								((MultiplayerQueueStage) Launcher.mq_stage).refreshList();
 //							}
@@ -336,6 +356,7 @@ public class NuclearWarServer {
 				client.connect(5000, NuclearWarServer.hostIpv4, code - 100, code);
 			} catch (Exception e) {
 				System.err.println("SERVER DOES NOT EXIST");
+	        	Launcher.log();
 			}
 		}
 	}
@@ -349,7 +370,9 @@ public class NuclearWarServer {
 				"@remove$" + (String) Backendless.UserService.CurrentUser().getProperty("name"));
 		System.out.println("SENDING REMOVE PLAYER CODE " + removePlayer.toString());
 		client.sendTCP(removePlayer);
-
+		
+		client.close();
+		
 		((MultiplayerQueueStage) Launcher.mq_stage).player_names.clear();
 		if (((MultiplayerQueueStage) Launcher.mq_stage).players != null)
 			((MultiplayerQueueStage) Launcher.mq_stage).refreshList();

@@ -127,7 +127,7 @@ public class InfoPopup extends WidgetGroup {
 
 		if (country.getAssignedPlayer() != null) {
 			player_name.setText(country.getAssignedPlayer().username);
-			population.setText("Population: " + country.getAssignedPlayer().pop_i + "M");
+			population.setText("Population: " + country.getAssignedPlayer().populationInteger + "M");
 			int i = 0;
 			String d = "";
 

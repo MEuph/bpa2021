@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.tidiness.Strings;
 
 public class Spinner extends Actor {
@@ -86,7 +85,7 @@ public class Spinner extends Actor {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if (!MainGameStage.warInitiated) return;
+//		if (!MainGameStage.warInitiated) return;
 		
 		if (spinning) {
 			

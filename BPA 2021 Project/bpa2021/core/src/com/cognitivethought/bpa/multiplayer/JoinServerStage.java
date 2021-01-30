@@ -94,9 +94,8 @@ public class JoinServerStage extends UIStage {
 					success = true;
 				} catch (Exception e) {
 					jss_errors.setText("Error, couldn\'t connect to server!");
+		        	Launcher.log();
 				}
-				
-				// TODO: Multiplayer connection is not working. Fix it or go local (one-machine) multiplayer
 				
 				if (success) {
 					NuclearWarServer.code = Integer.parseInt(server_code.getText().split(":")[1]);

@@ -8,6 +8,7 @@ public class Strings {
 	public static final String SECRET_KEY = "8DED3655-07DA-4371-8B74-BFC89AB61CD1";
 	
 	public static String USER_ID = "";
+	
 
 	public static final String EMPTY = "";
 	
@@ -16,6 +17,7 @@ public class Strings {
 	public static final String MUI_TITLE = NAME;
 	public static final String MUI_START = "Start";
 	public static final String MUI_HELP = "Help";
+	public static final String MUI_SETTINGS = "Settings";
 	public static final String MUI_QUIT = "Quit";
 	public static final String MUI_HOST = "Host Server";
 	public static final String MUI_HOST_FIELD = "[Host Code]";
@@ -41,6 +43,9 @@ public class Strings {
 
 	public static final String HSS_HOST = "Host Server";
 	public static final String HSS_START = "Start Game";
+
+	public static final String SS_SAVE = "Save";
+	public static final String SS_BACK = "Back";
 	
 	public static final String ERROR_BE3033 = "Sorry, an account with that username has already been created!";
 	public static final String ERROR_BE3003 = "Invalid username or password";
@@ -57,7 +62,10 @@ public class Strings {
 //	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/default/skin/uiskin.atlas";
 	public static final String URL_SKINS_DEFAULT_FILE = URL_LOCATOR + "skins/test/skin/skin.json";
 	public static final String URL_SKINS_DEFAULT_ATLAS = URL_LOCATOR + "skins/test/skin/skin.atlas";
-	
+
+	public static String URL_CTM = URL_LOCATOR + "companyandteam/ctm_placeholder.jpg";
+	public static String URL_GRS = URL_LOCATOR + "companyandteam/GRLogo.png";
+
 	public static final String URL_IMG_UI_DARK = URL_LOCATOR + "images/ui/dark.png";
 	
 	public static final String URL_TEAPOT = URL_LOCATOR + "models/teapot.obj";
@@ -105,4 +113,16 @@ public class Strings {
 	public static final String URL_ALERT_ATTACK_GIF = URL_LOCATOR + "alerts/attackalert.gif";
 	public static final String URL_ALERT_DEATH_GIF = URL_LOCATOR + "alerts/death.gif";
 	public static final String URL_ALERT_TRADE_GIF = URL_LOCATOR + "alerts/tradealert.gif";
+	
+	public static final String URL_MUSIC_INTRO = URL_LOCATOR + "sounds/music_intro.wav";
+	public static final String URL_MUSIC_QUEUE = URL_LOCATOR + "sounds/music_queue.wav";
+	public static final String URL_MUSIC_WAR = URL_LOCATOR + "sounds/music_war.wav";
+	
+	public static final String URL_SOUND_ATTACK = URL_LOCATOR + "sounds/attackalert.wav";
+	public static final String URL_SOUND_BOOM = URL_LOCATOR + "sounds/boom.wav";
+	public static final String URL_SOUND_COUNTRY_CLICKED = URL_LOCATOR + "sounds/countryclick.wav";
+	public static final String URL_SOUND_CARD_PLACED = URL_LOCATOR + "sounds/placecard.wav";
+	public static final String URL_SOUND_PLACEMAT_PULLED_DOWN = URL_LOCATOR + "sounds/placematappear.wav";
+	public static final String URL_SOUND_SIREN = URL_LOCATOR + "sounds/Siren.wav";
+	public static final String URL_SOUND_WAR_DECLARED = URL_LOCATOR + "sounds/wardeclared.wav";
 }

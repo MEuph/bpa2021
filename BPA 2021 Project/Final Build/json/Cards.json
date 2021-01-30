@@ -1,0 +1,212 @@
+{
+	"prop10mil": [ 
+		{ 
+			"Name": "10 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/10millionpropaganda.png",
+			"PopulationDelta": 10,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "10 Million of the Enemy population declares allegiance to your country!",
+			"Short Desc": "Take 10M from enemy",
+			"Quantity": 48
+		}
+	],
+	
+	"prop25mil": [ 
+		{ 
+			"Name": "25 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/25millionpropaganda.png",
+			"PopulationDelta": 25,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "25 Million of the Enemy population declares allegiance to your country!",
+			"Short Desc": "Take 25M from enemy",
+			"Quantity": 34
+		}
+	],
+	
+	"prop50mil": [ 
+		{ 
+			"Name": "50 Million",
+			"Type": "PROPAGANDA",
+			"Path": "cardart/propaganda/50millionpropaganda.png",
+			"PopulationDelta": 50,
+			"Capacity": 0,
+			"Weight": 0,
+			"Description": "50 Million of the Enemy population declares allegiance to your country!",
+			"Short Desc": "Take 50M from enemy",
+			"Quantity": 8
+		}
+	],
+	
+	"nuke10meg": [ 
+		{ 
+			"Name": "10 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/10megaton.png",
+			"PopulationDelta": -2,
+			"Capacity": 0,
+			"Weight": 10,
+			"Description": "Destroys 2 Million",
+			"Short Desc": "Kill 2M",
+			"Quantity": 76
+		}
+	],
+	
+	"nuke20meg": [ 
+		{ 
+			"Name": "20 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/20megaton.png",
+			"PopulationDelta": -5,
+			"Capacity": 0,
+			"Weight": 20,
+			"Description": "Destroys 5 Million of the Enemy population",
+			"Short Desc": "Kill 5M",
+			"Quantity": 40
+		}
+	],
+	
+	"nuke50meg": [ 
+		{ 
+			"Name": "50 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/50megaton.png",
+			"PopulationDelta": -10,
+			"Capacity": 0,
+			"Weight": 50,
+			"Description": "Destroys 10 Million of the Enemy population",
+			"Short Desc": "Kill 10M",
+			"Quantity": 16
+		}
+	],
+	
+	"nuke100meg": [ 
+		{ 
+			"Name": "100 Megatons",
+			"Type": "WARHEAD",
+			"Path": "cardart/warheads/100megaton.png",
+			"PopulationDelta": -25,
+			"Capacity": 0,
+			"Weight": 100,
+			"Description": "Destroys 25 Million of the Enemy population",
+			"Short Desc": "Kill 25M",
+			"Quantity": 4
+		}
+	]
+	
+	"delivery_b70": [ 
+		{ 
+			"Name": "B-70 Bomber",
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/B2bomber.png",
+			"PopulationDelta": 0,
+			"Capacity": 50,
+			"Weight": 0,
+			"Description": "Carries up to 50 Megatons over any amount of turns",
+			"Short Desc": "Carries 50 Megs",
+			"Quantity": 12
+		}
+	],
+	
+	"delivery_stealth_bomber": [ 
+		{ 
+			"Name": "Stealth Bomber",
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/B2bomber.png",
+			"PopulationDelta": 0,
+			"Capacity": 100,
+			"Weight": 0,
+			"Description": "Carries up to 100 Megatons over any amount of turns",
+			"Short Desc": "Carries 100 Megs",
+			"Quantity": 6
+		}
+	],
+	
+	"delivery_saturn": [ 
+		{ 
+			"Name": "Saturn Missile",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/saturncard.png",
+			"PopulationDelta": 0,
+			"Capacity": 100,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 100 megatons. Discard after use",
+			"Short Desc": "Carries one warhead. Consumable",
+			"Quantity": 6
+		}
+	],
+	
+	"delivery_atlas": [ 
+		{ 
+			"Name": "Atlas Missile",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/atlascard.png",
+			"PopulationDelta": 0,
+			"Capacity": 20,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 20 megatons. Discard after use",
+			"Short Desc": "Carries one nuke up to 20 megs. Consumable",
+			"Quantity": 18
+		}
+	],
+	
+	"delivery_submarine": [ 
+		{ 
+			"Name": "Submarine",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 20,
+			"Weight": 0,
+			"Description": "Carries 10 or 20 megatons",
+			"Short Desc": "Carries 10 or 20 megs",
+			"Quantity": 8
+		}
+	],
+	
+	"delivery_polaris": [ 
+		{ 
+			"Name": "Polaris",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"Path": "cardart/delivery/polariscard.png",
+			"PopulationDelta": 0,
+			"Capacity": 10,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 10 megatons. Discard after use",
+			"Short Desc": "Carries 10 megs. Consumable",
+			"Quantity": 18
+		}
+	],
+	
+	"delivery_scud": [ 
+		{ 
+			"Name": "Scud Missile",
+			"Consumable": true,
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 20,
+			"Weight": 0,
+			"Description": "Carries up to 20 megatons. Discard after use",
+			"Short Desc": "Carries up to 20 megs. Consumable",
+			"Quantity": 18
+		}
+	],
+
+	"delivery_space_shuttle": [ 
+		{ 
+			"Name": "Space Shuttle",
+			"Type": "DELIVERY_SYSTEM",
+			"PopulationDelta": 0,
+			"Capacity": 50,
+			"Weight": 0,
+			"Description": "Carries one warhead up to 50 megatons",
+			"Short Desc": "Carries 50 megs",
+			"Quantity": 2
+		}
+	]
+}

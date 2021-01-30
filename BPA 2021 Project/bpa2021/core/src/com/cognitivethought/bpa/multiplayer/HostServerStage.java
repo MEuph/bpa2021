@@ -110,9 +110,8 @@ public class HostServerStage extends UIStage {
 					} catch (Exception e) {
 						hss_errors.getStyle().fontColor = Colors.TEXT_ERROR;
 						hss_errors.setText("Please enter a valid 4-digit host code between 3000 and 9999");
+			        	Launcher.log();
 					}
-					
-					// TODO: THEN ALLOW PLAYERS TO SEND TURN DATA TO SERVER, THEN PRINT DEBUG DATA TO CONSOLE TO SHOW THAT TURNS ARE INDEED BEING SENT BACK AND FORTH AND PLAYERS ARE CHANGING
 					
 					if (NuclearWarServer.server != null) {
 						hss_errors.getStyle().fontColor = Colors.TEXT_INFO;
@@ -141,6 +140,7 @@ public class HostServerStage extends UIStage {
 		back.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				NuclearWarServer.closeServer();
 				Launcher.setStage(Launcher.game_menu_stage);
 			}
 		});

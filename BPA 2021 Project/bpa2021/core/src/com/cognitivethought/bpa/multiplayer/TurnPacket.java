@@ -3,6 +3,7 @@ package com.cognitivethought.bpa.multiplayer;
 import java.util.Arrays;
 
 import com.cognitivethought.bpa.gamestages.MainGameStage;
+import com.cognitivethought.bpa.launcher.Launcher;
 
 /**
  * Sends turn data to server to be distributed as a string to players on the server
@@ -154,6 +155,8 @@ public class TurnPacket {
 				}
 			}
 		}
+		
+		((MainGameStage)Launcher.game_stage).executingCard = null;
 	}
 	
 	public void reset() {

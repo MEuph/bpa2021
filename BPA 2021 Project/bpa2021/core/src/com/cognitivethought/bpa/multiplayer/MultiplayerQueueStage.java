@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.backendless.Backendless;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -26,6 +27,7 @@ import com.cognitivethought.bpa.gamestages.MainGameStage;
 import com.cognitivethought.bpa.launcher.Launcher;
 import com.cognitivethought.bpa.prefabs.Card;
 import com.cognitivethought.bpa.prefabs.GameMap;
+import com.cognitivethought.bpa.sound.Sounds;
 import com.cognitivethought.bpa.tidiness.Colors;
 import com.cognitivethought.bpa.tidiness.Strings;
 import com.cognitivethought.bpa.uistages.UIStage;
@@ -54,6 +56,13 @@ public class MultiplayerQueueStage extends UIStage {
 	public void populate() {
 		super.populate();
 		
+		int vol_i = (int) Backendless.UserService.CurrentUser().getProperty("nw_volume");
+		float vol = (float)(vol_i) / 100f;
+		Sounds.music_queue.stop();
+		Sounds.music_intro.stop();
+		Sounds.music_war.stop();
+		Sounds.music_queue.setLooping(Sounds.music_queue.play(vol), true);
+		
 		int scale = ((Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) / (1366 / 768));
 		
 		FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal(Strings.URL_PIXEL_FONT_REGULAR));
@@ -74,9 +83,9 @@ public class MultiplayerQueueStage extends UIStage {
 				"Popula", "Radonia", "Visalia");
 		select_country.addListener(new ChangeListener() {
 			public void changed(ChangeEvent event, Actor actor) {
-				((MainGameStage)Launcher.game_stage).players.get(Launcher.currentUser.getProperty("name")).country_id = select_country.getSelectedIndex();
-				StringPacket changeCountry = new StringPacket("%change%;" + Launcher.currentUser.getProperty("name") + ";" + ((MainGameStage)Launcher.game_stage).players.get((String)Launcher.currentUser.getProperty("name")).country_id);
-				System.out.println("PACKET " + "%change%;" + Launcher.currentUser.getProperty("name") + ";" + ((MainGameStage)Launcher.game_stage).players.get((String)Launcher.currentUser.getProperty("name")).country_id);
+				((MainGameStage)Launcher.game_stage).players.get(Launcher.currentUser.getProperty("name")).countryId = select_country.getSelectedIndex();
+				StringPacket changeCountry = new StringPacket("%change%;" + Launcher.currentUser.getProperty("name") + ";" + ((MainGameStage)Launcher.game_stage).players.get((String)Launcher.currentUser.getProperty("name")).countryId);
+				System.out.println("PACKET " + "%change%;" + Launcher.currentUser.getProperty("name") + ";" + ((MainGameStage)Launcher.game_stage).players.get((String)Launcher.currentUser.getProperty("name")).countryId);
 				NuclearWarServer.client.sendTCP(changeCountry);
 			}
 		});
@@ -96,7 +105,7 @@ public class MultiplayerQueueStage extends UIStage {
 					if (Launcher.currentUser != null) {
 						StringPacket ready = new StringPacket("?ready:true:" + Launcher.currentUser.getProperty("name"));
 						NuclearWarServer.client.sendTCP(ready);
-						mq_ready.setDisabled(true);
+//						mq_ready.setDisabled(true);
 					}
 				} else {
 					if (Launcher.currentUser != null) {
@@ -136,10 +145,9 @@ public class MultiplayerQueueStage extends UIStage {
 		back.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				NuclearWarServer.closeServer();
 				if (NuclearWarServer.client != null)
 					NuclearWarServer.disconnectClient();
-				if (NuclearWarServer.server != null)
-					NuclearWarServer.closeServer();
 				Launcher.setStage(Launcher.game_menu_stage);
 			}
 		});
@@ -170,7 +178,7 @@ public class MultiplayerQueueStage extends UIStage {
 				Iterator it = ((MainGameStage)Launcher.game_stage).players.entrySet().iterator();
 			    while (it.hasNext()) {
 			        Map.Entry pair = (Map.Entry)it.next();
-			        ids.add(((MainGameStage)Launcher.game_stage).players.get(pair.getKey()).country_id);
+			        ids.add(((MainGameStage)Launcher.game_stage).players.get(pair.getKey()).countryId);
 			    }
 			    
 			    for (int i = 0; i < ids.size() && !duplicates && !none; i++) {
@@ -222,8 +230,6 @@ public class MultiplayerQueueStage extends UIStage {
 		refreshList();
 	}
 	
-	// TODO: DO NOT allow multiple players to play the same country
-	
 	@Override
 	public void draw() {
 		
@@ -255,9 +261,12 @@ public class MultiplayerQueueStage extends UIStage {
 		}
 		
 		try {
+			if (getBatch().isDrawing()) getBatch().end();
 			super.draw();
 		} catch (Exception e) {
-			
+			e.printStackTrace();
+        	Launcher.log();
+			refreshList();
 		}
 		
 		if (start) {
@@ -276,9 +285,10 @@ public class MultiplayerQueueStage extends UIStage {
 		if (players == null) players = new VerticalGroup();
 		players.clearChildren();
 		for (int i = 0; i < player_names.size(); i++) {
+			if (i > player_names.size()) break;
 			System.out.println("PLAYER NAMES GET(i) " + i + " = null? " + (player_names.get(i) == null));
 			System.out.println("PLAYER " + player_names.get(i) + " = null? " + ((((MainGameStage)Launcher.game_stage).players.get(player_names.get(i)) == null)));
-			players.addActor(new Label(player_names.get(i) + (("(" + GameMap.idToString(((MainGameStage)Launcher.game_stage).players.get(player_names.get(i)).country_id) + ")") + (((MainGameStage)Launcher.game_stage).players.get(player_names.get(i)).ready ? "|Y" : "|N")), labelStyle));
+			players.addActor(new Label(player_names.get(i) + (("(" + GameMap.idToString(((MainGameStage)Launcher.game_stage).players.get(player_names.get(i)).countryId) + ")") + (((MainGameStage)Launcher.game_stage).players.get(player_names.get(i)).ready ? "|Y" : "|N")), labelStyle));
 		}
 		players.align(Align.center);
 //		players.setPosition(mq_elements.getX() - (players.getWidth() / 2), mq_elements.getY() - (mq_elements.getHeight() / 2));

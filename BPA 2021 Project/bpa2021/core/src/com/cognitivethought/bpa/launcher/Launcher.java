@@ -1,19 +1,20 @@
 package com.cognitivethought.bpa.launcher;
 
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -24,6 +25,7 @@ import com.cognitivethought.bpa.multiplayer.HostServerStage;
 import com.cognitivethought.bpa.multiplayer.JoinServerStage;
 import com.cognitivethought.bpa.multiplayer.MultiplayerQueueStage;
 import com.cognitivethought.bpa.multiplayer.NuclearWarServer;
+import com.cognitivethought.bpa.sound.Sounds;
 import com.cognitivethought.bpa.tidiness.Strings;
 import com.cognitivethought.bpa.uistages.ForgotPasswordStage;
 import com.cognitivethought.bpa.uistages.GameMenuStage;
@@ -31,6 +33,7 @@ import com.cognitivethought.bpa.uistages.LauncherStage;
 import com.cognitivethought.bpa.uistages.LoginStage;
 import com.cognitivethought.bpa.uistages.MainLauncherStage;
 import com.cognitivethought.bpa.uistages.NewAccountStage;
+import com.cognitivethought.bpa.uistages.SettingsStage;
 import com.cognitivethought.bpa.uistages.UIStage;
 
 public class Launcher extends ApplicationAdapter {
@@ -49,6 +52,7 @@ public class Launcher extends ApplicationAdapter {
 	public static UIStage js_stage;
 	public static UIStage hs_stage;
 	public static UIStage mq_stage;
+	public static UIStage settings_stage;
 	
 	public static GameStage game_stage;
 	
@@ -60,9 +64,35 @@ public class Launcher extends ApplicationAdapter {
 	
 	public static boolean isFullscreen = false;
 	
+	static File logFile;
+	static PrintStream err;
+	
+	public static void log() {
+		err.println("Please email the following log file to bpamisd@gmail.com: " + logFile.getAbsolutePath());
+	}
+	
 	@Override
 	public void create() {
 		Backendless.initApp(Strings.APP_ID, Strings.SECRET_KEY);
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
+		File f = new File(Strings.URL_LOCATOR + "Logs/" + dtf.format(LocalDateTime.now()) + ".txt");
+		
+		try {
+			f.createNewFile();
+
+			logFile = f;
+			
+			err = System.err;
+			
+			System.setOut(new PrintStream(new FileOutputStream(f)));
+			System.setErr(new PrintStream(new FileOutputStream(f)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Sounds.load();
 		
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(0, 0, -100);
@@ -81,6 +111,7 @@ public class Launcher extends ApplicationAdapter {
 		js_stage = new JoinServerStage(vp);
 		hs_stage = new HostServerStage(vp);
 		mq_stage = new MultiplayerQueueStage(vp);
+		settings_stage = new SettingsStage(vp);
 		
 		na_stage.getViewport().apply();
 		login_stage.getViewport().apply();
@@ -91,6 +122,8 @@ public class Launcher extends ApplicationAdapter {
 		js_stage.getViewport().apply();
 		hs_stage.getViewport().apply();
 		mq_stage.getViewport().apply();
+		settings_stage.getViewport().apply();
+		
 		
 		stages.add(na_stage);
 		stages.add(login_stage);
@@ -101,67 +134,9 @@ public class Launcher extends ApplicationAdapter {
 		stages.add(js_stage);
 		stages.add(hs_stage);
 		stages.add(mq_stage);
+		stages.add(settings_stage);
 		
 		setStage(login_stage);
-		
-		for (Stage s : stages) {
-			s.addListener(new InputListener() {
-				@Override
-				public boolean keyTyped(InputEvent event, char character) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.F12)) {
-						Backendless.UserService.login("MEuph", "603Euph_", new AsyncCallback<BackendlessUser>() {
-							
-							@Override
-							public void handleResponse(BackendlessUser response) {
-								Launcher.currentUser = response;
-								System.out.println("Worked");
-							}
-							
-							@Override
-							public void handleFault(BackendlessFault fault) {
-								System.err.println("Failed");
-							}
-						});
-						
-						Launcher.setStage(main_stage);
-					} else if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
-						Backendless.UserService.login("MEuph2", "603Euph_", new AsyncCallback<BackendlessUser>() {
-							
-							@Override
-							public void handleResponse(BackendlessUser response) {
-								Launcher.currentUser = response;
-								System.out.println("Worked");
-							}
-							
-							@Override
-							public void handleFault(BackendlessFault fault) {
-								System.err.println("Failed");
-							}
-						});
-						
-						Launcher.setStage(main_stage);
-					} else if (Gdx.input.isKeyJustPressed(Input.Keys.F10)) {
-						Backendless.UserService.login("MEuph3", "603Euph_", new AsyncCallback<BackendlessUser>() {
-							
-							@Override
-							public void handleResponse(BackendlessUser response) {
-								Launcher.currentUser = response;
-								System.out.println("Worked");
-							}
-							
-							@Override
-							public void handleFault(BackendlessFault fault) {
-								System.err.println("Failed");
-							}
-						});
-						
-						Launcher.setStage(main_stage);
-					}
-					
-					return super.keyTyped(event, character);
-				}
-			});
-		}
 		
 //		populateUI();
 	}
@@ -234,5 +209,6 @@ public class Launcher extends ApplicationAdapter {
 		game_stage.dispose();
 		js_stage.dispose();
 		hs_stage.dispose();
+		settings_stage.dispose();
 	}
 }

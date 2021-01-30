@@ -198,6 +198,7 @@ public class ForgotPasswordStage extends LauncherStage {
 				} catch (BackendlessException e) {
 					fp_errors.getStyle().fontColor = Colors.TEXT_ERROR;
 					fp_errors.setText("User with that email username combo does not exist");
+		        	Launcher.log();
 					return;
 				}
 				if (!fp_verifyNewPass.isVisible()) {
@@ -208,7 +209,8 @@ public class ForgotPasswordStage extends LauncherStage {
 							try {
 								Launcher.currentUser = Backendless.UserService.login(fp_username.getText(), fp_tempPass.getText());
 							} catch (BackendlessException e) {
-								System.err.println("line 706");
+								e.printStackTrace();
+								Launcher.log();
 								return;
 							}
 
@@ -266,6 +268,7 @@ public class ForgotPasswordStage extends LauncherStage {
 					} catch (BackendlessException e) {
 						fp_errors.getStyle().fontColor = Colors.TEXT_ERROR;
 						fp_errors.setText("User with that email username combo does not exist");
+			        	Launcher.log();
 						return;
 					}
 				}
@@ -359,6 +362,7 @@ public class ForgotPasswordStage extends LauncherStage {
 		} catch (Exception e) {
 			fp_errors.getStyle().fontColor = Colors.TEXT_ERROR;
 			fp_errors.setText("User with that email username combo does not exist");
+        	Launcher.log();
 		}
 
 		System.out.println(Strings.USER_ID);
